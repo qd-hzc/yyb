@@ -66,10 +66,6 @@ public class LoginController extends BaseController{
 	 * 管理登录
 	 * @throws IOException 
 	 */
-	@ApiOperation(notes = "login", httpMethod = "POST", value = "用户登录")
-	@ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query",dataType = "string"),
-			@ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query",dataType = "string"),
-			@ApiImplicitParam(name="mobileLogin",value = "接口标志",required = true, paramType = "query",dataType = "string")})
 	@RequestMapping(value = "${adminPath}/login")
 	public String login(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Principal principal = UserUtils.getPrincipal();

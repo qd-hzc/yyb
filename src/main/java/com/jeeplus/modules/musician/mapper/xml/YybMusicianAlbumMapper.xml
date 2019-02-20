@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.musician.mapper.YybMusicianAlbumMapper">
+    
+	<sql id="yybMusicianAlbumColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.musician_id AS "yybMusician.id",
+		a.name AS "name",
+		a.img AS "img",
+		a.remarks AS "remarks",
+				
+				
+				
+				
+				
+				
+		b.name AS "yybMusician.name"
+	</sql>
+	
+	<sql id="yybMusicianAlbumJoins">
+		
+			LEFT JOIN yyb_musician b ON b.id = a.musician_id
+	</sql>
+	
+    
+	<select id="get" resultType="YybMusicianAlbum" >
+		SELECT 
+			<include refid="yybMusicianAlbumColumns"/>
+		FROM yyb_musician_album a
+		<include refid="yybMusicianAlbumJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="YybMusicianAlbum" >
+		SELECT 
+			<include refid="yybMusicianAlbumColumns"/>
+		FROM yyb_musician_album a
+		<include refid="yybMusicianAlbumJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="yybMusician != null and yybMusician.id != null and yybMusician.id != ''">
+				AND a.musician_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{yybMusician.id}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{yybMusician.id}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{yybMusician.id},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="YybMusicianAlbum" >
+		SELECT 
+			<include refid="yybMusicianAlbumColumns"/>
+		FROM yyb_musician_album a
+		<include refid="yybMusicianAlbumJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date ASC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO yyb_musician_album(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			musician_id,
+			name,
+			img,
+			remarks
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{yybMusician.id},
+			#{name},
+			#{img},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE yyb_musician_album SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			musician_id = #{yybMusician.id},
+			name = #{name},
+			img = #{img},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM yyb_musician_album
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE musician_id = #{yybMusician.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE yyb_musician_album SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		<choose>
+			<when test="id !=null and id != ''">
+				WHERE id = #{id}
+			</when>
+			<otherwise>
+				WHERE musician_id = #{yybMusician.id}
+			</otherwise>
+		</choose>
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="YybMusicianAlbum" statementType="STATEMENT">
+		select * FROM yyb_musician_album  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

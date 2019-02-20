@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.member.mapper.YybMemberMapper">
+    
+	<sql id="yybMemberColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.name AS "name",
+		a.phone AS "phone",
+		a.type AS "type",
+		a.sex AS "sex",
+		a.id_card AS "idCard",
+		a.id_card_attach AS "idCardAttach",
+		a.address AS "address",
+		a.org_code AS "orgCode",
+		a.org_code_attach AS "orgCodeAttach",
+		a.status AS "status",
+		a.remarks AS "remark"
+	</sql>
+	
+	<sql id="yybMemberJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="YybMember" >
+		SELECT 
+			<include refid="yybMemberColumns"/>
+		FROM yyb_member a
+		<include refid="yybMemberJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="YybMember" >
+		SELECT 
+			<include refid="yybMemberColumns"/>
+		FROM yyb_member a
+		<include refid="yybMemberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone LIKE 
+					<if test="dbName == 'oracle'">'%'||#{phone}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{phone}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{phone},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card LIKE 
+					<if test="dbName == 'oracle'">'%'||#{idCard}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{idCard}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{idCard},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="YybMember" >
+		SELECT 
+			<include refid="yybMemberColumns"/>
+		FROM yyb_member a
+		<include refid="yybMemberJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO yyb_member(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			name,
+			phone,
+			type,
+			sex,
+			id_card,
+			id_card_attach,
+			address,
+			org_code,
+			org_code_attach,
+			status,
+			remarks
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{name},
+			#{phone},
+			#{type},
+			#{sex},
+			#{idCard},
+			#{idCardAttach},
+			#{address},
+			#{orgCode},
+			#{orgCodeAttach},
+			#{status},
+			#{remark}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE yyb_member SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			name = #{name},
+			phone = #{phone},
+			type = #{type},
+			sex = #{sex},
+			id_card = #{idCard},
+			id_card_attach = #{idCardAttach},
+			address = #{address},
+			org_code = #{orgCode},
+			org_code_attach = #{orgCodeAttach},
+			status = #{status},
+			remarks = #{remark}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM yyb_member
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE yyb_member SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="YybMember" statementType="STATEMENT">
+		select * FROM yyb_member  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
