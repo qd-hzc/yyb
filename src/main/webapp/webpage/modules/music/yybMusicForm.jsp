@@ -64,17 +64,17 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>地址：</label></td>
 					<td class="width-35">
-						<sys:fileUpload path="url"  value="${yybMusic.url}" type="file" uploadPath="/music/yybMusic"/>
+						<sys:fileUpload fileNumLimit="1" path="url"  value="${yybMusic.url}" type="file" uploadPath="/music/yybMusic"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>图片：</label></td>
 					<td class="width-35">
-						<sys:fileUpload path="img"  value="${yybMusic.img}" type="file" uploadPath="/music/yybMusic"/>
+						<sys:fileUpload fileNumLimit="1" path="img"  value="${yybMusic.img}" type="file" uploadPath="/music/yybMusic"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">标签：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/tagcatetory/yybTagCategory/data" id="yybTagCategory" name="yybTagCategory.id" value="${yybMusic.yybTagCategory.id}" labelName="yybTagCategory.name" labelValue="${yybMusic.yybTagCategory.name}"
+						<sys:gridselect isMultiSelected="true" url="${ctx}/tagcatetory/yybTagCategory/data" id="yybTagCategory" name="yybTagCategory.id" value="${yybMusic.yybTagCategory.id}" labelName="yybTagCategory.name" labelValue="${yybMusic.yybTagCategory.name}"
 							 title="选择标签" cssClass="form-control " fieldLabels="名称" fieldKeys="name" searchLabels="名称" searchKeys="name" ></sys:gridselect>
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>时长：</label></td>

@@ -28,7 +28,7 @@ deniedExtensions： 禁止上传的文件类型
 <%--bmp,gif,jpeg,jpg,png--%>
 
 <div class="input-group" style="width:100%">
-    <input type="hidden" name="${path}"  value="${value}"/>
+    <input class="ccc" type="hidden" name="${path}"  value="${value}"/>
     <input type="text" id="${path}" value="${fns:getLabels(value)}" class="form-control" readonly="readonly"/>
     <span class="input-group-btn">
 	       		 <button type="button" id="${path}Button" onclick="${path}FileDialogOpen();" class="btn btn-primary "><i class="fa fa-cloud-upload"></i></button>

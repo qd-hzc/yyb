@@ -112,7 +112,8 @@
 			org_code,
 			org_code_attach,
 			status,
-			remarks
+			remarks,
+			password
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -130,7 +131,8 @@
 			#{orgCode},
 			#{orgCodeAttach},
 			#{status},
-			#{remark}
+			#{remark},
+			#{password}
 		)
 	</insert>
 	

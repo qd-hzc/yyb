@@ -320,7 +320,7 @@ $(document).ready(function() {
 						{{row.name}}
 					</td>
 					<td>
-						{{row.img}}
+						<img   onclick="jp.showPic('{{row.img}}')" height="50px" src="{{row.img}}">
 					</td>
 					<td>
 						{{row.remarks}}

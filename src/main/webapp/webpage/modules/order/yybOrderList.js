@@ -401,11 +401,10 @@ $(document).ready(function() {
 						<thead>
 							<tr>
 								<th>订单</th>
-								<th>购物车</th>
 								<th>音乐</th>
 								<th>音乐名称</th>
 								<th>音乐单价</th>
-								<th>用途</th>
+								<th>用途与占比</th>
 								<th>权利</th>
 								<th>总价</th>
 								<th>备注信息</th>
@@ -422,9 +421,7 @@ $(document).ready(function() {
 					<td>
 						{{row.yybOrder.id}}
 					</td>
-					<td>
-						{{row.yybShopcart.id}}
-					</td>
+
 					<td>
 						{{row.musicId}}
 					</td>
@@ -435,10 +432,10 @@ $(document).ready(function() {
 						{{row.musicPrice}}
 					</td>
 					<td>
-						{{row.usageSelect}}
+						{{row.usageSelectName}}
 					</td>
 					<td>
-						{{row.rightSelect}}
+						{{row.rightSelectName}}
 					</td>
 					<td>
 						{{row.musicTotal}}

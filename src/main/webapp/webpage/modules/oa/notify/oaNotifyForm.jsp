@@ -59,10 +59,10 @@
 					<label class="col-sm-2 control-label">附件：</label>
 					<div class="col-sm-10">
 						<c:if test="${oaNotify.status ne '1'}">
-							<sys:fileUpload path="files" value="${oaNotify.files}" type="file" uploadPath="/oa/notify"/>
+							<sys:fileUpload fileNumLimit="1" path="files" value="${oaNotify.files}" type="file" uploadPath="/oa/notify"/>
 						</c:if>
 				         <c:if test="${oaNotify.status eq '1'}">
-							 <sys:fileUpload path="files" value="${oaNotify.files}" type="file" uploadPath="/oa/notify"  readonly="true"/>
+							 <sys:fileUpload fileNumLimit="1" path="files" value="${oaNotify.files}" type="file" uploadPath="/oa/notify"  readonly="true"/>
 				         </c:if>
 					</div>
 				</div>

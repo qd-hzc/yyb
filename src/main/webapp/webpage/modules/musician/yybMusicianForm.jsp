@@ -10,6 +10,14 @@
 		});
 
 		function save() {
+
+            $.each($(".ccc"), function(i, value) {
+                if(i > 0) {
+                    console.log($(value).attr("name"))
+					var n = i - 1 ;
+                    $(value).attr("name","yybMusicianAlbumList["+n+"].img")
+                }
+            })
             var isValidate = jp.validateForm('#inputForm');//校验表单
             if(!isValidate){
                 return false;
@@ -79,7 +87,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>头像：</label></td>
 					<td class="width-35">
-						<sys:fileUpload path="headPhoto"  value="${yybMusician.headPhoto}" type="file" uploadPath="/musician/yybMusician"/>
+						<sys:fileUpload fileNumLimit="1" path="headPhoto"  value="${yybMusician.headPhoto}" type="file" uploadPath="/musician/yybMusician"/>
 					</td>
 				</tr>
 				<tr>
@@ -126,7 +134,7 @@
 					
 					
 					<td>
-									<sys:fileUpload path="yybMusicianAlbumList{{idx}}_img"  value="{{row.img}}" type="file" uploadPath="/musician/yybMusician"/>
+									<sys:fileUpload fileNumLimit="1" path="yybMusicianAlbumList{{idx}}img"  value="{{row.img}}" type="file" uploadPath="/musician/yybMusician"/>
 					</td>
 					
 					
@@ -147,6 +155,8 @@
 						addRow('#yybMusicianAlbumList', yybMusicianAlbumRowIdx, yybMusicianAlbumTpl, data[i]);
 						yybMusicianAlbumRowIdx = yybMusicianAlbumRowIdx + 1;
 					}
+
+
 				});
 			</script>
 			</div>

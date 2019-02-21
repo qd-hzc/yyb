@@ -72,7 +72,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>群头像：</label></td>
 					<td class="width-35">
-						<sys:fileUpload path="avatar" value="${layGroup.avatar}" type="image" uploadPath="/iim/layGroup" fileNumLimit="1"/>
+						<sys:fileUpload fileNumLimit="1" path="avatar" value="${layGroup.avatar}" type="image" uploadPath="/iim/layGroup" fileNumLimit="1"/>
 					</td>
 				</tr>
 				<tr>

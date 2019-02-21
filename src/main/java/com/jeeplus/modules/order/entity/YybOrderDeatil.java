@@ -3,11 +3,17 @@
  */
 package com.jeeplus.modules.order.entity;
 
+import com.alibaba.fastjson.JSON;
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.order.entity.YybOrder;
+import com.jeeplus.modules.right.entity.YybRight;
 import com.jeeplus.modules.shopcart.entity.YybShopcart;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.usage.entity.YybUsage;
+
+import java.util.List;
 
 /**
  * 订单详情Entity
@@ -23,7 +29,13 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 	private String musicTitle;		// 音乐名称
 	private Double musicPrice;		// 音乐单价
 	private String usageSelect;		// 用途
+	private List<YybUsage> usageList;		// 用途
+	private String usageSelectName;
+
 	private String rightSelect;		// 权利
+	private List<YybRight> rightList;		// 权利
+	private String rightSelectName;
+
 	private Double musicTotal;		// 总价
 	
 	public YybOrderDeatil() {
@@ -89,6 +101,15 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 
 	public void setUsageSelect(String usageSelect) {
 		this.usageSelect = usageSelect;
+		if (StringUtils.isNotBlank(usageSelect)){
+			List<YybUsage> list = JSON.parseArray(usageSelect, YybUsage.class);
+			this.usageList = list;
+			String nameAll = "";
+			for (YybUsage yybUsage:list) {
+				nameAll = nameAll + yybUsage.getName() + ":" + yybUsage.getRate() + "; ";
+			}
+			this.usageSelectName = nameAll;
+		}
 	}
 	
 	@ExcelField(title="权利", align=2, sort=12)
@@ -98,6 +119,15 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 
 	public void setRightSelect(String rightSelect) {
 		this.rightSelect = rightSelect;
+		if (StringUtils.isNotBlank(rightSelect)){
+			List<YybRight> list = JSON.parseArray(rightSelect, YybRight.class);
+			this.rightList = list;
+			String nameAll = "";
+			for (YybRight yybRight:list) {
+				nameAll = nameAll + yybRight.getName() + ":" + yybRight.getRate() + "; ";
+			}
+			this.rightSelectName = nameAll;
+		}
 	}
 	
 	@ExcelField(title="总价", align=2, sort=13)
@@ -108,5 +138,42 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 	public void setMusicTotal(Double musicTotal) {
 		this.musicTotal = musicTotal;
 	}
-	
+
+	public List<YybUsage> getUsageList() {
+		return usageList;
+	}
+
+	public void setUsageList(List<YybUsage> usageList) {
+		this.usageList = usageList;
+	}
+
+	public List<YybRight> getRightList() {
+		return rightList;
+	}
+
+	public void setRightList(List<YybRight> rightList) {
+		this.rightList = rightList;
+	}
+
+	public String getUsageSelectName() {
+		return usageSelectName;
+	}
+
+	public void setUsageSelectName(String usageSelectName) {
+		this.usageSelectName = usageSelectName;
+	}
+
+	public String getRightSelectName() {
+		return rightSelectName;
+	}
+
+	public void setRightSelectName(String rightSelectName) {
+		this.rightSelectName = rightSelectName;
+	}
+
+	public static void main(String[] args) {
+		String usageSelect = "[{'name':1, 'rate':1, 'id':1},{'name':2, 'rate':2, 'id':2}]";
+		List<YybUsage> list = JSON.parseArray(usageSelect, YybUsage.class);
+		System.out.println(list);
+	}
 }

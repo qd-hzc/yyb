@@ -50,7 +50,7 @@
 		      <tr>
 		         <td class="width-15 active">	<label class="pull-right"><font color="red">*</font>头像：</label></td>
 		         <td class="width-35">
-						<sys:fileUpload path="photo" value="${user.photo}" type="image" uploadPath="/photo" fileNumLimit="1" readonly="false"/></td>
+						<sys:fileUpload fileNumLimit="1" path="photo" value="${user.photo}" type="image" uploadPath="/photo" fileNumLimit="1" readonly="false"/></td>
 		         <td  class="width-15 active">	<label class="pull-right"><font color="red">*</font>归属公司:</label></td>
 		         <td class="width-35"><sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
 						title="公司" url="/sys/office/treeData?type=1" allowClear="true" cssClass="form-control required"/></td>

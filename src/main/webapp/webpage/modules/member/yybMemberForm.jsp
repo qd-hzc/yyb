@@ -66,7 +66,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">身份证附件：</label></td>
 					<td class="width-35">
-						<sys:fileUpload path="idCardAttach"  value="${yybMember.idCardAttach}" type="file" uploadPath="/member/yybMember"/>
+						<sys:fileUpload fileNumLimit="1" path="idCardAttach"  value="${yybMember.idCardAttach}" type="file" uploadPath="/member/yybMember"/>
 					</td>
 				</tr>
 				<tr>
@@ -82,7 +82,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">营业执照：</label></td>
 					<td class="width-35">
-						<sys:fileUpload path="orgCodeAttach"  value="${yybMember.orgCodeAttach}" type="file" uploadPath="/member/yybMember"/>
+						<sys:fileUpload fileNumLimit="1" path="orgCodeAttach"  value="${yybMember.orgCodeAttach}" type="file" uploadPath="/member/yybMember"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">状态：</label></td>
 					<td class="width-35">

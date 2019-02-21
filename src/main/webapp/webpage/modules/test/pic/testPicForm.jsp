@@ -43,7 +43,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>图片路径：</label></td>
 					<td class="width-35">
-						<sys:fileUpload path="pic"  value="${testPic.pic}" type="file" uploadPath="/test/pic/testPic"/>
+						<sys:fileUpload fileNumLimit="1" path="pic"  value="${testPic.pic}" type="file" uploadPath="/test/pic/testPic"/>
 					</td>
 				</tr>
 				<tr>

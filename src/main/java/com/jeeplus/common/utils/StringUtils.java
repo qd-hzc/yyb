@@ -391,14 +391,19 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     public static String getLabels(String values){
+    	if (!values.contains("/")) {
+    		return values;
+		}
     	String[] valueAttr = values.split("\\|");
     	String labels = "";
     	for(String value:valueAttr){
     		labels += StringUtils.substringAfterLast(value, "/")+",";
 		}
 		if(StringUtils.isBlank(labels)){
+			System.out.println(labels);
     		return labels;
 		}else{
+			System.out.println(labels.substring(0,labels.length()-1));
     		return labels.substring(0,labels.length()-1);
 		}
 	}
