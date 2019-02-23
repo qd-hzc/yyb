@@ -20,7 +20,7 @@ import com.jeeplus.modules.musician.mapper.YybMusicianAlbumMapper;
 /**
  * 音乐人Service
  * @author lwb
- * @version 2019-02-18
+ * @version 2019-02-22
  */
 @Service
 @Transactional(readOnly = true)

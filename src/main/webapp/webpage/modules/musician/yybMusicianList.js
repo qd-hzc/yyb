@@ -130,6 +130,81 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+		        field: 'stageName',
+		        title: '艺名',
+		        sortable: true,
+		        sortName: 'stageName'
+		       
+		    }
+			,{
+		        field: 'address',
+		        title: '地址',
+		        sortable: true,
+		        sortName: 'address'
+		       
+		    }
+			,{
+		        field: 'phone',
+		        title: '手机',
+		        sortable: true,
+		        sortName: 'phone'
+		       
+		    }
+			,{
+		        field: 'mail',
+		        title: '邮箱',
+		        sortable: true,
+		        sortName: 'mail'
+		       
+		    }
+			,{
+		        field: 'idCard',
+		        title: '身份证号',
+		        sortable: true,
+		        sortName: 'idCard'
+		       
+		    }
+		    ,{
+		        field: 'idCardAttach',
+		        title: '身份证附件',
+		        sortable: true,
+		        sortName: 'idCardAttach',
+		        formatter:function(value, row , index){
+		        	var valueArray = value.split("|");
+		        	var labelArray = [];
+		        	for(var i =0 ; i<valueArray.length; i++){
+		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
+		        		{
+		        			labelArray[i] = "<a href=\""+valueArray[i]+"\" url=\""+valueArray[i]+"\" target=\"_blank\">"+decodeURIComponent(valueArray[i].substring(valueArray[i].lastIndexOf("/")+1))+"</a>"
+		        		}else{
+		        			labelArray[i] = '<img   onclick="jp.showPic(\''+valueArray[i]+'\')"'+' height="50px" src="'+valueArray[i]+'">';
+		        		}
+		        	}
+		        	return labelArray.join(" ");
+		        }
+		       
+		    }
+		    ,{
+		        field: 'production',
+		        title: '作品',
+		        sortable: true,
+		        sortName: 'production',
+		        formatter:function(value, row , index){
+		        	var valueArray = value.split("|");
+		        	var labelArray = [];
+		        	for(var i =0 ; i<valueArray.length; i++){
+		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
+		        		{
+		        			labelArray[i] = "<a href=\""+valueArray[i]+"\" url=\""+valueArray[i]+"\" target=\"_blank\">"+decodeURIComponent(valueArray[i].substring(valueArray[i].lastIndexOf("/")+1))+"</a>"
+		        		}else{
+		        			labelArray[i] = '<img   onclick="jp.showPic(\''+valueArray[i]+'\')"'+' height="50px" src="'+valueArray[i]+'">';
+		        		}
+		        	}
+		        	return labelArray.join(" ");
+		        }
+		       
+		    }
+			,{
 		        field: 'remarks',
 		        title: '备注信息',
 		        sortable: true,

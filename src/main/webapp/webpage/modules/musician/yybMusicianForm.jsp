@@ -10,14 +10,14 @@
 		});
 
 		function save() {
-
+            var n = 0;
             $.each($(".ccc"), function(i, value) {
-                if(i > 0) {
-                    console.log($(value).attr("name"))
-					var n = i - 1 ;
+                if($(value).attr("name").indexOf("yybMusicianAlbumList")!= -1 ) {
                     $(value).attr("name","yybMusicianAlbumList["+n+"].img")
+                    n++;
                 }
             })
+
             var isValidate = jp.validateForm('#inputForm');//校验表单
             if(!isValidate){
                 return false;
@@ -87,17 +87,49 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>头像：</label></td>
 					<td class="width-35">
-						<sys:fileUpload fileNumLimit="1" path="headPhoto"  value="${yybMusician.headPhoto}" type="file" uploadPath="/musician/yybMusician"/>
+						<sys:fileUpload path="headPhoto"  value="${yybMusician.headPhoto}" type="file" uploadPath="/musician/yybMusician"/>
 					</td>
 				</tr>
 				<tr>
+					<td class="width-15 active"><label class="pull-right">艺名：</label></td>
+					<td class="width-35">
+						<form:input path="stageName" htmlEscape="false"    class="form-control "/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">地址：</label></td>
+					<td class="width-35">
+						<form:input path="address" htmlEscape="false"    class="form-control "/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>手机：</label></td>
+					<td class="width-35">
+						<form:input path="phone" htmlEscape="false"    class="form-control required isMobile"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">邮箱：</label></td>
+					<td class="width-35">
+						<form:input path="mail" htmlEscape="false"    class="form-control  email"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">身份证号：</label></td>
+					<td class="width-35">
+						<form:input path="idCard" htmlEscape="false"    class="form-control  isIdCardNo"/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">身份证附件：</label></td>
+					<td class="width-35">
+						<sys:fileUpload path="idCardAttach"  value="${yybMusician.idCardAttach}" type="file" uploadPath="/musician/yybMusician"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">作品：</label></td>
+					<td class="width-35">
+						<sys:fileUpload path="production"  value="${yybMusician.production}" type="file" uploadPath="/musician/yybMusician"/>
+					</td>
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
 						<form:input path="remarks" htmlEscape="false"    class="form-control "/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
-		  		</tr>
+				</tr>
 		 	</tbody>
 		</table>
 		<div class="tabs-container">
@@ -134,7 +166,7 @@
 					
 					
 					<td>
-									<sys:fileUpload fileNumLimit="1" path="yybMusicianAlbumList{{idx}}img"  value="{{row.img}}" type="file" uploadPath="/musician/yybMusician"/>
+									<sys:fileUpload path="yybMusicianAlbumList{{idx}}_img"  value="{{row.img}}" type="file" uploadPath="/musician/yybMusician"/>
 					</td>
 					
 					
@@ -155,8 +187,6 @@
 						addRow('#yybMusicianAlbumList', yybMusicianAlbumRowIdx, yybMusicianAlbumTpl, data[i]);
 						yybMusicianAlbumRowIdx = yybMusicianAlbumRowIdx + 1;
 					}
-
-
 				});
 			</script>
 			</div>

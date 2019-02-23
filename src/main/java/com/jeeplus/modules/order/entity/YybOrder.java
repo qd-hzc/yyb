@@ -36,6 +36,7 @@ public class YybOrder extends DataEntity<YybOrder> {
 	private String orgCodeAttach;		// 组织机构附件
 	private Integer memberType;		// 用户类型
 	private String phone;		// 手机号
+	private String companyId;
 	private List<YybOrderDeatil> yybOrderDeatilList = Lists.newArrayList();		// 子表列表
 	
 	public YybOrder() {
@@ -207,5 +208,13 @@ public class YybOrder extends DataEntity<YybOrder> {
 
 	public void setYybOrderDeatilList(List<YybOrderDeatil> yybOrderDeatilList) {
 		this.yybOrderDeatilList = yybOrderDeatilList;
+	}
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 }

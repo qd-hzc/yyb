@@ -26,7 +26,8 @@
 		a.org_code_attach AS "orgCodeAttach",
 		a.member_type AS "memberType",
 		a.phone AS "phone",
-		a.remarks AS "remarks"
+		a.remarks AS "remarks",
+		a.company_id AS "companyId"
 	</sql>
 	
 	<sql id="yybOrderJoins">
@@ -46,10 +47,14 @@
 		SELECT 
 			<include refid="yybOrderColumns"/>
 		FROM yyb_order a
+
 		<include refid="yybOrderJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id = #{companyId}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -65,10 +70,14 @@
 		SELECT 
 			<include refid="yybOrderColumns"/>
 		FROM yyb_order a
+
 		<include refid="yybOrderJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id = #{companyId}
+			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -105,7 +114,8 @@
 			org_code_attach,
 			member_type,
 			phone,
-			remarks
+			remarks,
+			company_id
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -130,7 +140,8 @@
 			#{orgCodeAttach},
 			#{memberType},
 			#{phone},
-			#{remarks}
+			#{remarks},
+			#{companyId}
 		)
 	</insert>
 	

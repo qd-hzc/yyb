@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
@@ -35,7 +39,7 @@ import com.jeeplus.modules.musician.service.YybMusicianService;
 /**
  * 音乐人Controller
  * @author lwb
- * @version 2019-02-18
+ * @version 2019-02-22
  */
 @Controller
 @RequestMapping(value = "${adminPath}/musician/yybMusician")
@@ -43,7 +47,6 @@ public class YybMusicianController extends BaseController {
 
 	@Autowired
 	private YybMusicianService yybMusicianService;
-
 	
 	@ModelAttribute
 	public YybMusician get(@RequestParam(required=false) String id) {
@@ -74,11 +77,14 @@ public class YybMusicianController extends BaseController {
 	@RequiresPermissions("musician:yybMusician:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybMusician yybMusician, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<YybMusician> page = yybMusicianService.findPage(new Page<YybMusician>(request, response), yybMusician); 
+		User user = UserUtils.getUser();
+		System.out.println(Global.getConfig("admin.loginName"));
+		if (!Global.getConfig("admin.loginName").equals(user.getLoginName())) {
+			yybMusician.setCompanyId(user.getOffice().getId());
+		}
+		Page<YybMusician> page = yybMusicianService.findPage(new Page<YybMusician>(request, response), yybMusician);
 		return getBootstrapData(page);
 	}
-
-
 
 	/**
 	 * 查看，增加，编辑音乐人表单页面
@@ -97,6 +103,10 @@ public class YybMusicianController extends BaseController {
 	@RequiresPermissions(value={"musician:yybMusician:add","musician:yybMusician:edit"},logical=Logical.OR)
 	@RequestMapping(value = "save")
 	public AjaxJson save(YybMusician yybMusician, Model model) throws Exception{
+		User user = UserUtils.getUser();
+		if (!Global.getConfig("admin.loginName").equals(user.getLoginName())) {
+			yybMusician.setCompanyId(user.getOffice().getId());
+		}
 		AjaxJson j = new AjaxJson();
 		/**
 		 * 后台hibernate-validation插件校验

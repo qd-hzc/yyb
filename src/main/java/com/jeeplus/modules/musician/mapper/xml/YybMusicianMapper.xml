@@ -11,7 +11,15 @@
 		a.del_flag AS "delFlag",
 		a.name AS "name",
 		a.head_photo AS "headPhoto",
-		a.remarks AS "remarks"
+		a.stage_name AS "stageName",
+		a.address AS "address",
+		a.phone AS "phone",
+		a.mail AS "mail",
+		a.id_card AS "idCard",
+		a.id_card_attach AS "idCardAttach",
+		a.production AS "production",
+		a.remarks AS "remarks",
+		a.company_id AS "companyId"
 	</sql>
 	
 	<sql id="yybMusicianJoins">
@@ -35,6 +43,9 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id = #{companyId}
+			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
@@ -56,10 +67,14 @@
 		SELECT 
 			<include refid="yybMusicianColumns"/>
 		FROM yyb_musician a
+
 		<include refid="yybMusicianJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="companyId != null and companyId != ''">
+				AND a.company_id = #{companyId}
+			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -81,7 +96,15 @@
 			del_flag,
 			name,
 			head_photo,
-			remarks
+			stage_name,
+			address,
+			phone,
+			mail,
+			id_card,
+			id_card_attach,
+			production,
+			remarks,
+			company_id
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -91,7 +114,15 @@
 			#{delFlag},
 			#{name},
 			#{headPhoto},
-			#{remarks}
+			#{stageName},
+			#{address},
+			#{phone},
+			#{mail},
+			#{idCard},
+			#{idCardAttach},
+			#{production},
+			#{remarks},
+			#{companyId}
 		)
 	</insert>
 	
@@ -101,7 +132,15 @@
 			update_date = #{updateDate},
 			name = #{name},
 			head_photo = #{headPhoto},
-			remarks = #{remarks}
+			stage_name = #{stageName},
+			address = #{address},
+			phone = #{phone},
+			mail = #{mail},
+			id_card = #{idCard},
+			id_card_attach = #{idCardAttach},
+			production = #{production},
+			remarks = #{remarks},
+			company_id = #{companyId}
 		WHERE id = #{id}
 	</update>
 	
