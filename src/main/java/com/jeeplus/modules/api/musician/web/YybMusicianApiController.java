@@ -4,6 +4,7 @@
 package com.jeeplus.modules.api.musician.web;
 
 import com.jeeplus.common.annotation.IgnoreAuth;
+import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.HanyuPinyinHelper;
 import com.jeeplus.core.web.BaseController;
@@ -54,7 +55,7 @@ public class YybMusicianApiController extends BaseController {
         YybMusician yybMusician = yybMusicianService.get(id);
 
 		Office parent = new Office();
-		parent.setId("e238821a48784ed5894fc9fa5b7bbeb0");
+		parent.setId(Global.getConfig("office.music"));
 		User createUser = new User();
 		createUser.setId("1");
 
@@ -101,7 +102,7 @@ public class YybMusicianApiController extends BaseController {
 
 		user.setLoginFlag("1");
 		//角色音乐id
-		user.setRoleList(Arrays.asList(new Role("7c8cdf69d232430ab1757a0abf4cc150")));
+		user.setRoleList(Arrays.asList(new Role(Global.getConfig("role.music"))));
 		systemService.saveUser(user);
 
 

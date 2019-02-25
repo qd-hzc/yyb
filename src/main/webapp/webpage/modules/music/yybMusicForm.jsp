@@ -68,7 +68,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>图片：</label></td>
 					<td class="width-35">
-						<sys:fileUpload fileNumLimit="1" path="img"  value="${yybMusic.img}" type="file" uploadPath="/music/yybMusic"/>
+						<sys:fileUpload type="image" fileNumLimit="1" path="img"  value="${yybMusic.img}" uploadPath="/music/yybMusic"/>
 					</td>
 				</tr>
 				<tr>

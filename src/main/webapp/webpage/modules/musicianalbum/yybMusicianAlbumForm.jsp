@@ -54,7 +54,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">封面：</label></td>
 					<td class="width-35">
-						<sys:fileUpload fileNumLimit="1" path="img"  value="${yybMusicianAlbum.img}" type="file" uploadPath="/musicianalbum/yybMusicianAlbum"/>
+						<sys:fileUpload type="image" fileNumLimit="1" path="img"  value="${yybMusicianAlbum.img}" uploadPath="/musicianalbum/yybMusicianAlbum"/>
 					</td>
 				</tr>
 		 	</tbody>
