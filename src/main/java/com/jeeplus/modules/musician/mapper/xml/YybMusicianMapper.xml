@@ -19,7 +19,10 @@
 		a.id_card_attach AS "idCardAttach",
 		a.production AS "production",
 		a.remarks AS "remarks",
-		a.company_id AS "companyId"
+		a.company_id AS "companyId",
+		a.type AS "type",
+		a.company_name AS "companyName",
+		a.status AS "status"
 	</sql>
 	
 	<sql id="yybMusicianJoins">
@@ -43,14 +46,26 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-			<if test="companyId != null and companyId != ''">
-				AND a.company_id = #{companyId}
-			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="companyId != null and companyId != ''">
+				and a.company_id = #{companyId}
+			</if>
+			<if test="companyName != null and companyName != ''">
+				AND a.company_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{companyName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{companyName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{companyName},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
 			</if>
 		</where>
 		<choose>
@@ -67,14 +82,10 @@
 		SELECT 
 			<include refid="yybMusicianColumns"/>
 		FROM yyb_musician a
-
 		<include refid="yybMusicianJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-			<if test="companyId != null and companyId != ''">
-				AND a.company_id = #{companyId}
-			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -104,7 +115,10 @@
 			id_card_attach,
 			production,
 			remarks,
-			company_id
+			company_id,
+			type,
+			company_name,
+			status
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -122,7 +136,10 @@
 			#{idCardAttach},
 			#{production},
 			#{remarks},
-			#{companyId}
+			#{companyId},
+			#{type},
+			#{companyName},
+			#{status}
 		)
 	</insert>
 	
@@ -140,7 +157,10 @@
 			id_card_attach = #{idCardAttach},
 			production = #{production},
 			remarks = #{remarks},
-			company_id = #{companyId}
+			company_id = #{companyId},
+			type = #{type},
+			company_name = #{companyName},
+			status = #{status}
 		WHERE id = #{id}
 	</update>
 	
@@ -157,11 +177,22 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
+
 	
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="YybMusician" statementType="STATEMENT">
 		select * FROM yyb_musician  where ${propertyName} = '${value}'
 	</select>
+
+	<!--修改状态-->
+	<update id="updateStatus" parameterType="YybMusician">
+		UPDATE yyb_musician SET
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+
+
+
 	
 </mapper>

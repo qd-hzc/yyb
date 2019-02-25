@@ -145,7 +145,7 @@ $(document).ready(function() {
 		        sortable: true,
 		        sortName: 'idCardAttach',
 		        formatter:function(value, row , index){
-		        	var valueArray = value.split("|");
+		        	if (value == undefined || value == "" || value == null) {return "";}; var valueArray = value.split("|");
 		        	var labelArray = [];
 		        	for(var i =0 ; i<valueArray.length; i++){
 		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
@@ -179,7 +179,7 @@ $(document).ready(function() {
 		        sortable: true,
 		        sortName: 'orgCodeAttach',
 		        formatter:function(value, row , index){
-		        	var valueArray = value.split("|");
+		        	if (value == undefined || value == "" || value == null) {return "";}; var valueArray = value.split("|");
 		        	var labelArray = [];
 		        	for(var i =0 ; i<valueArray.length; i++){
 		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))

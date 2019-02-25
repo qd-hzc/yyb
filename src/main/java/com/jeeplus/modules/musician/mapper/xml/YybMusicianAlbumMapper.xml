@@ -44,7 +44,6 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-
 			<if test="yybMusician != null and yybMusician.id != null and yybMusician.id != ''">
 				AND a.musician_id LIKE 
 					<if test="dbName == 'oracle'">'%'||#{yybMusician.id}||'%'</if>

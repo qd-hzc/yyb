@@ -10,14 +10,13 @@
 		});
 
 		function save() {
-            var n = 0;
-            $.each($(".ccc"), function(i, value) {
-                if($(value).attr("name").indexOf("yybMusicianAlbumList")!= -1 ) {
-                    $(value).attr("name","yybMusicianAlbumList["+n+"].img")
-                    n++;
-                }
-            })
-
+                var n = 0;
+                $.each($(".ccc"), function(i, value) {
+                    if($(value).attr("name").indexOf("yybMusicianAlbumList")!= -1 ) {
+                        $(value).attr("name","yybMusicianAlbumList["+n+"].img")
+                        n++;
+                    }
+                })
             var isValidate = jp.validateForm('#inputForm');//校验表单
             if(!isValidate){
                 return false;

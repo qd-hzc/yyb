@@ -14,7 +14,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 音乐人Entity
  * @author lwb
- * @version 2019-02-22
+ * @version 2019-02-23
  */
 public class YybMusician extends DataEntity<YybMusician> {
 	
@@ -29,6 +29,9 @@ public class YybMusician extends DataEntity<YybMusician> {
 	private String idCardAttach;		// 身份证附件
 	private String production;		// 作品
 	private String companyId;		// 归属公司
+	private Integer type;		// 类型
+	private String companyName;		// 归属公司
+	private Integer status;		// 音乐人状态
 	private List<YybMusicianAlbum> yybMusicianAlbumList = Lists.newArrayList();		// 子表列表
 	
 	public YybMusician() {
@@ -129,6 +132,33 @@ public class YybMusician extends DataEntity<YybMusician> {
 
 	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
+	}
+	
+	@ExcelField(title="类型", dictType="musician_type", align=2, sort=17)
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+	
+	@ExcelField(title="归属公司", align=2, sort=18)
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	
+	@ExcelField(title="音乐人状态", dictType="musician_status", align=2, sort=19)
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 	
 	public List<YybMusicianAlbum> getYybMusicianAlbumList() {

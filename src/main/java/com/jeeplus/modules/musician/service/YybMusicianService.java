@@ -20,7 +20,7 @@ import com.jeeplus.modules.musician.mapper.YybMusicianAlbumMapper;
 /**
  * 音乐人Service
  * @author lwb
- * @version 2019-02-22
+ * @version 2019-02-23
  */
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +28,10 @@ public class YybMusicianService extends CrudService<YybMusicianMapper, YybMusici
 
 	@Autowired
 	private YybMusicianAlbumMapper yybMusicianAlbumMapper;
-	
+
+		@Autowired
+	private YybMusicianMapper yybMusicianMapper;
+
 	public YybMusician get(String id) {
 		YybMusician yybMusician = super.get(id);
 		yybMusician.setYybMusicianAlbumList(yybMusicianAlbumMapper.findList(new YybMusicianAlbum(yybMusician)));
@@ -70,5 +73,9 @@ public class YybMusicianService extends CrudService<YybMusicianMapper, YybMusici
 		super.delete(yybMusician);
 		yybMusicianAlbumMapper.delete(new YybMusicianAlbum(yybMusician));
 	}
-	
+
+	@Transactional(readOnly = false)
+	public void updateStatus(YybMusician yybMusician) {
+		yybMusicianMapper.updateStatus(yybMusician);
+	}
 }

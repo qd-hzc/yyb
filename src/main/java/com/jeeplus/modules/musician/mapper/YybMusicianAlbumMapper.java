@@ -10,7 +10,7 @@ import com.jeeplus.modules.musician.entity.YybMusicianAlbum;
 /**
  * 专辑MAPPER接口
  * @author lwb
- * @version 2019-02-22
+ * @version 2019-02-23
  */
 @MyBatisMapper
 public interface YybMusicianAlbumMapper extends BaseMapper<YybMusicianAlbum> {

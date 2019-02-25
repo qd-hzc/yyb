@@ -10,9 +10,10 @@ import com.jeeplus.modules.musician.entity.YybMusician;
 /**
  * 音乐人MAPPER接口
  * @author lwb
- * @version 2019-02-22
+ * @version 2019-02-23
  */
 @MyBatisMapper
 public interface YybMusicianMapper extends BaseMapper<YybMusician> {
-	
+
+    void updateStatus(YybMusician yybMusician);
 }

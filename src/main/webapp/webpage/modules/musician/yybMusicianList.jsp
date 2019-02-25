@@ -25,6 +25,24 @@
 				<label class="label-item single-overflow pull-left" title="姓名：">姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="类型：">类型：</label>
+				<form:select path="type"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('musician_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="归属公司：">归属公司：</label>
+				<form:input path="companyName" htmlEscape="false" maxlength="64"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="音乐人状态：">音乐人状态：</label>
+				<form:select path="status"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('musician_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>

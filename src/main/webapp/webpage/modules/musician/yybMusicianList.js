@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <script>
+var typeFlag = "1";
 $(document).ready(function() {
 	$('#yybMusicianTable').bootstrapTable({
 		 
@@ -115,7 +116,7 @@ $(document).ready(function() {
 		        sortable: true,
 		        sortName: 'headPhoto',
 		        formatter:function(value, row , index){
-		        	var valueArray = value.split("|");
+		        	if (value == undefined || value == "" || value == null) {return "";}; var valueArray = value.split("|");
 		        	var labelArray = [];
 		        	for(var i =0 ; i<valueArray.length; i++){
 		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
@@ -170,7 +171,7 @@ $(document).ready(function() {
 		        sortable: true,
 		        sortName: 'idCardAttach',
 		        formatter:function(value, row , index){
-		        	var valueArray = value.split("|");
+		        	if (value == undefined || value == "" || value == null) {return "";}; var valueArray = value.split("|");
 		        	var labelArray = [];
 		        	for(var i =0 ; i<valueArray.length; i++){
 		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
@@ -190,7 +191,7 @@ $(document).ready(function() {
 		        sortable: true,
 		        sortName: 'production',
 		        formatter:function(value, row , index){
-		        	var valueArray = value.split("|");
+		        	if (value == undefined || value == "" || value == null) {return "";}; var valueArray = value.split("|");
 		        	var labelArray = [];
 		        	for(var i =0 ; i<valueArray.length; i++){
 		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
@@ -209,6 +210,54 @@ $(document).ready(function() {
 		        title: '备注信息',
 		        sortable: true,
 		        sortName: 'remarks'
+		       
+		    }
+			,{
+		        field: 'type',
+		        title: '类型',
+		        sortable: true,
+		        sortName: 'type',
+		        formatter:function(value, row , index){
+                	<c:if test="${fns:getUser().getLoginName()!='admin'}">
+                        if (value == "1"){
+                            typeFlag = "1";
+
+                        } if (value == "2"){
+                        	typeFlag = "2";
+                        $("#add").attr("disabled",true);
+                        $("#remove").attr("disabled",true);
+                    	}
+					</c:if>
+
+                    return jp.getDictLabel(${fns:toJson(fns:getDictList('musician_type'))}, value, "-");
+		        }
+		       
+		    }
+			,{
+		        field: 'companyName',
+		        title: '归属公司',
+		        sortable: true,
+		        sortName: 'companyName'
+		       
+		    }
+			,{
+		        field: 'status',
+		        title: '音乐人状态',
+		        sortable: true,
+		        sortName: 'status',
+		        formatter:function(value, row , index){
+                    if ("通过" == jp.getDictLabel(${fns:toJson(fns:getDictList('musician_status'))}, value, "-")){
+                        return "通过";
+
+                    }if ("拒绝" == jp.getDictLabel(${fns:toJson(fns:getDictList('musician_status'))}, value, "-")){
+                        return "拒绝";
+
+                    } if ("待审核" == jp.getDictLabel(${fns:toJson(fns:getDictList('musician_status'))}, value, "-")){
+                    	var html = "<a onclick='pass(\""+row.id+"\")'>通过</a>  <a onclick='noPass(\""+row.id+"\")'>拒绝</a>"
+                        return "待审核 " + html;
+
+                    }
+                }
 		       
 		    }
 		     ]
@@ -287,7 +336,7 @@ $(document).ready(function() {
 		
 		
 	});
-		
+
   function getIdSelections() {
         return $.map($("#yybMusicianTable").bootstrapTable('getSelections'), function (row) {
             return row.id
@@ -295,7 +344,10 @@ $(document).ready(function() {
     }
   
   function deleteAll(){
-
+      if (typeFlag == "2") {
+          jp.error("您是独立音乐人， 不能进行新增")
+		  return;
+      }
 		jp.confirm('确认要删除该音乐人记录吗？', function(){
 			jp.loading();  	
 			jp.get("${ctx}/musician/yybMusician/deleteAll?ids=" + getIdSelections(), function(data){
@@ -315,10 +367,15 @@ $(document).ready(function() {
       $('#yybMusicianTable').bootstrapTable('refresh');
   }
   function add(){
+  		if (typeFlag == "2") {
+            jp.error("您是独立音乐人， 不能进行新增操作")
+			return;
+		}
 	  jp.openSaveDialog('新增音乐人', "${ctx}/musician/yybMusician/form",'800px', '500px');
   }
   
    function edit(id){//没有权限时，不显示确定按钮
+
        if(id == undefined){
 	      id = getIdSelections();
 	}
@@ -362,7 +419,38 @@ $(document).ready(function() {
 			idx: idx, delBtn: true, row: row
 		}));
 	}
-			
+
+    function pass(id){
+        jp.confirm('确认要通过音乐人记录吗？', function(){
+            jp.loading();
+            jp.get("${ctx}/musician/yybMusician/pass?id=" + id, function(data){
+                if(data.success){
+                    $('#yybMusicianTable').bootstrapTable('refresh');
+                    jp.success(data.msg);
+                }else{
+                    jp.error(data.msg);
+                }
+            })
+
+        })
+	}
+
+    function noPass(id){
+        jp.confirm('确认要通过音乐人记录吗？', function(){
+            jp.loading();
+            jp.get("${ctx}/musician/yybMusician/noPass?id=" + id, function(data){
+                if(data.success){
+                    $('#yybMusicianTable').bootstrapTable('refresh');
+                    jp.success(data.msg);
+                }else{
+                    jp.error(data.msg);
+                }
+            })
+
+        })
+	}
+
+
 </script>
 <script type="text/template" id="yybMusicianChildrenTpl">//<!--
 	<div class="tabs-container">

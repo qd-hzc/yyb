@@ -3,20 +3,27 @@
  */
 package com.jeeplus.modules.musician.web;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.common.utils.HanyuPinyinHelper;
+import com.jeeplus.modules.sys.entity.Area;
+import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.sys.entity.Role;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.service.OfficeService;
+import com.jeeplus.modules.sys.service.SystemService;
+import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,7 +46,7 @@ import com.jeeplus.modules.musician.service.YybMusicianService;
 /**
  * 音乐人Controller
  * @author lwb
- * @version 2019-02-22
+ * @version 2019-02-23
  */
 @Controller
 @RequestMapping(value = "${adminPath}/musician/yybMusician")
@@ -47,6 +54,10 @@ public class YybMusicianController extends BaseController {
 
 	@Autowired
 	private YybMusicianService yybMusicianService;
+	@Autowired
+	private OfficeService officeService;
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public YybMusician get(@RequestParam(required=false) String id) {
@@ -78,11 +89,13 @@ public class YybMusicianController extends BaseController {
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybMusician yybMusician, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
-		System.out.println(Global.getConfig("admin.loginName"));
 		if (!Global.getConfig("admin.loginName").equals(user.getLoginName())) {
 			yybMusician.setCompanyId(user.getOffice().getId());
 		}
 		Page<YybMusician> page = yybMusicianService.findPage(new Page<YybMusician>(request, response), yybMusician);
+		if (!CollectionUtils.isEmpty(page.getList())) {
+
+		}
 		return getBootstrapData(page);
 	}
 
@@ -106,7 +119,11 @@ public class YybMusicianController extends BaseController {
 		User user = UserUtils.getUser();
 		if (!Global.getConfig("admin.loginName").equals(user.getLoginName())) {
 			yybMusician.setCompanyId(user.getOffice().getId());
+			yybMusician.setCompanyName(user.getOffice().getName());
+			yybMusician.setType(1);
+			yybMusician.setStatus(2);
 		}
+
 		AjaxJson j = new AjaxJson();
 		/**
 		 * 后台hibernate-validation插件校验
@@ -136,8 +153,92 @@ public class YybMusicianController extends BaseController {
 		j.setMsg("删除音乐人成功");
 		return j;
 	}
-	
-	/**
+
+    /**
+     * 通过音乐人
+     */
+    @ResponseBody
+    @RequestMapping(value = "pass")
+    public AjaxJson pass(String id) {
+        AjaxJson j = new AjaxJson();
+        YybMusician yybMusician = yybMusicianService.get(id);
+
+		Office parent = new Office();
+		parent.setId("e238821a48784ed5894fc9fa5b7bbeb0");
+		User createUser = new User();
+		createUser.setId("1");
+
+		String officeId = UUID.randomUUID().toString().replace("-","");
+		Office office = new Office();
+		office.setArea(new Area("a9beb8c645ff448d89e71f96dc97bc09"));
+		office.setParent(parent);
+		office.setParentIds("0,1");
+		office.setId(officeId);
+		office.setCreateBy(createUser);
+		office.setCreateDate(new Date());
+		office.setUpdateBy(createUser);
+		office.setUpdateDate(new Date());
+		office.setName("音乐人"+yybMusician.getName());
+
+		office.setType("1");
+		office.setUseable("1");
+		office.setGrade("1");
+		office.setDelFlag("0");
+		officeService.saveOffice(office);
+
+
+		User user = new User();
+		user.setCompany(new Office("1"));
+		user.setOffice(new Office(officeId));
+
+		user.setCreateBy(createUser);
+		user.setUpdateBy(createUser);
+		user.setCreateDate(new Date());
+		user.setUpdateDate(new Date());
+		user.setDelFlag("0");
+
+		user.setPassword(SystemService.entryptPassword("123456"));
+		user.setPhoto(yybMusician.getHeadPhoto());
+		user.setName(yybMusician.getName());
+		HanyuPinyinHelper hanyuPinyinHelper = new HanyuPinyinHelper() ;
+		user.setLoginName(hanyuPinyinHelper.toHanyuPinyin(yybMusician.getName()));
+		user.setLoginFlag("1");
+		//角色音乐id
+		user.setRoleList(Arrays.asList(new Role("7c8cdf69d232430ab1757a0abf4cc150")));
+		systemService.saveUser(user);
+
+
+
+		yybMusician.setId(id);
+		yybMusician.setStatus(2);
+		yybMusician.setCompanyId(officeId);
+		yybMusician.setCompanyName("音乐人"+yybMusician.getName());
+		yybMusicianService.save(yybMusician);
+
+		j.setMsg("通过音乐人成功");
+        return j;
+    }
+
+
+    /**
+     * 拒绝音乐人
+     */
+    @ResponseBody
+    @RequestMapping(value = "noPass")
+    public AjaxJson noPass(String id) {
+        AjaxJson j = new AjaxJson();
+        YybMusician yybMusician = new YybMusician();
+        yybMusician.setId(id);
+        yybMusician.setStatus(3);
+        yybMusicianService.updateStatus(yybMusician);
+        j.setMsg("拒绝音乐人成功");
+        return j;
+    }
+
+
+
+
+    /**
 	 * 批量删除音乐人
 	 */
 	@ResponseBody

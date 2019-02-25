@@ -11,7 +11,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 专辑Entity
  * @author lwb
- * @version 2019-02-22
+ * @version 2019-02-23
  */
 public class YybMusicianAlbum extends DataEntity<YybMusicianAlbum> {
 	
