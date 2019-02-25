@@ -17,4 +17,6 @@ import org.apache.ibatis.annotations.Param;
 public interface YybMemberApiMapper extends BaseMapper<YybMember> {
 
     YybMember getByLoginName(@Param("loginName") String loginName);
+
+    void updatePass(YybMember yybMember);
 }

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.api.musician.mapper.YybMusicianApiMapper">
+    
+	<sql id="yybMusicianColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.name AS "name",
+		a.head_photo AS "headPhoto",
+		a.stage_name AS "stageName",
+		a.address AS "address",
+		a.phone AS "phone",
+		a.mail AS "mail",
+		a.id_card AS "idCard",
+		a.id_card_attach AS "idCardAttach",
+		a.production AS "production",
+		a.remarks AS "remarks",
+		a.company_id AS "companyId",
+		a.type AS "type",
+		a.company_name AS "companyName",
+		a.status AS "status"
+	</sql>
+	
+	<sql id="yybMusicianJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="YybMusician" >
+		SELECT 
+			<include refid="yybMusicianColumns"/>
+		FROM yyb_musician a
+		<include refid="yybMusicianJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="YybMusician" >
+		SELECT 
+			<include refid="yybMusicianColumns"/>
+		FROM yyb_musician a
+		<include refid="yybMusicianJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			<if test="companyId != null and companyId != ''">
+				and a.company_id = #{companyId}
+			</if>
+			<if test="companyName != null and companyName != ''">
+				AND a.company_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{companyName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{companyName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{companyName},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="YybMusician" >
+		SELECT 
+			<include refid="yybMusicianColumns"/>
+		FROM yyb_musician a
+		<include refid="yybMusicianJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO yyb_musician(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			name,
+			head_photo,
+			stage_name,
+			address,
+			phone,
+			mail,
+			id_card,
+			id_card_attach,
+			production,
+			remarks,
+			company_id,
+			type,
+			company_name,
+			status
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{name},
+			#{headPhoto},
+			#{stageName},
+			#{address},
+			#{phone},
+			#{mail},
+			#{idCard},
+			#{idCardAttach},
+			#{production},
+			#{remarks},
+			#{companyId},
+			#{type},
+			#{companyName},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE yyb_musician SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			name = #{name},
+			head_photo = #{headPhoto},
+			stage_name = #{stageName},
+			address = #{address},
+			phone = #{phone},
+			mail = #{mail},
+			id_card = #{idCard},
+			id_card_attach = #{idCardAttach},
+			production = #{production},
+			remarks = #{remarks},
+			company_id = #{companyId},
+			type = #{type},
+			company_name = #{companyName},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM yyb_musician
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE yyb_musician SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="YybMusician" statementType="STATEMENT">
+		select * FROM yyb_musician  where ${propertyName} = '${value}'
+	</select>
+
+	<!--修改状态-->
+	<update id="updateStatus" parameterType="YybMusician">
+		UPDATE yyb_musician SET
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+
+
+
+	
+</mapper>

@@ -167,9 +167,15 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
-	
-	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+
+    <update id="updatePass">
+		  UPDATE yyb_member SET
+			password = #{password}
+		WHERE id = #{id}
+	</update>
+
+
+    <!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="YybMember" statementType="STATEMENT">
 		select * FROM yyb_member  where ${propertyName} = '${value}'
 	</select>

@@ -421,12 +421,13 @@ $(document).ready(function() {
 	}
 
     function pass(id){
+  		var apiHost = window.location.protocol+"//"+window.location.host+"/api";
         jp.confirm('确认要通过音乐人记录吗？', function(){
             jp.loading();
-            jp.get("${ctx}/musician/yybMusician/pass?id=" + id, function(data){
+            jp.get(apiHost + "/musician/pass?id=" + id, function(data){
                 if(data.success){
                     $('#yybMusicianTable').bootstrapTable('refresh');
-                    jp.success(data.msg);
+                    jp.alert(data.msg);
                 }else{
                     jp.error(data.msg);
                 }
@@ -436,9 +437,10 @@ $(document).ready(function() {
 	}
 
     function noPass(id){
+        var apiHost = window.location.protocol+"//"+window.location.host+"/api";
         jp.confirm('确认要通过音乐人记录吗？', function(){
             jp.loading();
-            jp.get("${ctx}/musician/yybMusician/noPass?id=" + id, function(data){
+            jp.get(apiHost + "/musician/noPass?id=" + id, function(data){
                 if(data.success){
                     $('#yybMusicianTable').bootstrapTable('refresh');
                     jp.success(data.msg);

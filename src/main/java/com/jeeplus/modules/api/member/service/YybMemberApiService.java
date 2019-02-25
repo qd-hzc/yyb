@@ -47,4 +47,8 @@ public class YybMemberApiService extends CrudService<YybMemberApiMapper, YybMemb
     public YybMember getByLoginName(String loginName) {
 		return mapper.getByLoginName(loginName);
     }
+
+    public void updatePass(YybMember yybMember) {
+		mapper.updatePass(yybMember);
+    }
 }
