@@ -21,9 +21,9 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
     	//注册layIM socket服务
-        registry.addHandler(layImSocketHandler(),"/layIMSocketServer").addInterceptors(new LayIMSocketHandshakeInterceptor());
-        registry.addHandler(layImSocketHandler(), "/sockjs/layIMSocketServer").addInterceptors(new LayIMSocketHandshakeInterceptor())
-                .withSockJS();
+//        registry.addHandler(layImSocketHandler(),"/layIMSocketServer").addInterceptors(new LayIMSocketHandshakeInterceptor());
+//        registry.addHandler(layImSocketHandler(), "/sockjs/layIMSocketServer").addInterceptors(new LayIMSocketHandshakeInterceptor())
+//                .withSockJS();
         
       //注册 系统通知socket服务
         registry.addHandler(systemInfoSocketHandler(),"/systemInfoSocketServer").addInterceptors(new SystemInfoSocketHandshakeInterceptor());

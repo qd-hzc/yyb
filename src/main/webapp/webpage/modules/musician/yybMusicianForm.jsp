@@ -86,7 +86,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>头像：</label></td>
 					<td class="width-35">
-						<sys:fileUpload type="image" fileNumLimit="1"path="headPhoto"  value="${yybMusician.headPhoto}"  uploadPath="/musician/yybMusician"/>
+						<sys:fileUpload type="image" fileNumLimit="1" path="headPhoto"  value="${yybMusician.headPhoto}"  uploadPath="/musician/yybMusician"/>
 					</td>
 				</tr>
 				<tr>
@@ -116,13 +116,13 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">身份证附件：</label></td>
 					<td class="width-35">
-						<sys:fileUpload type="image" fileNumLimit="1"path="idCardAttach"  value="${yybMusician.idCardAttach}"  uploadPath="/musician/yybMusician"/>
+						<sys:fileUpload type="image" fileNumLimit="1" path="idCardAttach"  value="${yybMusician.idCardAttach}"  uploadPath="/musician/yybMusician"/>
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">作品：</label></td>
 					<td class="width-35">
-						<sys:fileUpload fileNumLimit="1"path="production"  value="${yybMusician.production}" type="file" uploadPath="/musician/yybMusician"/>
+						<sys:fileUpload fileNumLimit="1" path="production"  value="${yybMusician.production}" type="file" uploadPath="/musician/yybMusician"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
@@ -165,7 +165,7 @@
 					
 					
 					<td>
-									<sys:fileUpload type="image" fileNumLimit="1"path="yybMusicianAlbumList{{idx}}_img"  value="{{row.img}}"  uploadPath="/musician/yybMusician"/>
+									<sys:fileUpload type="image" fileNumLimit="1" path="yybMusicianAlbumList{{idx}}_img"  value="{{row.img}}"  uploadPath="/musician/yybMusician"/>
 					</td>
 					
 					

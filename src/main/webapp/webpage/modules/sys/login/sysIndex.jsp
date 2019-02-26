@@ -11,7 +11,7 @@
 	<script src="${ctxStatic}/plugin/js-menu/contabs.js"></script>
 	<link id="theme-tab" href="${ctxStatic}/plugin/js-menu/menuTab-${cookie.theme.value==null?'blue':cookie.theme.value}.css" rel="stylesheet" />
 	<%@ include file="/webpage/include/systemInfoSocket-init.jsp"%>
-	<%@ include file="/webpage/include/layIM-init.jsp"%>
+	<%--<%@ include file="/webpage/include/layIM-init.jsp"%>--%>
 </head>
 
 <body class="">

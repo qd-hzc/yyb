@@ -27,7 +27,7 @@ import com.jeeplus.modules.sysparam.mapper.SysParamMapper;
 public class SysParamService extends CrudService<SysParamMapper, SysParam> {
 
 	@Autowired
-	SysParamMapper sysParamMapper;
+	private SysParamMapper sysParamMapper;
 
 	public SysParam get(String id) {
 		return super.get(id);

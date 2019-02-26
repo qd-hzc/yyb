@@ -218,7 +218,7 @@ $(document).ready(function() {
 		        sortable: true,
 		        sortName: 'type',
 		        formatter:function(value, row , index){
-                	<c:if test="${fns:getUser().getLoginName()!='admin'}">
+                	<c:if test="${fns:getUser().getLoginName()!='admin' || fns:getUser().getLoginName()!='gaosheng'}">
                         if (value == "1"){
                             typeFlag = "1";
 
