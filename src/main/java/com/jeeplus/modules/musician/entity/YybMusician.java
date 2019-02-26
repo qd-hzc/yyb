@@ -32,6 +32,7 @@ public class YybMusician extends DataEntity<YybMusician> {
 	private Integer type;		// 类型
 	private String companyName;		// 归属公司
 	private Integer status;		// 音乐人状态
+	private String memberId;		// 申请人
 	private List<YybMusicianAlbum> yybMusicianAlbumList = Lists.newArrayList();		// 子表列表
 	
 	public YybMusician() {
@@ -167,5 +168,13 @@ public class YybMusician extends DataEntity<YybMusician> {
 
 	public void setYybMusicianAlbumList(List<YybMusicianAlbum> yybMusicianAlbumList) {
 		this.yybMusicianAlbumList = yybMusicianAlbumList;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 }

@@ -7,7 +7,11 @@ import com.jeeplus.common.annotation.IgnoreAuth;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.HanyuPinyinHelper;
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.web.BaseController;
+import com.jeeplus.core.web.Result;
+import com.jeeplus.core.web.ResultUtil;
+import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.musician.entity.YybMusician;
 import com.jeeplus.modules.musician.service.YybMusicianService;
 import com.jeeplus.modules.sys.entity.Area;
@@ -16,16 +20,24 @@ import com.jeeplus.modules.sys.entity.Role;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.service.SystemService;
+import com.jeeplus.modules.sys.utils.UserUtils;
+import com.jeeplus.modules.sysparam.service.SysParamService;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
+
+import static com.jeeplus.modules.sys.interceptor.LogInterceptor.LOGIN_MEMBER;
 
 /**
  * 音乐人Controller
@@ -42,6 +54,8 @@ public class YybMusicianApiController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private SysParamService sysParamService;
 	
 
     /**
@@ -93,16 +107,11 @@ public class YybMusicianApiController extends BaseController {
 		user.setName(yybMusician.getName());
 		HanyuPinyinHelper hanyuPinyinHelper = new HanyuPinyinHelper() ;
 		String adminLoginName = hanyuPinyinHelper.toHanyuPinyin(yybMusician.getName());
-		if (systemService.getUserByLoginName(adminLoginName) == null) {
-			user.setLoginName(adminLoginName);
-		} else {
-			adminLoginName = adminLoginName + RandomStringUtils.random(2, false, true);
-			user.setLoginName(adminLoginName);
-		}
+		user.setLoginName(this.getLoginName(adminLoginName));
 
 		user.setLoginFlag("1");
 		//角色音乐id
-		user.setRoleList(Arrays.asList(new Role(Global.getConfig("role.music"))));
+		user.setRoleList(Arrays.asList(new Role(sysParamService.getValueByKey("role_music"))));
 		systemService.saveUser(user);
 
 
@@ -136,7 +145,29 @@ public class YybMusicianApiController extends BaseController {
 
 
 
+	/**
+	 * 保存音乐人
+	 */
+	@ResponseBody
+	@RequestMapping(value = "save")
+	public Result save(HttpServletRequest request, YybMusician yybMusician) throws Exception{
 
+		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+		yybMusician.setType(2);
+		yybMusician.setStatus(1);
+
+		yybMusician.setMemberId(yybMember.getId());
+		yybMusicianService.save(yybMusician);//保存
+		return ResultUtil.success();
+	}
+
+	private String getLoginName(String loginName){
+		if (systemService.getUserByLoginName(loginName) == null) {
+			return loginName;
+		}else{
+			return getLoginName(loginName+"0");
+		}
+	}
 
 
 }

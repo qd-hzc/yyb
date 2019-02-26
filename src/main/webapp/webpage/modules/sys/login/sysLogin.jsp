@@ -44,7 +44,7 @@
 		<div class="row">
 			<div class="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
 				<img  class="img-circle" src="${ctxStatic}/common/images/flat-avatar.png" class="user-avatar" />
-				<h1>Jeeplus</h1>
+				<h1>音乐邦</h1>
 				<sys:message content="${message}" showType="1"/>
 				<form id="loginForm" role="form" action="${ctx}/login" method="post">
 					<div class="form-content">
@@ -115,7 +115,9 @@
 					</div>
 					<input type="submit" class="btn btn-white btn-outline btn-lg btn-rounded progress-login"  value="登录">
 					&nbsp;
+<%--
 					<a href="${ctx}/sys/register" class="btn btn-white btn-outline btn-lg btn-rounded progress-login">注册</a>
+--%>
 				</form>
 			</div>			
 		</div>

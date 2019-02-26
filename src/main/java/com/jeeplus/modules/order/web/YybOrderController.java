@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolationException;
 
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
+import com.jeeplus.modules.sysparam.service.SysParamService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class YybOrderController extends BaseController {
 
 	@Autowired
 	private YybOrderService yybOrderService;
+	@Autowired
+	private SysParamService sysParamService;
 	
 	@ModelAttribute
 	public YybOrder get(@RequestParam(required=false) String id) {
@@ -78,7 +81,7 @@ public class YybOrderController extends BaseController {
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybOrder yybOrder, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
-		if (!Global.getConfig("admin.loginName").equals(user.getLoginName())) {
+		if (!sysParamService.judgeMusicOrderAll()) {
 			yybOrder.setCompanyId(user.getOffice().getId());
 		}
 		Page<YybOrder> page = yybOrderService.findPage(new Page<YybOrder>(request, response), yybOrder); 

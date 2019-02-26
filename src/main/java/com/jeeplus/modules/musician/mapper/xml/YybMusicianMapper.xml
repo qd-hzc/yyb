@@ -118,7 +118,8 @@
 			company_id,
 			type,
 			company_name,
-			status
+			status,
+			member_id
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -139,7 +140,8 @@
 			#{companyId},
 			#{type},
 			#{companyName},
-			#{status}
+			#{status},
+			#{memberId}
 		)
 	</insert>
 	

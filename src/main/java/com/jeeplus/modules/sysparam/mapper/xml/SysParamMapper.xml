@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.sysparam.mapper.SysParamMapper">
+    
+	<sql id="sysParamColumns">
+		a.id AS "id",
+		a.remarks AS "remarks",
+		a.param_key AS "paramKey",
+		a.param_value AS "paramValue"
+	</sql>
+	
+	<sql id="sysParamJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="SysParam" >
+		SELECT 
+			<include refid="sysParamColumns"/>
+		FROM sys_param a
+		<include refid="sysParamJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+
+
+	<select id="getValueByKey" resultType="java.lang.String">
+		SELECT
+		param_value
+		FROM sys_param a
+		WHERE a.param_key = #{key}
+	</select>
+	
+	<select id="findList" resultType="SysParam" >
+		SELECT 
+			<include refid="sysParamColumns"/>
+		FROM sys_param a
+		<include refid="sysParamJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysParam" >
+		SELECT 
+			<include refid="sysParamColumns"/>
+		FROM sys_param a
+		<include refid="sysParamJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_param(
+			id,
+			remarks,
+			param_key,
+			param_value
+		) VALUES (
+			#{id},
+			#{remarks},
+			#{paramKey},
+			#{paramValue}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_param SET 	
+			remarks = #{remarks},
+			param_key = #{paramKey},
+			param_value = #{paramValue}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM sys_param
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE sys_param SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="SysParam" statementType="STATEMENT">
+		select * FROM sys_param  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

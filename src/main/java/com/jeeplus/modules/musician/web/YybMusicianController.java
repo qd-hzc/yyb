@@ -18,6 +18,7 @@ import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
+import com.jeeplus.modules.sysparam.service.SysParamService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,8 @@ public class YybMusicianController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private SysParamService sysParamService;
 	
 	@ModelAttribute
 	public YybMusician get(@RequestParam(required=false) String id) {
@@ -89,7 +92,7 @@ public class YybMusicianController extends BaseController {
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybMusician yybMusician, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
-		if (!Global.getConfig("admin.loginName").equals(user.getLoginName())) {
+		if (!sysParamService.judgeMusicOrderAll()) {
 			yybMusician.setCompanyId(user.getOffice().getId());
 		}
 		Page<YybMusician> page = yybMusicianService.findPage(new Page<YybMusician>(request, response), yybMusician);
@@ -117,7 +120,7 @@ public class YybMusicianController extends BaseController {
 	@RequestMapping(value = "save")
 	public AjaxJson save(YybMusician yybMusician, Model model) throws Exception{
 		User user = UserUtils.getUser();
-		if (!Global.getConfig("admin.loginName").equals(user.getLoginName())) {
+		if (!sysParamService.judgeMusicOrderAll()) {
 			yybMusician.setCompanyId(user.getOffice().getId());
 			yybMusician.setCompanyName(user.getOffice().getName());
 			yybMusician.setType(1);
@@ -254,6 +257,9 @@ public class YybMusicianController extends BaseController {
 		}
 		return j;
     }
+
+
+
 	
 
 }

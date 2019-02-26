@@ -40,7 +40,7 @@
 				<span class="icon-bar"></span>
 			</button>
 
-			<a class="navbar-brand J_menuItem" href="${ctx}/home" data-index="0">JeePlus快速开发框架</a>
+			<a class="navbar-brand J_menuItem" href="/static/welcome.html" data-index="0">音乐邦管理平台</a>
 		</div>
 	</div>
 	<div class="navbar-container container-fluid">
@@ -272,9 +272,9 @@
 											<span class="name">
 											${fns:getUser().name}
 											</span>
-											<a id="user-link" href="#" class="dropdown-toggle">
+											<%--<a id="user-link" href="#" class="dropdown-toggle">
 												<font>${fns:getUser().roleNames}<b class="caret"></b></font>
-											</a>
+											</a>--%>
 										</div>
 
 
@@ -334,7 +334,7 @@
 				</div>
 
 				<div class="J_mainContent"  id="content-main" style="${cookie.tab.value!=false?'height:calc(100% - 40px)':'height:calc(100%)'}">
-					<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${ctx}/home" frameborder="0" data-id="${ctx}/home" seamless></iframe>
+							<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/static/welcome.html" frameborder="0" data-id="${ctx}/home" seamless></iframe>
 				</div>
 			</div>
 
