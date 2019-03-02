@@ -27,7 +27,7 @@
         }
 
 	  webSocket.onerror = function(event) {
-	    jp.alert("websockt连接发生错误，请刷新页面重试!")
+	    // jp.alert("websockt连接发生错误，请刷新页面重试!")
 	  };
 			
 		// 连接成功建立的回调方法

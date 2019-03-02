@@ -49,11 +49,11 @@
 				<form id="loginForm" role="form" action="${ctx}/login" method="post">
 					<div class="form-content">
 						<div class="form-group">
-							<input type="text" id="username" name="username" class="form-control input-underline input-lg required"  value="admin" placeholder="用户名">
+							<input type="text" id="username" name="username" class="form-control input-underline input-lg required"  value="" placeholder="用户名">
 						</div>
 
 						<div class="form-group">
-							<input type="password" id="password" name="password" value="admin" class="form-control input-underline input-lg required" placeholder="密码">
+							<input type="password" id="password" name="password" value="" class="form-control input-underline input-lg required" placeholder="密码">
 						</div>
 						<c:if test="${isValidateCodeLogin}">
 						<div class="form-group  text-muted">
@@ -108,10 +108,10 @@
 									</ul>
 								</li>
 						</ul>
-						<label class="inline">
+						<%--<label class="inline">
 								<input  type="checkbox" id="rememberMe" name="rememberMe" ${rememberMe ? 'checked' : ''} class="ace" />
 								<span class="lbl"> 记住我</span>
-						</label>
+						</label>--%>
 					</div>
 					<input type="submit" class="btn btn-white btn-outline btn-lg btn-rounded progress-login"  value="登录">
 					&nbsp;

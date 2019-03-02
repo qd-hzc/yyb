@@ -14,7 +14,7 @@ import net.oschina.j2cache.J2Cache;
 public class CacheUtils {
 	
 
-	private static final String SYS_REGION = "sysCache";
+	private static final String SYS_REGION = "sysCache2";
 
 	
 	

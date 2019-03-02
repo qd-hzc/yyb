@@ -7,7 +7,7 @@
     <artifactId>jeeplus</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>jeeplus</name>
+    <name>yyb</name>
 
     <!-- 项目属性 -->
     <properties>
@@ -106,7 +106,7 @@
 
 
     <build>
-        <finalName>jeeplus</finalName>
+        <finalName>yyb</finalName>
         <resources>
 			<resource>
 				<directory>src/main/java</directory>
