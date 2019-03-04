@@ -5,6 +5,7 @@ import com.jeeplus.common.annotation.IgnoreAuth;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
+import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.usage.entity.YybUsage;
 import com.jeeplus.modules.usage.service.YybUsageService;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +41,7 @@ public class IndexApiController extends BaseController {
         List<YybUsage> usageList = yybUsageService.findAllList(new YybUsage());
         resultAll.put("usageAll", usageList);
 
+//        List<YybMusic> musicList = yybUsageService.getIndexMusic();
 
         return ResultUtil.success();
     }
