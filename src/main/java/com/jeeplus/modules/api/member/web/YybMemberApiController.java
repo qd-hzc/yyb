@@ -81,7 +81,7 @@ public class YybMemberApiController extends BaseController {
     @IgnoreAuth
     @ResponseBody
     @RequestMapping(value = "/validSms")
-    @ApiOperation(notes = "validSms", httpMethod = "POST", value = "短信校验")
+    @ApiOperation(notes = "validSms", httpMethod = "POST", value = "重置密码下一步之前短信校验")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query",dataType = "string")})
     public Result validSms(HttpSession httpSession, @RequestParam String phone, @RequestParam  String code) {
@@ -156,7 +156,7 @@ public class YybMemberApiController extends BaseController {
 
 
 
-
+    @IgnoreAuth
     @ResponseBody
     @RequestMapping(value = "/resetPass", method = RequestMethod.POST)
     @ApiOperation(notes = "resetPass", httpMethod = "POST", value = "重置密码")

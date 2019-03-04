@@ -43,5 +43,12 @@ public class YybUsageService extends CrudService<YybUsageMapper, YybUsage> {
 	public void delete(YybUsage yybUsage) {
 		super.delete(yybUsage);
 	}
+
+
+	public List<YybUsage> findAllList(YybUsage yybUsage) {
+		return super.findAllList(yybUsage);
+	}
+
+
 	
 }

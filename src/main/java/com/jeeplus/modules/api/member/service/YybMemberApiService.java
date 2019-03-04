@@ -48,6 +48,7 @@ public class YybMemberApiService extends CrudService<YybMemberApiMapper, YybMemb
 		return mapper.getByLoginName(loginName);
     }
 
+	@Transactional(readOnly = false)
     public void updatePass(YybMember yybMember) {
 		mapper.updatePass(yybMember);
     }
