@@ -93,10 +93,6 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error(smsMap.get("msg").toString());
         }
 
-        if (TextValidator.isMobileExact(name)){
-            return ResultUtil.error("注册用户名不能为手机号");
-
-        }
 
         YybMember yybMember = new YybMember();
         yybMember.setPhone(phone);
