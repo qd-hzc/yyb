@@ -46,7 +46,7 @@ public class YybMemberApiController extends BaseController {
     @RequestMapping(value = "/sendSms")
     @ApiOperation(notes = "sendSms", httpMethod = "POST", value = "短信发送")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
-            @ApiImplicitParam(name = "type", value = "类型，1:注册， 2：重置密码", required = false, paramType = "query",dataType = "string")})
+            @ApiImplicitParam(name = "type", value = "类型，1:注册， 2：重置密码", required = true, paramType = "query",dataType = "string")})
     public Result sendSms(HttpSession httpSession, String phone, @RequestParam String type) {
 
         if ("2".equals(type)) {
