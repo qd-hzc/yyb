@@ -196,4 +196,5 @@
 		select * FROM yyb_musician  where  del_flag = 0
 	</select>
 
+
 </mapper>
