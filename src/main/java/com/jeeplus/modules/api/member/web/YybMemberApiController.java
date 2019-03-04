@@ -169,7 +169,9 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error("获取用户失败");
         }
 
-
+        if (session.getAttribute(phone) == null) {
+            return ResultUtil.error("请先获取验证码");
+        }
         if (!validCode.equals(session.getAttribute(phone).toString())) {
             return ResultUtil.error("请先获取验证码");
         }
@@ -211,7 +213,5 @@ public class YybMemberApiController extends BaseController {
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(MD5Util.MD5("123456"));
-    }
+
 }
