@@ -187,7 +187,7 @@ public class YybMemberApiController extends BaseController {
     @IgnoreAuth
     @ResponseBody
     @RequestMapping(value = "/mobileLogin", method = RequestMethod.POST)
-    @ApiOperation(notes = "mobileLogin", httpMethod = "POST", value = "重置密码")
+    @ApiOperation(notes = "mobileLogin", httpMethod = "POST", value = "手机号登陆")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query",dataType = "string")})
     public Result mobileLogin(HttpSession httpSession, @RequestParam String phone, @RequestParam String code) {
