@@ -220,8 +220,8 @@ public class YybMemberApiController extends BaseController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/getToken", method = RequestMethod.POST)
-    @ApiOperation(notes = "getToken", httpMethod = "get", value = "手机号登陆")
+    @RequestMapping(value = "/getToken", method = RequestMethod.GET)
+    @ApiOperation(notes = "getToken", httpMethod = "get", value = "获取token信息")
     @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "token", required = true, paramType = "query",dataType = "string")})
     public Result getToken(@RequestParam String token) {
         return ResultUtil.success(CacheUtils.get(token));
