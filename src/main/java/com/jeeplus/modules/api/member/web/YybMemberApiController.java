@@ -157,4 +157,33 @@ public class YybMemberApiController extends BaseController {
     }
 
 
+    @IgnoreAuth
+    @ResponseBody
+    @RequestMapping(value = "/mobileLogin", method = RequestMethod.POST)
+    @ApiOperation(notes = "mobileLogin", httpMethod = "POST", value = "重置密码")
+    @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
+            @ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query",dataType = "string"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query",dataType = "string")})
+    public Result mobileLogin(HttpSession httpSession, @RequestParam String phone, @RequestParam String password,  @RequestParam String code) {
+
+        Map<String,Object> smsMap = ValidateCode.validateSmsPhoneCode(httpSession, code, phone);
+        if (!true == (Boolean) smsMap.get("pass")) {
+            return ResultUtil.error(smsMap.get("msg").toString());
+        }
+
+        YybMember yybMember = yybMemberApiService.getByLoginName(phone);
+        if (yybMember == null) {
+            return ResultUtil.error("获取用户失败");
+        }
+
+        TokenEntity tokenEntity = new TokenEntity();
+        tokenEntity.setExpireTime(new Date(System.currentTimeMillis() + 12 * 3600 * 1000));
+        tokenEntity.setMember(yybMember);
+        //缓存 key为memberId
+        CacheUtils.put(yybMember.getId(), tokenEntity);
+        yybMember.setToken(yybMember.getId());
+        return ResultUtil.success(yybMember);
+    }
+
+
 }

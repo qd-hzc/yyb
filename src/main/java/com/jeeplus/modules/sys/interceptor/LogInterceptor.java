@@ -50,6 +50,12 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 	        	.format(beginTime), request.getRequestURI());
 		}
 
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+		response.setHeader("Access-Control-Allow-Credentials","true"); //是否支持cookie跨域
+
 		if (!request.getRequestURI().contains("/api/")) {
 			return true;
 		}
