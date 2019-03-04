@@ -167,10 +167,10 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'yybTagCategory.name',
+		        field: 'tagName',
 		        title: '标签',
 		        sortable: true,
-		        sortName: 'yybTagCategory.name'
+		        sortName: 'tagName'
 		       
 		    }
 			,{

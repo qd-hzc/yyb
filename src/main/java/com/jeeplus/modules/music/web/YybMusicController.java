@@ -84,23 +84,6 @@ public class YybMusicController extends BaseController {
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybMusic yybMusic, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<YybMusic> page = yybMusicService.findPage(new Page<YybMusic>(request, response), yybMusic);
-		List<YybMusic> list = page.getList();
-		for (YybMusic yybMusic1 : list) {
-			YybTagCategory yybTagCategory = yybMusic1.getYybTagCategory();
-			if (yybTagCategory != null) {
-				String id = yybTagCategory.getId();
-				List<String> ids = Arrays.asList(id.split(","));
-				String name = "";
-				for (String tagId : ids) {
-					YybTagCategory yybTagCategoryId = yybTagCategoryService.get(tagId);
-					if (yybTagCategoryId != null){
-						name = name + yybTagCategoryId.getName()+";";
-					}
-				}
-				yybTagCategory.setName(name);
-
-			}
-		}
 		return getBootstrapData(page);
 	}
 
@@ -110,20 +93,6 @@ public class YybMusicController extends BaseController {
 	@RequiresPermissions(value={"music:yybMusic:view","music:yybMusic:add","music:yybMusic:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
 	public String form(YybMusic yybMusic, Model model) {
-		YybTagCategory yybTagCategory = yybMusic.getYybTagCategory();
-		if (yybTagCategory != null) {
-			String id = yybTagCategory.getId();
-			List<String> ids = Arrays.asList(id.split(","));
-			String name = "";
-			for (String tagId : ids) {
-				YybTagCategory yybTagCategoryId = yybTagCategoryService.get(tagId);
-				if (yybTagCategoryId != null){
-					name = name + yybTagCategoryId.getName()+";";
-				}
-			}
-			yybTagCategory.setName(name);
-
-		}
 		model.addAttribute("yybMusic", yybMusic);
 		return "modules/music/yybMusicForm";
 	}
@@ -135,6 +104,21 @@ public class YybMusicController extends BaseController {
 	@RequiresPermissions(value={"music:yybMusic:add","music:yybMusic:edit"},logical=Logical.OR)
 	@RequestMapping(value = "save")
 	public AjaxJson save(YybMusic yybMusic, Model model) throws Exception{
+
+		YybTagCategory yybTagCategory = yybMusic.getYybTagCategory();
+		if (yybTagCategory != null) {
+			String id = yybTagCategory.getId();
+			List<String> ids = Arrays.asList(id.split(","));
+			String name = "";
+			for (String tagId : ids) {
+				YybTagCategory yybTagCategoryId = yybTagCategoryService.get(tagId);
+				if (yybTagCategoryId != null){
+					name = name + yybTagCategoryId.getName()+";";
+				}
+			}
+			yybMusic.setTagName(name);
+
+		}
 		AjaxJson j = new AjaxJson();
 		/**
 		 * 后台hibernate-validation插件校验

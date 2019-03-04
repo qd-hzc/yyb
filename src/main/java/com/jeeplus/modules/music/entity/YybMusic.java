@@ -28,6 +28,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 	private String url;		// 地址
 	private String img;		// 图片
 	private YybTagCategory yybTagCategory;		// 标签
+	private String tagName; //标签名称
 	private String musicTime;		// 时长
 	private Date publishTime;		// 发布时间
 	private Integer playCount;		// 播放量
@@ -144,5 +145,12 @@ public class YybMusic extends DataEntity<YybMusic> {
 	public void setLikeCount(Integer likeCount) {
 		this.likeCount = likeCount;
 	}
-	
+
+	public String getTagName() {
+		return tagName;
+	}
+
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
 }

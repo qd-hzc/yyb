@@ -21,7 +21,7 @@
 		a.remarks AS "remarks",
 		a.play_count AS "playCount",
 		a.like_count AS "likeCount",
-				
+		a.tag_name as tagName,
 				
 				
 				
@@ -129,7 +129,8 @@
 			publish_time,
 			remarks,
 			play_count,
-			like_count
+			like_count,
+			tag_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -148,7 +149,8 @@
 			#{publishTime},
 			#{remarks},
 			#{playCount},
-			#{likeCount}
+			#{likeCount},
+			#{tagName}
 		)
 	</insert>
 	
@@ -167,7 +169,8 @@
 			publish_time = #{publishTime},
 			remarks = #{remarks},
 			play_count = #{playCount},
-			like_count = #{likeCount}
+			like_count = #{likeCount},
+			tag_name = #{tagName}
 		WHERE id = #{id}
 	</update>
 	
