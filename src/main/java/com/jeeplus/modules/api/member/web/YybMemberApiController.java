@@ -22,8 +22,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
+
+import static com.jeeplus.common.utils.ValidateCode.SESSION_KEY_FOR_CODE_SMS;
+import static com.jeeplus.modules.sys.interceptor.LogInterceptor.LOGIN_MEMBER;
 
 /**
  * 会员Controller
@@ -42,14 +46,22 @@ public class YybMemberApiController extends BaseController {
     @RequestMapping(value = "/sendSms")
     @ApiOperation(notes = "sendSms", httpMethod = "POST", value = "短信发送")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
-            @ApiImplicitParam(name = "type", value = "类型，1：重置密码", required = false, paramType = "query",dataType = "string")})
-    public Result sendSms(HttpSession httpSession, String phone, @RequestParam(required = false) String type) {
+            @ApiImplicitParam(name = "type", value = "类型，1:注册， 2：重置密码", required = false, paramType = "query",dataType = "string")})
+    public Result sendSms(HttpSession httpSession, String phone, @RequestParam String type) {
 
-        if ("1".equals(type)) {
+        if ("2".equals(type)) {
             YybMember yybMember = yybMemberApiService.getByLoginName(phone);
             if (yybMember == null) {
                 return ResultUtil.error("获取用户失败");
             }
+
+        }
+        if ("1".equals(type)) {
+            YybMember yybMember = yybMemberApiService.getByLoginName(phone);
+            if (yybMember != null) {
+                return ResultUtil.error("用户已存在");
+            }
+
         }
         //验证码位数  是否含有字母  是否含有数字
         String code= RandomStringUtils.random(6, false, true);
@@ -59,7 +71,8 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error("短信发送失败");
         }
         ValidateCode validateCode =  new ValidateCode(phone, code,180);
-        httpSession.setAttribute(ValidateCode.SESSION_KEY_FOR_CODE_SMS, validateCode);
+        httpSession.setAttribute(SESSION_KEY_FOR_CODE_SMS, validateCode);
+
         return ResultUtil.success();
     }
 
@@ -75,9 +88,17 @@ public class YybMemberApiController extends BaseController {
         Map<String,Object> smsMap = ValidateCode.validateSmsPhoneCode(httpSession, code, phone);
         if (!true == (Boolean) smsMap.get("pass")) {
             return ResultUtil.error(smsMap.get("msg").toString());
-        }else {
-            return ResultUtil.success();
         }
+
+        YybMember yybMember = yybMemberApiService.getByLoginName(phone);
+        if (yybMember == null) {
+            return ResultUtil.error("获取用户失败");
+        }
+
+        String validCode = UUID.randomUUID().toString();
+
+        httpSession.setAttribute(phone, validCode);
+        return ResultUtil.success(validCode);
     }
 
     @IgnoreAuth
@@ -93,10 +114,15 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error(smsMap.get("msg").toString());
         }
 
+        YybMember getyybMember = yybMemberApiService.getByLoginName(phone);
+        if (getyybMember != null) {
+            return ResultUtil.error("该用户已存在");
+        }
+
 
         YybMember yybMember = new YybMember();
         yybMember.setPhone(phone);
-        yybMember.setPassword(SystemService.entryptPassword(password));
+        yybMember.setPassword(MD5Util.MD5(password));
         yybMember.setDelFlag("0");
         yybMemberApiService.save(yybMember);
         return ResultUtil.success();
@@ -115,7 +141,7 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error("获取用户失败");
         }
 
-        if (!SystemService.entryptPassword (password).equals(yybMember.getPassword())) {
+        if (!MD5Util.MD5(password).equals(yybMember.getPassword())) {
             return ResultUtil.error("用户或密码错误");
         }
 
@@ -131,21 +157,26 @@ public class YybMemberApiController extends BaseController {
 
 
 
-    @IgnoreAuth
     @ResponseBody
     @RequestMapping(value = "/resetPass", method = RequestMethod.POST)
     @ApiOperation(notes = "resetPass", httpMethod = "POST", value = "重置密码")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
+            @ApiImplicitParam(name = "validCode", value = "校验码", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query",dataType = "string")})
-    public Result resetPass(@RequestParam String phone, @RequestParam String password) {
+    public Result resetPass(HttpSession session, @RequestParam String validCode, @RequestParam String phone, @RequestParam String password) {
         YybMember yybMember = yybMemberApiService.getByLoginName(phone);
         if (yybMember == null) {
             return ResultUtil.error("获取用户失败");
         }
 
+
+        if (!validCode.equals(session.getAttribute(phone).toString())) {
+            return ResultUtil.error("请先获取验证码");
+        }
+
         YybMember resetYybMember = new YybMember();
         resetYybMember.setId(yybMember.getId());
-        resetYybMember.setPassword(SystemService.entryptPassword(password));
+        resetYybMember.setPassword(MD5Util.MD5(password));
         yybMemberApiService.updatePass(resetYybMember);
         return ResultUtil.success();
     }
@@ -178,5 +209,9 @@ public class YybMemberApiController extends BaseController {
         yybMember.setToken(yybMember.getId());
         return ResultUtil.success(yybMember);
 
+    }
+
+    public static void main(String[] args) {
+        System.out.println(MD5Util.MD5("123456"));
     }
 }

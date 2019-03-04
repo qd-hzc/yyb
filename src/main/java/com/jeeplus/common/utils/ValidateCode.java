@@ -20,6 +20,7 @@ public class ValidateCode implements Serializable {
     private final static int frequentlySecond = 5;
 
     public static final  String SESSION_KEY_FOR_CODE_SMS = "SESSION_KEY_FOR_CODE_SMS";
+    public static final  String SESSION_KEY_FOR_VALID = "SESSION_KEY_FOR_VALID";
 
     private String code;
 
