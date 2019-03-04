@@ -87,7 +87,7 @@ public class YybMemberApiController extends BaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query",dataType = "string")})
-    public Result register(HttpSession httpSession, @RequestParam String phone, @RequestParam String code, @RequestParam String name, @RequestParam String password) {
+    public Result register(HttpSession httpSession, @RequestParam String phone, @RequestParam String code, @RequestParam String password) {
         Map<String,Object> smsMap = ValidateCode.validateSmsPhoneCode(httpSession, code, phone);
         if (!true == (Boolean) smsMap.get("pass")) {
             return ResultUtil.error(smsMap.get("msg").toString());
