@@ -15,6 +15,8 @@ import com.jeeplus.modules.api.music.entity.YybMusicVo;
 import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.api.musician.service.YybMusicianApiService;
 import com.jeeplus.modules.music.entity.YybMusic;
+import com.jeeplus.modules.tagcatetory.entity.YybTagCategory;
+import com.jeeplus.modules.tagcatetory.service.YybTagCategoryService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +45,8 @@ public class YybMusicApiController extends BaseController {
 	private YybMusicApiService yybMusicService;
 	@Autowired
 	private YybMusicianApiService yybMusicianApiService;
-
+	@Autowired
+	private YybTagCategoryService tagCategoryService;
 
 
 	@IgnoreAuth
@@ -126,5 +130,36 @@ public class YybMusicApiController extends BaseController {
 	public Result getAllMusician(){
 		return ResultUtil.success(yybMusicianApiService.getAllMusician());
 	}
+
+
+	@IgnoreAuth
+	@ResponseBody
+	@RequestMapping(value = "/getAllTag")
+	@ApiOperation(notes = "getAllTag", httpMethod = "GET", value = "获取所有标签, 子父")
+	public Result getAllTag(){
+
+		List<YybTagCategory> yybTagCategories = tagCategoryService.findAllList(new YybTagCategory());
+		List<YybTagCategory> result = new ArrayList<>();
+		for (YybTagCategory yybTagCategory : yybTagCategories) {
+			if ("0".equals(yybTagCategory.getParentId())) {
+				result.add(yybTagCategory);
+			}
+		}
+
+
+		for (YybTagCategory yybTagCategory : result) {
+			List<YybTagCategory> child = new ArrayList<>();
+			for (YybTagCategory yybTagCategoryAll : yybTagCategories) {
+				if (yybTagCategory.getId().equals(yybTagCategoryAll.getParentId())) {
+					child.add(yybTagCategoryAll);
+				}
+			}
+			yybTagCategory.setList(child);
+		}
+
+		return ResultUtil.success(result);
+	}
+
+
 
 }

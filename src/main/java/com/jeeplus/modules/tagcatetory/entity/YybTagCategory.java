@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.jeeplus.core.persistence.TreeEntity;
 
+import java.util.List;
+
 /**
  * 标签分类Entity
  * @author l
@@ -17,7 +19,8 @@ import com.jeeplus.core.persistence.TreeEntity;
 public class YybTagCategory extends TreeEntity<YybTagCategory> {
 	
 	private static final long serialVersionUID = 1L;
-	
+
+	private List<YybTagCategory> list;
 	
 	public YybTagCategory() {
 		super();
@@ -39,5 +42,13 @@ public class YybTagCategory extends TreeEntity<YybTagCategory> {
 	
 	public String getParentId() {
 		return parent != null && parent.getId() != null ? parent.getId() : "0";
+	}
+
+	public List<YybTagCategory> getList() {
+		return list;
+	}
+
+	public void setList(List<YybTagCategory> list) {
+		this.list = list;
 	}
 }
