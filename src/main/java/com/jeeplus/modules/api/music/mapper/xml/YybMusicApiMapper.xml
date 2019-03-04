@@ -198,7 +198,14 @@
 		FROM yyb_music a
 		<include refid="yybMusicJoins"/>
 		where a.del_flag = 0
-			ORDER BY a.like_count desc
+		<choose>
+			<when test="type=='1'">
+				order by a.music_time #{mode}
+			</when>
+			<when test="type=='2'">
+				order by a.pulish_time #{mode}
+			</when>
+		</choose>
 
 		limit 10
 	</select>
@@ -240,6 +247,13 @@
 			</foreach>
 		</if>
 
-		ORDER BY a.publish_time desc
+		<choose>
+			<when test="type=='1'">
+				order by a.music_time #{mode}
+			</when>
+			<when test="type=='2'">
+				order by a.pulish_time #{mode}
+			</when>
+		</choose>
 	</select>
 </mapper>

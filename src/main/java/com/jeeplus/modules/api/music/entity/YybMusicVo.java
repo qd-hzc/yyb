@@ -25,6 +25,10 @@ public class YybMusicVo implements Serializable {
 
     private List<String> tagNames;
 
+    private String type;//排序，1时长  2发布时间
+
+    private String mode;//排序方式， desc， asc
+
     public String getMultiCondition() {
         return multiCondition;
     }
@@ -103,5 +107,21 @@ public class YybMusicVo implements Serializable {
 
     public void setTagNames(List<String> tagNames) {
         this.tagNames = tagNames;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 }

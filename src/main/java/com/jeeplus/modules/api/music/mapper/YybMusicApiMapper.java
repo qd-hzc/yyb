@@ -9,6 +9,7 @@ import com.jeeplus.modules.api.music.entity.YybMusicVo;
 import com.jeeplus.modules.music.entity.YybMusic;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 音乐MAPPER接口
@@ -18,7 +19,7 @@ import java.util.List;
 @MyBatisMapper
 public interface YybMusicApiMapper extends BaseMapper<YybMusic> {
 
-    List<YybMusic> getIndexMusicList();
+    List<YybMusic> getIndexMusicList(Map<String,Object> param);
 
     List<YybMusic> searchMusic(YybMusicVo yybMusicVo);
 }

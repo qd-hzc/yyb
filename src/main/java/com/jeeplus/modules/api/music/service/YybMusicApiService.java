@@ -4,6 +4,7 @@
 package com.jeeplus.modules.api.music.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jeeplus.modules.api.music.entity.YybMusicVo;
 import com.jeeplus.modules.api.music.mapper.YybMusicApiMapper;
@@ -52,8 +53,8 @@ public class YybMusicApiService extends CrudService<YybMusicApiMapper, YybMusic>
 		super.delete(yybMusic);
 	}
 
-	public List<YybMusic> getIndexMusicList() {
-		return yybMusicApiMapper.getIndexMusicList();
+	public List<YybMusic> getIndexMusicList(Map<String,Object> param) {
+		return yybMusicApiMapper.getIndexMusicList(param);
 	}
 
 	public List<YybMusic> searchMusic(YybMusicVo yybMusicVo) {
