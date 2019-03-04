@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.api.music.mapper.YybMusicApiMapper">
+    
+	<sql id="yybMusicColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.title AS "title",
+		a.price AS "price",
+		a.musician_id AS "yybMusician.id",
+		a.album_id AS "yybMusicianAlbum.id",
+		a.url AS "url",
+		a.img AS "img",
+		a.tag_id AS "yybTagCategory.id",
+		a.music_time AS "musicTime",
+		a.publish_time AS "publishTime",
+		a.remarks AS "remarks",
+		a.play_count AS "playCount",
+		a.like_count AS "likeCount",
+		a.tag_name as tagName,
+				
+				
+				
+				
+				
+				
+				
+		yybMusician.name AS "yybMusician.name",
+				
+		yybMusicianAlbum.name AS "yybMusicianAlbum.name"
+	</sql>
+	
+	<sql id="yybMusicJoins">
+		
+		LEFT JOIN yyb_musician yybMusician ON yybMusician.id = a.musician_id
+		LEFT JOIN yyb_musician_album yybMusicianAlbum ON yybMusicianAlbum.id = a.album_id
+		LEFT JOIN yyb_tag_category yybTagCategory ON yybTagCategory.id = a.tag_id
+	</sql>
+	
+    
+	<select id="get" resultType="YybMusic" >
+		SELECT 
+			<include refid="yybMusicColumns"/>
+		FROM yyb_music a
+		<include refid="yybMusicJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="YybMusic" >
+		SELECT 
+			<include refid="yybMusicColumns"/>
+		FROM yyb_music a
+		<include refid="yybMusicJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="yybMusician != null and yybMusician.id != null and yybMusician.id != ''">
+				AND a.musician_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{yybMusician.id}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{yybMusician.id}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{yybMusician.id},'%')</if>
+			</if>
+			<if test="yybMusicianAlbum != null and yybMusicianAlbum.id != null and yybMusicianAlbum.id != ''">
+				AND a.album_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{yybMusicianAlbum.id}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{yybMusicianAlbum.id}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{yybMusicianAlbum.id},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="YybMusic" >
+
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO yyb_music(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			title,
+			price,
+			musician_id,
+			album_id,
+			url,
+			img,
+			tag_id,
+			music_time,
+			publish_time,
+			remarks,
+			play_count,SELECT
+		<include refid="yybMusicColumns"/>
+		FROM yyb_music a
+		<include refid="yybMusicJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+			like_count,
+			tag_name
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{title},
+			#{price},
+			#{yybMusician.id},
+			#{yybMusicianAlbum.id},
+			#{url},
+			#{img},
+			#{yybTagCategory.id},
+			#{musicTime},
+			#{publishTime},
+			#{remarks},
+			#{playCount},
+			#{likeCount},
+			#{tagName}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE yyb_music SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			title = #{title},
+			price = #{price},
+			musician_id = #{yybMusician.id},
+			album_id = #{yybMusicianAlbum.id},
+			url = #{url},
+			img = #{img},
+			tag_id = #{yybTagCategory.id},
+			music_time = #{musicTime},
+			publish_time = #{publishTime},
+			remarks = #{remarks},
+			play_count = #{playCount},
+			like_count = #{likeCount},
+			tag_name = #{tagName}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM yyb_music
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE yyb_music SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="YybMusic" statementType="STATEMENT">
+		select * FROM yyb_music  where ${propertyName} = '${value}'
+	</select>
+
+
+	<select id="getIndexMusicList"  resultType="YybMusic" >
+
+		SELECT
+		<include refid="yybMusicColumns"/>
+		FROM yyb_music a
+		<include refid="yybMusicJoins"/>
+		where a.del_flag = 0
+			ORDER BY a.like_count desc
+
+		limit 10
+	</select>
+
+
+	<select id="searchMusic" parameterType="com.jeeplus.modules.api.music.entity.YybMusicVo"  resultType="YybMusic" >
+
+		SELECT
+		<include refid="yybMusicColumns"/>
+		FROM yyb_music a
+		<include refid="yybMusicJoins"/>
+		where a.del_flag = 0
+		<if test="multiCondition != null and multiCondition != ''">
+			and (a.title like concat('%',#{multiCondition},'%')
+			or a.tag_name like concat('%',#{multiCondition},'%')
+			or yybMusician.name.name like concat('%',#{multiCondition},'%')
+			)
+		</if>
+
+		<if test="musicianName != null and musicianName != ''">
+			and yybMusician.name.name like concat('%',#{musicianName},'%')
+		</if>
+
+		<if test="tagName != null and tagName != ''">
+			and a.tag_name like concat('%',#{tagName},'%')
+		</if>
+
+		<if test="musicTimeBegin != null and musicTimeBegin != '' and musicTimeEnd != null and musicTimeEnd != ''">
+	  		and a.music_time &lt;= musicTimeEnd and a.music_time &gt;= musicTimeBegin
+		</if>
+
+		<if test="publishTimeEnd != null and publishTimeEnd != '' and publishTimeBegin != null and publishTimeBegin != ''">
+			and a.publish_time &lt;= publishTimeEnd and a.publish_time &gt;= publishTimeBegin
+		</if>
+
+		<if test="tagNames != null and tagNames.size() > 0">
+			<foreach item="item" collection="tagNames">
+				and CONCAT(';',a.tag_name,';') like concat('%;',#{item},';%')
+			</foreach>
+		</if>
+
+		ORDER BY a.publish_time desc
+	</select>
+</mapper>

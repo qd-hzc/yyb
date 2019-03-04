@@ -29,6 +29,17 @@
         <property name="typeAliasesPackage" value="com.jeeplus.modules.**.entity.**"/>
         <property name="typeAliasesSuperType" value="com.jeeplus.core.persistence.BaseEntity"/>
         <property name="mapperLocations" value="classpath*:com/jeeplus/modules/**/*Mapper.xml"/>
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<value>
+							helperDialect=mysql
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
 	<property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"></property>
 	<property name="configurationProperties">
 		<props>
