@@ -170,6 +170,7 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error(smsMap.get("msg").toString());
         }
 
+
         YybMember yybMember = yybMemberApiService.getByLoginName(phone);
         if (yybMember == null) {
             return ResultUtil.error("获取用户失败");
