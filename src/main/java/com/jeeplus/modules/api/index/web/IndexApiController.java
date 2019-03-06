@@ -43,7 +43,7 @@ public class IndexApiController extends BaseController {
 
 //        List<YybMusic> musicList = yybUsageService.getIndexMusic();
 
-        return ResultUtil.success();
+        return ResultUtil.success(resultAll);
     }
 
 }
