@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
-package com.jeeplus.modules.like.entity;
+package com.jeeplus.modules.playhistory.entity;
 
 
 import com.jeeplus.core.persistence.DataEntity;
@@ -9,22 +9,22 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.modules.music.entity.YybMusic;
 
 /**
- * 个人喜欢Entity
+ * 播放历史Entity
  * @author lwb
- * @version 2019-02-18
+ * @version 2019-03-06
  */
-public class YybLike extends DataEntity<YybLike> {
+public class YybPlayHistory extends DataEntity<YybPlayHistory> {
 	
 	private static final long serialVersionUID = 1L;
 	private String memberId;		// 用户
 	private String musicId;		// 音乐
 	private YybMusic yybMusic;
 	
-	public YybLike() {
+	public YybPlayHistory() {
 		super();
 	}
 
-	public YybLike(String id){
+	public YybPlayHistory(String id){
 		super(id);
 	}
 

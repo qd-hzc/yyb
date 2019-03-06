@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.api.playhistory.mapper.YybPlayHistoryApiMapper">
+    
+	<sql id="yybPlayHistoryColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.member_id AS "memberId",
+		a.music_id AS "musicId"
+	</sql>
+	
+	<sql id="yybPlayHistoryJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="YybPlayHistory" >
+		SELECT 
+			<include refid="yybPlayHistoryColumns"/>
+		FROM yyb_play_history a
+		<include refid="yybPlayHistoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="YybPlayHistory" >
+		SELECT 
+			<include refid="yybPlayHistoryColumns"/>
+		FROM yyb_play_history a
+		<include refid="yybPlayHistoryJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="YybPlayHistory" >
+		SELECT 
+			<include refid="yybPlayHistoryColumns"/>
+		FROM yyb_play_history a
+		<include refid="yybPlayHistoryJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO yyb_play_history(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			member_id,
+			music_id
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{memberId},
+			#{musicId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE yyb_play_history SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			member_id = #{memberId},
+			music_id = #{musicId}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM yyb_play_history
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE yyb_play_history SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="YybPlayHistory" statementType="STATEMENT">
+		select * FROM yyb_play_history  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
