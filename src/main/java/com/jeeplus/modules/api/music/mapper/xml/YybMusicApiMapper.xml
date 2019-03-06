@@ -247,6 +247,12 @@
 			</foreach>
 		</if>
 
+		<if test="tagIds != null and tagIds.size() > 0">
+			<foreach item="item" collection="tagIds">
+				and CONCAT(',',a.tag_id,',') like concat('%,',#{item},',%')
+			</foreach>
+		</if>
+
 		<choose>
 			<when test="type=='1'">
 				order by a.music_time #{mode}
