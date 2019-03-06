@@ -191,25 +191,6 @@
 	</select>
 
 
-	<select id="getIndexMusicList"  resultType="YybMusic" >
-
-		SELECT
-		<include refid="yybMusicColumns"/>
-		FROM yyb_music a
-		<include refid="yybMusicJoins"/>
-		where a.del_flag = 0
-		<choose>
-			<when test="type=='1'">
-				order by a.music_time #{mode}
-			</when>
-			<when test="type=='2'">
-				order by a.pulish_time #{mode}
-			</when>
-		</choose>
-
-		limit 10
-	</select>
-
 
 	<select id="searchMusic" parameterType="com.jeeplus.modules.api.music.entity.YybMusicVo"  resultType="YybMusic" >
 
@@ -221,12 +202,12 @@
 		<if test="multiCondition != null and multiCondition != ''">
 			and (a.title like concat('%',#{multiCondition},'%')
 			or a.tag_name like concat('%',#{multiCondition},'%')
-			or yybMusician.name.name like concat('%',#{multiCondition},'%')
+			or yybMusician.name like concat('%',#{multiCondition},'%')
 			)
 		</if>
 
 		<if test="musicianName != null and musicianName != ''">
-			and yybMusician.name.name like concat('%',#{musicianName},'%')
+			and yybMusician.name like concat('%',#{musicianName},'%')
 		</if>
 
 		<if test="tagName != null and tagName != ''">
