@@ -2,18 +2,17 @@ package com.jeeplus.modules.api.member.web;
 
 
 import com.jeeplus.common.annotation.IgnoreAuth;
-import com.jeeplus.common.json.TokenEntity;
 import com.jeeplus.common.utils.*;
-import com.jeeplus.common.utils.text.TextValidator;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
+import com.jeeplus.modules.api.member.entity.ApiMember;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.api.member.service.YybMemberApiService;
-import com.jeeplus.modules.sys.service.SystemService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Member;
 import java.util.*;
 
 import static com.jeeplus.common.utils.ValidateCode.SESSION_KEY_FOR_CODE_SMS;
@@ -140,7 +138,7 @@ public class YybMemberApiController extends BaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "用户名", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, paramType = "query",dataType = "string")})
 
-    public Result login(@RequestParam String loginName, @RequestParam String password) {
+    public Result login(@RequestParam String loginName, @RequestParam String password) throws Exception{
         YybMember yybMember = yybMemberApiService.getByLoginName(loginName);
         if (yybMember == null) {
             return ResultUtil.error("获取用户失败");
@@ -150,12 +148,13 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error("用户或密码错误");
         }
 
-        TokenEntity tokenEntity = new TokenEntity();
-        tokenEntity.setExpireTime(new Date(System.currentTimeMillis() + 12 * 3600 * 1000));
-        tokenEntity.setMember(yybMember);
-        //缓存 key为memberId
-        CacheUtils.put(yybMember.getId(), tokenEntity);
-        yybMember.setToken(yybMember.getId());
+        yybMember.setPassword(null);
+        ApiMember apiMember = new ApiMember();
+        BeanUtils.copyProperties(apiMember, yybMember);
+
+        //给用户jwt加密生成token
+        String token = JWT.sign(apiMember, 12L * 60L * 60L * 1000L);
+        yybMember.setToken(token);
         return ResultUtil.success(yybMember);
     }
 
@@ -195,7 +194,7 @@ public class YybMemberApiController extends BaseController {
     @ApiOperation(notes = "mobileLogin", httpMethod = "POST", value = "手机号登陆")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query",dataType = "string")})
-    public Result mobileLogin(HttpSession httpSession, @RequestParam String phone, @RequestParam String code) {
+    public Result mobileLogin(HttpSession httpSession, @RequestParam String phone, @RequestParam String code) throws Exception{
 
         Map<String, Object> smsMap = ValidateCode.validateSmsPhoneCode(httpSession, code, phone);
         if (!true == (Boolean) smsMap.get("pass")) {
@@ -208,12 +207,13 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error("获取用户失败");
         }
 
-        TokenEntity tokenEntity = new TokenEntity();
-        tokenEntity.setExpireTime(new Date(System.currentTimeMillis() + 12 * 3600 * 1000));
-        tokenEntity.setMember(yybMember);
-        //缓存 key为memberId
-        CacheUtils.put(yybMember.getId(), tokenEntity);
-        yybMember.setToken(yybMember.getId());
+        yybMember.setPassword(null);
+        ApiMember apiMember = new ApiMember();
+        BeanUtils.copyProperties(apiMember, yybMember);
+
+        //给用户jwt加密生成token
+        String token = JWT.sign(apiMember, 12L * 60L * 60L * 1000L);
+        yybMember.setToken(token);
         return ResultUtil.success(yybMember);
 
     }
@@ -224,8 +224,8 @@ public class YybMemberApiController extends BaseController {
     @RequestMapping(value = "/getToken", method = RequestMethod.GET)
     @ApiOperation(notes = "getToken", httpMethod = "get", value = "获取token信息")
     public Result getToken(HttpServletRequest request) {
-        YybMember yybMember = (YybMember)request.getAttribute(LOGIN_MEMBER);
-        return ResultUtil.success(CacheUtils.get(yybMember.getId()));
+        ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
+        return ResultUtil.success(yybMember);
 
     }
 

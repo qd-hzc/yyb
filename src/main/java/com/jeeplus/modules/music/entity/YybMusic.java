@@ -34,6 +34,8 @@ public class YybMusic extends DataEntity<YybMusic> {
 	private Integer playCount;		// 播放量
 	private Integer likeCount;		// 收藏量
 	private String musicianName;
+
+	private int isLike;//是否喜欢
 	
 	public YybMusic() {
 		super();
@@ -161,5 +163,13 @@ public class YybMusic extends DataEntity<YybMusic> {
 
 	public void setMusicianName(String musicianName) {
 		this.musicianName = musicianName;
+	}
+
+	public int getIsLike() {
+		return isLike;
+	}
+
+	public void setIsLike(int isLike) {
+		this.isLike = isLike;
 	}
 }

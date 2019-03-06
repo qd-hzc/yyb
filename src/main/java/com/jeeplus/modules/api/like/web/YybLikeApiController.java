@@ -10,6 +10,7 @@ import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.like.service.YybLikeApiService;
+import com.jeeplus.modules.api.member.entity.ApiMember;
 import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.like.entity.YybLike;
 import com.jeeplus.modules.member.entity.YybMember;
@@ -59,7 +60,7 @@ public class YybLikeApiController extends BaseController {
 	public Result list(HttpServletRequest request, @RequestParam(required = false, defaultValue = "1") String startPage,
 					   @RequestParam(required = false, defaultValue = "10") String pageSize) {
 
-		YybMember yybMember = (YybMember)request.getAttribute(LOGIN_MEMBER);
+		ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", memebrId);
@@ -87,7 +88,7 @@ public class YybLikeApiController extends BaseController {
 	@ApiImplicitParams({@ApiImplicitParam(name = "musicId", value = "", required = true, paramType = "query",dataType = "string")})
 	public Result save(HttpServletRequest request, @RequestParam String musicId) throws Exception{
 
-		YybMember yybMember = (YybMember)request.getAttribute(LOGIN_MEMBER);
+		ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
 
 		Map<String, Object> param = new HashMap<>();
@@ -123,7 +124,7 @@ public class YybLikeApiController extends BaseController {
 	@ApiImplicitParams({@ApiImplicitParam(name = "musicId", value = "", required = true, paramType = "query",dataType = "string")})
 	public Result cancel(HttpServletRequest request, @RequestParam String musicId) throws Exception{
 
-		YybMember yybMember = (YybMember)request.getAttribute(LOGIN_MEMBER);
+		ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
 
 		Map<String, Object> param = new HashMap<>();

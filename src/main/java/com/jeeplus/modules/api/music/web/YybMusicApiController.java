@@ -31,11 +31,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.jeeplus.modules.sys.interceptor.LogInterceptor.LOGIN_MEMBER;
 
 /**
  * 音乐Controller
@@ -61,7 +64,10 @@ public class YybMusicApiController extends BaseController {
 	@ApiOperation(notes = "searchMusic", httpMethod = "POST", value = "音乐搜索")
 	@ApiImplicitParams({@ApiImplicitParam(name = "参数详见代码", value = "参数详见代码", required = true, paramType = "query",dataType = "RequestBody")})
 
-	public Result searchMusic(@RequestBody YybMusicVo yybMusicVo){
+	public Result searchMusic(HttpServletRequest request, @RequestBody YybMusicVo yybMusicVo){
+
+		request.getAttribute(LOGIN_MEMBER);
+
 
 
 		String type = yybMusicVo.getType();

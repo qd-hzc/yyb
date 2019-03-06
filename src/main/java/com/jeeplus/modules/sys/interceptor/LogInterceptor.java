@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.jeeplus.common.annotation.IgnoreAuth;
-import com.jeeplus.common.json.TokenEntity;
-import com.jeeplus.common.utils.CacheUtils;
+import com.jeeplus.common.utils.JWT;
 import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.core.service.ServiceException;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
+import com.jeeplus.modules.api.member.entity.ApiMember;
+import com.jeeplus.modules.api.member.service.YybMemberApiService;
+import com.jeeplus.modules.member.entity.YybMember;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -36,6 +38,8 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
 	public static final String LOGIN_MEMBER = "LOGIN_MEMBER";
 
+	@Autowired
+	private YybMemberApiService yybMemberApiService;
 
 	private static final ThreadLocal<Long> startTimeThreadLocal =
 			new NamedThreadLocal<Long>("ThreadLocal StartTime");
@@ -82,14 +86,28 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 			returnResponse(response, "token不能为空");
 		}
 
-		//查询token信息
-		TokenEntity tokenEntity = (TokenEntity)CacheUtils.get(token);
-		if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
-			returnResponse(response, "token失效，请重新登录");
+		ApiMember apiMember = JWT.unsign(token, ApiMember.class);
+
+		if (apiMember == null) {
+			returnResponse(response, "token失效");
 		}
 
+		String memberId = request.getParameter("memberId");
+		if (StringUtils.isNotBlank(memberId)) {
+			if (!memberId.equals(apiMember.getId())) {
+				returnResponse(response, "登陆信息有误");
+			}
+		}
+
+		//校验数据库中的用户信息
+		YybMember yybMember1 = yybMemberApiService.get(apiMember.getId());
+		if (yybMember1 == null) {
+			returnResponse(response, "登陆信息有误");
+		}
+
+
 		//设置userId到request里，后续根据userId，获取用户信息
-		request.setAttribute(LOGIN_MEMBER, tokenEntity.getMember());
+		request.setAttribute(LOGIN_MEMBER, apiMember);
 
 		return true;
 	}
