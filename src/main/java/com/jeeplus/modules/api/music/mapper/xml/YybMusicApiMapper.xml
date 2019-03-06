@@ -215,11 +215,11 @@
 		</if>
 
 		<if test="musicTimeBegin != null and musicTimeBegin != '' and musicTimeEnd != null and musicTimeEnd != ''">
-	  		and a.music_time &lt;= musicTimeEnd and a.music_time &gt;= musicTimeBegin
+	  		and a.music_time &lt;= ${musicTimeEnd} and a.music_time &gt;= ${musicTimeBegin}
 		</if>
 
 		<if test="publishTimeEnd != null and publishTimeEnd != '' and publishTimeBegin != null and publishTimeBegin != ''">
-			and a.publish_time &lt;= publishTimeEnd and a.publish_time &gt;= publishTimeBegin
+			and a.publish_time &lt;= #{publishTimeEnd} and a.publish_time &gt;= #{publishTimeBegin}
 		</if>
 
 		<if test="tagNames != null and tagNames.size() > 0">
