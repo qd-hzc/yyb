@@ -68,7 +68,7 @@ public class YybMusicApiController extends BaseController {
 			mode = "desc";
 		}
 
-		if (!("1".equals(type) || "2".equals(type))){
+		if (!("1".equals(type) || "2".equals(type) || "3".equals(type))){
 			return ResultUtil.error("类型有误");
 		}
 
