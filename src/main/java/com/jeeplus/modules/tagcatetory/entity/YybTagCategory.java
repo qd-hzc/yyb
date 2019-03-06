@@ -21,7 +21,17 @@ public class YybTagCategory extends TreeEntity<YybTagCategory> {
 	private static final long serialVersionUID = 1L;
 
 	private List<YybTagCategory> list;
-	
+
+	private String parentId;
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getParent_Id() {
+		return parentId;
+	}
+
 	public YybTagCategory() {
 		super();
 	}

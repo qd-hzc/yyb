@@ -5,6 +5,8 @@ package com.jeeplus.modules.api.music.web;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.jeeplus.common.annotation.IgnoreAuth;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
@@ -14,6 +16,7 @@ import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.music.entity.YybMusicVo;
 import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.api.musician.service.YybMusicianApiService;
+import com.jeeplus.modules.api.tagcatetory.service.YybTagCategoryApiService;
 import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.tagcatetory.entity.YybTagCategory;
 import com.jeeplus.modules.tagcatetory.service.YybTagCategoryService;
@@ -22,11 +25,13 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +51,7 @@ public class YybMusicApiController extends BaseController {
 	@Autowired
 	private YybMusicianApiService yybMusicianApiService;
 	@Autowired
-	private YybTagCategoryService tagCategoryService;
+	private YybTagCategoryApiService tagCategoryService;
 
 
 
@@ -104,10 +109,10 @@ public class YybMusicApiController extends BaseController {
 	@ApiOperation(notes = "getAllTag", httpMethod = "GET", value = "获取所有标签, 子父")
 	public Result getAllTag(){
 
-		List<YybTagCategory> yybTagCategories = tagCategoryService.findAllList(new YybTagCategory());
+		List<YybTagCategory> yybTagCategories = tagCategoryService.findAll(new YybTagCategory());
 		List<YybTagCategory> result = new ArrayList<>();
 		for (YybTagCategory yybTagCategory : yybTagCategories) {
-			if ("0".equals(yybTagCategory.getParentId())) {
+			if ("0".equals(yybTagCategory.getParent_Id())) {
 				result.add(yybTagCategory);
 			}
 		}
@@ -116,15 +121,20 @@ public class YybMusicApiController extends BaseController {
 		for (YybTagCategory yybTagCategory : result) {
 			List<YybTagCategory> child = new ArrayList<>();
 			for (YybTagCategory yybTagCategoryAll : yybTagCategories) {
-				if (yybTagCategory.getId().equals(yybTagCategoryAll.getParentId())) {
+				if (yybTagCategory.getId().equals(yybTagCategoryAll.getParent_Id())) {
 					child.add(yybTagCategoryAll);
 				}
 			}
 			yybTagCategory.setList(child);
+			if (!CollectionUtils.isEmpty(child)) {
+				yybTagCategory.setHasChildren(true);
+			}
 		}
 
 		return ResultUtil.success(result);
 	}
+
+
 
 
 
