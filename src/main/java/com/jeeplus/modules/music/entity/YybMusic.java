@@ -33,6 +33,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 	private Date publishTime;		// 发布时间
 	private Integer playCount;		// 播放量
 	private Integer likeCount;		// 收藏量
+	private String musicianName;
 	
 	public YybMusic() {
 		super();
@@ -152,5 +153,13 @@ public class YybMusic extends DataEntity<YybMusic> {
 
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
+	}
+
+	public String getMusicianName() {
+		return musicianName;
+	}
+
+	public void setMusicianName(String musicianName) {
+		this.musicianName = musicianName;
 	}
 }

@@ -19,16 +19,16 @@
 	</sql>
 	
     
-	<select id="get" resultType="YybLike" >
-		SELECT 
+	<select id="get" resultType="com.jeeplus.modules.like.entity.YybLike" >
+		SELECT
 			<include refid="yybLikeColumns"/>
 		FROM yyb_like a
 		<include refid="yybLikeJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
-	<select id="findList" resultType="YybLike" >
-		SELECT 
+
+	<select id="findList" resultType="com.jeeplus.modules.like.entity.YybLike" >
+		SELECT
 			<include refid="yybLikeColumns"/>
 		FROM yyb_like a
 		<include refid="yybLikeJoins"/>
@@ -45,16 +45,16 @@
 			</otherwise>
 		</choose>
 	</select>
-	
-	<select id="findAllList" resultType="YybLike" >
-		SELECT 
+
+	<select id="findAllList" resultType="com.jeeplus.modules.like.entity.YybLike" >
+		SELECT
 			<include refid="yybLikeColumns"/>
 		FROM yyb_like a
 		<include refid="yybLikeJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-		</where>		
+		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -64,7 +64,7 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO yyb_like(
 			id,
@@ -88,9 +88,9 @@
 			#{musicId}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE yyb_like SET 	
+		UPDATE yyb_like SET
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks},
@@ -98,25 +98,58 @@
 			music_id = #{musicId}
 		WHERE id = #{id}
 	</update>
-	
-	
+
+
 	<!--物理删除-->
 	<update id="delete">
 		DELETE FROM yyb_like
 		WHERE id = #{id}
 	</update>
-	
+
 	<!--逻辑删除-->
 	<update id="deleteByLogic">
-		UPDATE yyb_like SET 
+		UPDATE yyb_like SET
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
-	
+
+
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="YybLike" statementType="STATEMENT">
+	<select id="findUniqueByProperty" resultType="com.jeeplus.modules.like.entity.YybLike" statementType="STATEMENT">
 		select * FROM yyb_like  where ${propertyName} = '${value}'
+	</select>
+
+
+	<select id="memberLikeList"  resultType="com.jeeplus.modules.like.entity.YybLike">
+		SELECT
+		<include refid="yybLikeColumns"/>,
+
+		b.id AS "yybMusic.id",
+		b.title AS "yybMusic.title",
+		b.price AS "yybMusic.price",
+		b.url AS "yybMusic.url",
+		b.img AS "yybMusic.img",
+		b.music_time AS "yybMusic.musicTime",
+		b.publish_time AS "yybMusic.publishTime",
+		b.play_count AS "yybMusic.playCount",
+		b.like_count AS "yybMusic.likeCount",
+		b.tag_name as "yybMusic.tagName",
+		c.name as "yybMusic.musicianName"
+
+
+
+		FROM yyb_like a
+		left join yyb_music b on a.music_id = b.id
+		left join yyb_musician c on b.musician_id = c.id
+		WHERE a.member_id = #{memberId} and b.del_flag = 0
+		order by a.update_date desc
+	</select>
+
+	<select id="getByCondition" resultType="com.jeeplus.modules.like.entity.YybLike">
+		SELECT
+		<include refid="yybLikeColumns"/>
+		FROM yyb_like a
+		WHERE a.member_id = #{memberId} and a.music_id = #{musicId}
 	</select>
 	
 </mapper>

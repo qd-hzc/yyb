@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Member;
 import java.util.*;
 
 import static com.jeeplus.common.utils.ValidateCode.SESSION_KEY_FOR_CODE_SMS;
@@ -43,7 +44,7 @@ public class YybMemberApiController extends BaseController {
 
     @IgnoreAuth
     @ResponseBody
-    @RequestMapping(value = "/sendSms")
+    @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
     @ApiOperation(notes = "sendSms", httpMethod = "POST", value = "短信发送")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "type", value = "类型，1:注册， 2：重置密码 3:手机号登陆", required = true, paramType = "query",dataType = "string")})
@@ -84,7 +85,7 @@ public class YybMemberApiController extends BaseController {
 
     @IgnoreAuth
     @ResponseBody
-    @RequestMapping(value = "/validSms")
+    @RequestMapping(value = "/validSms", method = RequestMethod.POST)
     @ApiOperation(notes = "validSms", httpMethod = "POST", value = "重置密码下一步之前短信校验")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "code", value = "验证码", required = true, paramType = "query",dataType = "string")})
@@ -222,9 +223,9 @@ public class YybMemberApiController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/getToken", method = RequestMethod.GET)
     @ApiOperation(notes = "getToken", httpMethod = "get", value = "获取token信息")
-    @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "token", required = true, paramType = "query",dataType = "string")})
-    public Result getToken(@RequestParam String token) {
-        return ResultUtil.success(CacheUtils.get(token));
+    public Result getToken(HttpServletRequest request) {
+        YybMember yybMember = (YybMember)request.getAttribute(LOGIN_MEMBER);
+        return ResultUtil.success(CacheUtils.get(yybMember.getId()));
 
     }
 

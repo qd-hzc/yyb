@@ -49,40 +49,6 @@ public class YybMusicApiController extends BaseController {
 	private YybTagCategoryService tagCategoryService;
 
 
-	@IgnoreAuth
-	@ResponseBody
-	@RequestMapping(value = "/getIndexMusicList")
-	@ApiOperation(notes = "getIndexMusicList", httpMethod = "GET", value = "首页音乐列表")
-	@ApiImplicitParams({@ApiImplicitParam(name = "type", value = "排序，1:时长， 2：发布时间，", required = false, paramType = "query",dataType = "string"),
-			@ApiImplicitParam(name = "mode", value = "排序方式，1:asc， 2：desc，", required = false, paramType = "query",dataType = "string")})
-
-	public Result getIndexMusicList(@RequestParam(required = false) String type, @RequestParam(required = false) String mode){
-
-		if (StringUtils.isEmpty(type)) {
-			type = "2";
-		}
-		if (StringUtils.isEmpty(mode)) {
-			mode = "desc";
-		}
-
-		if (!("1".equals(type) || "2".equals(type))){
-			return ResultUtil.error("类型有误");
-		}
-
-
-		if (!("asc".equals(mode) || "desc".equals(mode))){
-			return ResultUtil.error("排序方式有误");
-		}
-
-
-
-
-		Map<String, Object> param = new HashMap<>();
-		param.put("type", type);
-		List<YybMusic> list = yybMusicService.getIndexMusicList(param);
-		return ResultUtil.success(list);
-	}
-
 
 	@IgnoreAuth
 	@ResponseBody
@@ -96,7 +62,7 @@ public class YybMusicApiController extends BaseController {
 		String type = yybMusicVo.getType();
 		String mode = yybMusicVo.getMode();
 		if (StringUtils.isEmpty(type)) {
-			type = "2";
+			type = "3";
 		}
 		if (StringUtils.isEmpty(mode)) {
 			mode = "desc";

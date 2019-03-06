@@ -60,4 +60,9 @@ public class YybMusicApiService extends CrudService<YybMusicApiMapper, YybMusic>
 	public List<YybMusic> searchMusic(YybMusicVo yybMusicVo) {
 		return  yybMusicApiMapper.searchMusic(yybMusicVo);
 	}
+
+	@Transactional(readOnly = false)
+	public void updateLikeCount(String musicId) {
+		yybMusicApiMapper.updateLikeCount(musicId);
+	}
 }

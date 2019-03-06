@@ -260,6 +260,13 @@
 			<when test="type=='2'">
 				order by a.pulish_time #{mode}
 			</when>
+			<when test="type=='3'">
+				order by a.like_count #{mode}
+			</when>
 		</choose>
 	</select>
+
+	<update id="updateLikeCount">
+		update yyb_music set like_count = like_count  + 1 where id = #{musicId}
+	</update>
 </mapper>

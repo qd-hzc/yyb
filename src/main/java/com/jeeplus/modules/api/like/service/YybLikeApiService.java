@@ -4,8 +4,10 @@
 package com.jeeplus.modules.api.like.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jeeplus.modules.api.like.mapper.YybLikeApiMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ import com.jeeplus.modules.like.mapper.YybLikeMapper;
 @Service
 @Transactional(readOnly = true)
 public class YybLikeApiService extends CrudService<YybLikeApiMapper, YybLike> {
+
+	@Autowired
+	private YybLikeApiMapper yybLikeApiMapper;
 
 	public YybLike get(String id) {
 		return super.get(id);
@@ -44,5 +49,12 @@ public class YybLikeApiService extends CrudService<YybLikeApiMapper, YybLike> {
 	public void delete(YybLike yybLike) {
 		super.delete(yybLike);
 	}
-	
+
+	public List<YybLike> memberLikeList(Map<String, Object> param) {
+		return yybLikeApiMapper.memberLikeList(param);
+	}
+
+	public YybLike getByCondition(Map<String, Object> param) {
+		return yybLikeApiMapper.getByCondition(param);
+	}
 }

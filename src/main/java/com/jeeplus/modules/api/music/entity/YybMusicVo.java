@@ -27,7 +27,7 @@ public class YybMusicVo implements Serializable {
 
     private List<String> tagIds;
 
-    private String type;//排序，1时长  2发布时间
+    private String type;//排序，1时长  2发布时间 3喜欢量
 
     private String mode;//排序方式， desc， asc
 
