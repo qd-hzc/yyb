@@ -23,5 +23,7 @@ public interface YybMusicApiMapper extends BaseMapper<YybMusic> {
 
     List<YybMusic> searchMusic(YybMusicVo yybMusicVo);
 
-    void updateLikeCount(String musicId);
+    void updateAddLikeCount(String musicId);
+
+    void updateReduceLikeCount(String musicId);
 }

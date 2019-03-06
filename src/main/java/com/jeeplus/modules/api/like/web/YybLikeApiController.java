@@ -84,8 +84,8 @@ public class YybLikeApiController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ApiOperation(notes = "save", httpMethod = "post", value = "保存")
-	@ApiImplicitParams({@ApiImplicitParam(name = "musicId", value = "", required = false, paramType = "query",dataType = "string")})
-	public Result save(HttpServletRequest request, @RequestParam String musicId, @RequestParam String token) throws Exception{
+	@ApiImplicitParams({@ApiImplicitParam(name = "musicId", value = "", required = true, paramType = "query",dataType = "string")})
+	public Result save(HttpServletRequest request, @RequestParam String musicId) throws Exception{
 
 		YybMember yybMember = (YybMember)request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
@@ -99,7 +99,7 @@ public class YybLikeApiController extends BaseController {
 
 		if (yybLike != null && StringUtils.isNotBlank(yybLike.getId())){
 			//更新
-			yybLikeService.save(yybLike);
+//			yybLikeService.save(yybLike);
 		} else {
 			//保存
 			YybLike yybLikeSave = new YybLike();
@@ -107,11 +107,41 @@ public class YybLikeApiController extends BaseController {
 			yybLikeSave.setMusicId(musicId);
 			yybLikeService.save(yybLikeSave);
 			//音乐喜欢数量+1
-			yybMusicService.updateLikeCount(musicId);
+			yybMusicService.updateAddLikeCount(musicId);
 		}
 
 		return ResultUtil.success();
 	}
 
+
+	/**
+	 * 取消个人喜欢
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/cancel", method = RequestMethod.POST)
+	@ApiOperation(notes = "cancel", httpMethod = "post", value = "取消")
+	@ApiImplicitParams({@ApiImplicitParam(name = "musicId", value = "", required = true, paramType = "query",dataType = "string")})
+	public Result cancel(HttpServletRequest request, @RequestParam String musicId) throws Exception{
+
+		YybMember yybMember = (YybMember)request.getAttribute(LOGIN_MEMBER);
+		String memebrId = yybMember.getId();
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", memebrId);
+		param.put("musicId", musicId);
+
+
+		YybLike yybLike = yybLikeService.getByCondition(param);
+
+		if (yybLike != null && StringUtils.isNotBlank(yybLike.getId())){
+			//删除
+			yybLikeService.delete(yybLike);
+		} else { ;
+			//音乐喜欢数量-1
+			yybMusicService.updateReduceLikeCount(musicId);
+		}
+
+		return ResultUtil.success();
+	}
 
 }

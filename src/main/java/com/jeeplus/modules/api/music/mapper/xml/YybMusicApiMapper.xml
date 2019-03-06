@@ -247,7 +247,11 @@
 		</choose>
 	</select>
 
-	<update id="updateLikeCount">
+	<update id="updateAddLikeCount">
 		update yyb_music set like_count = like_count  + 1 where id = #{musicId}
+	</update>
+
+	<update id="updateReduceLikeCount">
+		update yyb_music set like_count = like_count  - 1 where id = #{musicId}
 	</update>
 </mapper>

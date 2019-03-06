@@ -62,7 +62,12 @@ public class YybMusicApiService extends CrudService<YybMusicApiMapper, YybMusic>
 	}
 
 	@Transactional(readOnly = false)
-	public void updateLikeCount(String musicId) {
-		yybMusicApiMapper.updateLikeCount(musicId);
+	public void updateAddLikeCount(String musicId) {
+		yybMusicApiMapper.updateAddLikeCount(musicId);
+	}
+
+	@Transactional(readOnly = false)
+	public void updateReduceLikeCount(String musicId) {
+		yybMusicApiMapper.updateReduceLikeCount(musicId);
 	}
 }
