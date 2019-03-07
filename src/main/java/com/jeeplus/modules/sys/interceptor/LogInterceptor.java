@@ -106,7 +106,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 		ApiMember apiMember = JWT.unsign(token, ApiMember.class);
 
 		if (apiMember == null) {
-			returnResponse(response, "token失效");
+			returnResponse(response, "token失效", "1111");
 		}
 
 		String memberId = request.getParameter("memberId");
@@ -154,6 +154,25 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 					(Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory())/1024/1024); 
 		}
 		
+	}
+
+
+	public void returnResponse(HttpServletResponse response, String msg, String code){
+
+		Result result = ResultUtil.error(code,msg);
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json; charset=utf-8");
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+			out.append(JSON.toJSONString(result));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
 	}
 
 
