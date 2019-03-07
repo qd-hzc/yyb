@@ -26,4 +26,6 @@ public interface YybMusicApiMapper extends BaseMapper<YybMusic> {
     void updateAddLikeCount(String musicId);
 
     void updateReduceLikeCount(String musicId);
+
+    void updateAddPlayHistoryCount(String musicId);
 }

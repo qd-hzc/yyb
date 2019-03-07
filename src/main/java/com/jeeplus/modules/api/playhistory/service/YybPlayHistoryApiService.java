@@ -4,6 +4,7 @@
 package com.jeeplus.modules.api.playhistory.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jeeplus.modules.api.playhistory.mapper.YybPlayHistoryApiMapper;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,13 @@ public class YybPlayHistoryApiService extends CrudService<YybPlayHistoryApiMappe
 	public void delete(YybPlayHistory yybPlayHistory) {
 		super.delete(yybPlayHistory);
 	}
-	
+
+    public List<YybPlayHistory> memberPlayHistoryList(Map<String, Object> param) {
+		return mapper.memberPlayHistoryList(param);
+    }
+
+	public YybPlayHistory getByCondition(Map<String, Object> param) {
+		return mapper.getByCondition(param);
+	}
+
 }

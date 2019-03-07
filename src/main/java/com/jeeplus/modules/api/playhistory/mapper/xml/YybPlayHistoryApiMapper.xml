@@ -118,5 +118,33 @@
 	<select id="findUniqueByProperty" resultType="YybPlayHistory" statementType="STATEMENT">
 		select * FROM yyb_play_history  where ${propertyName} = '${value}'
 	</select>
-	
+
+
+	<select id="memberPlayHistoryList"  resultType="YybPlayHistory">
+		SELECT
+		<include refid="yybPlayHistoryColumns"/>,
+		b.id AS "yybMusic.id",
+		b.title AS "yybMusic.title",
+		b.price AS "yybMusic.price",
+		b.url AS "yybMusic.url",
+		b.img AS "yybMusic.img",
+		b.music_time AS "yybMusic.musicTime",
+		b.publish_time AS "yybMusic.publishTime",
+		b.play_count AS "yybMusic.playCount",
+		b.like_count AS "yybMusic.likeCount",
+		b.tag_name as "yybMusic.tagName",
+		c.name as "yybMusic.musicianName"
+		FROM yyb_play_history a
+		left join yyb_music b on a.music_id = b.id
+		left join yyb_musician c on b.musician_id = c.id
+		WHERE a.member_id = #{memberId} and b.del_flag = 0
+		order by a.update_date desc
+	</select>
+
+	<select id="getByCondition" resultType="YybPlayHistory">
+		SELECT
+		<include refid="yybPlayHistoryColumns"/>
+		FROM yyb_play_history a
+		WHERE a.member_id = #{memberId} and a.music_id = #{musicId}
+	</select>
 </mapper>

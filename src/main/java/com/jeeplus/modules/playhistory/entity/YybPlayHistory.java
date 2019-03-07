@@ -8,6 +8,8 @@ import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.modules.music.entity.YybMusic;
 
+import java.util.Map;
+
 /**
  * 播放历史Entity
  * @author lwb
@@ -19,6 +21,7 @@ public class YybPlayHistory extends DataEntity<YybPlayHistory> {
 	private String memberId;		// 用户
 	private String musicId;		// 音乐
 	private YybMusic yybMusic;
+
 	
 	public YybPlayHistory() {
 		super();

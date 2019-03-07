@@ -7,6 +7,9 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.playhistory.entity.YybPlayHistory;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 播放历史MAPPER接口
  * @author lwb
@@ -14,5 +17,9 @@ import com.jeeplus.modules.playhistory.entity.YybPlayHistory;
  */
 @MyBatisMapper
 public interface YybPlayHistoryApiMapper extends BaseMapper<YybPlayHistory> {
-	
+
+    List<YybPlayHistory> memberPlayHistoryList(Map<String, Object> param);
+
+    YybPlayHistory getByCondition(Map<String, Object> param);
+
 }
