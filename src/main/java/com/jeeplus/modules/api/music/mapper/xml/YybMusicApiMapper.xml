@@ -197,7 +197,7 @@
 		SELECT
 		<include refid="yybMusicColumns"/>
 			<if test="memberId != null and memberId != ''">
-				, select count(*) from yyb_like where yyb_like.member_id = #{memberId} and yyb_like.music_id = a.id
+				, (select count(*) from yyb_like where yyb_like.member_id = #{memberId} and yyb_like.music_id = a.id) as isLike
 			</if>
 		FROM yyb_music a
 		<include refid="yybMusicJoins"/>

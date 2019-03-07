@@ -19,6 +19,7 @@ import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.member.entity.ApiMember;
 import com.jeeplus.modules.api.member.service.YybMemberApiService;
 import com.jeeplus.modules.member.entity.YybMember;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.method.HandlerMethod;
@@ -69,10 +70,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 		}else{
 			return true;
 		}
-		//如果有@IgnoreAuth注解，则不验证token
-		if(annotation != null){
-			return true;
-		}
+
 
 		//从header中获取token
 		String token = request.getHeader("token");
@@ -80,6 +78,25 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 		if(StringUtils.isBlank(token)){
 			token = request.getParameter("token");
 		}
+
+		//如果有@IgnoreAuth注解，则不验证token
+		if(annotation != null){
+
+			//如果传了token， 取出用户信息
+			if (StringUtils.isNotBlank(token)) {
+				ApiMember apiMember = JWT.unsign(token, ApiMember.class);
+				if (apiMember != null) {
+					//校验数据库中的用户信息
+					YybMember yybMember1 = new YybMember();
+					BeanUtils.copyProperties(yybMember1, apiMember);
+					//设置userId到request里，后续根据userId，获取用户信息
+					request.setAttribute(LOGIN_MEMBER, yybMember1);
+				}
+			}
+
+			return true;
+		}
+
 
 		//token为空
 		if(StringUtils.isBlank(token)){
