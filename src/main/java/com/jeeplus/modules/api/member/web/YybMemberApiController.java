@@ -230,6 +230,26 @@ public class YybMemberApiController extends BaseController {
     }
 
 
+    @ResponseBody
+    @RequestMapping(value = "/bindTags", method = RequestMethod.POST)
+    @ApiOperation(notes = "bindTags", httpMethod = "POST", value = "绑定tags， 英文逗号分隔id: 1,2,3,4")
+    @ApiImplicitParams({@ApiImplicitParam(name = "tags", value = "tags， 英文逗号分隔id: 1,2,3,4", required = true, paramType = "form",dataType = "string")})
+    public Result bindTag(HttpServletRequest request, @RequestParam String tags){
+
+        YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+        yybMember = yybMemberApiService.get(yybMember.getId());
+        if (StringUtils.isNotBlank(yybMember.getTags())) {
+            return ResultUtil.error("已经绑定");
+        }
+
+        Map<String,Object> param = new HashMap<>();
+        param.put("tags",tags);
+        param.put("memberId",yybMember.getId());
+        yybMemberApiService.bindTags(param);
+        return ResultUtil.success();
+    }
+
+
 
 
 }

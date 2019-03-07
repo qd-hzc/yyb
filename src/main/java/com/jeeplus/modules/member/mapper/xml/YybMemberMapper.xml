@@ -19,7 +19,8 @@
 		a.org_code AS "orgCode",
 		a.org_code_attach AS "orgCodeAttach",
 		a.status AS "status",
-		a.remarks AS "remark"
+		a.remarks AS "remark",
+		a.tags
 	</sql>
 	
 	<sql id="yybMemberJoins">

@@ -39,6 +39,7 @@ public class ApiMember {
 	private String remark;		// 备注信息
 	private String password;		// 密码
 	private String token;		// token
+	private String tags;
 
 
 	@ExcelField(title="名称", align=2, sort=6)
@@ -210,5 +211,13 @@ public class ApiMember {
 
 	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 }

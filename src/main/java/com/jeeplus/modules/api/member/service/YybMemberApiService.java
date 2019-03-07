@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 会员Service
@@ -50,6 +51,11 @@ public class YybMemberApiService extends CrudService<YybMemberApiMapper, YybMemb
 
 	@Transactional(readOnly = false)
     public void updatePass(YybMember yybMember) {
+
 		mapper.updatePass(yybMember);
     }
+	@Transactional(readOnly = false)
+	public void bindTags(Map<String, Object> param) {
+		mapper.bindTags(param);
+	}
 }

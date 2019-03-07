@@ -28,7 +28,7 @@ public class YybMember extends DataEntity<YybMember> {
 	private String remark;		// 备注信息
 	private String password;		// 密码
 	private String token;		// token
-
+	private String tags;
 	public YybMember() {
 		super();
 	}
@@ -150,5 +150,13 @@ public class YybMember extends DataEntity<YybMember> {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 }
