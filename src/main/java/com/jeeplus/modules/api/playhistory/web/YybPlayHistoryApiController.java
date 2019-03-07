@@ -120,8 +120,8 @@ public class YybPlayHistoryApiController extends BaseController {
 			yybPlayHistorySave.setMusicId(musicId);
 			yybPlayHistoryService.save(yybPlayHistorySave);
 			//音乐收藏数量+1
-			yybMusicService.updateAddPlayHistoryCount(musicId);
 		}
+		yybMusicService.updateAddPlayHistoryCount(musicId);
 
 		return ResultUtil.success();
 	}

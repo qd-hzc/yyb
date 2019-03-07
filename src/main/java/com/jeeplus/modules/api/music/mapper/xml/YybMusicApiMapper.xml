@@ -259,6 +259,6 @@
 	</update>
 
 	<update id="updateAddPlayHistoryCount">
-		update yyb_music set play_count = like_count  + 1 where id = #{musicId}
+		update yyb_music set play_count = play_count  + 1 where id = #{musicId}
 	</update>
 </mapper>
