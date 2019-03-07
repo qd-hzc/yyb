@@ -178,7 +178,7 @@
 	<update id="bindTags">
 		  UPDATE yyb_member SET
 			tags = #{tags}
-		WHERE id = #{id}
+		WHERE id = #{memberId}
 	</update>
 
 
