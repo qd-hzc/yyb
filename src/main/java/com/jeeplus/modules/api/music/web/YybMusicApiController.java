@@ -17,6 +17,7 @@ import com.jeeplus.modules.api.music.entity.YybMusicVo;
 import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.api.musician.service.YybMusicianApiService;
 import com.jeeplus.modules.api.tagcatetory.service.YybTagCategoryApiService;
+import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.tagcatetory.entity.YybTagCategory;
 import com.jeeplus.modules.tagcatetory.service.YybTagCategoryService;
@@ -26,10 +27,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,15 +58,20 @@ public class YybMusicApiController extends BaseController {
 
 	@IgnoreAuth
 	@ResponseBody
-	@RequestMapping(value = "/searchMusic")
+	@RequestMapping(value = "/searchMusic", method = RequestMethod.POST)
 	@ApiOperation(notes = "searchMusic", httpMethod = "POST", value = "音乐搜索")
 	@ApiImplicitParams({@ApiImplicitParam(name = "参数详见代码", value = "参数详见代码", required = true, paramType = "query",dataType = "RequestBody")})
 
 	public Result searchMusic(HttpServletRequest request, @RequestBody YybMusicVo yybMusicVo){
 
-		request.getAttribute(LOGIN_MEMBER);
-
-
+		//是否喜欢
+		Object o = request.getAttribute(LOGIN_MEMBER);
+		if (o != null) {
+			YybMember yybMember = (YybMember) o;
+			if (yybMember != null && yybMember.getId() != null) {
+				yybMusicVo.setMemberId(yybMember.getId());
+			}
+		}
 
 		String type = yybMusicVo.getType();
 		String mode = yybMusicVo.getMode();
@@ -102,7 +105,7 @@ public class YybMusicApiController extends BaseController {
 
 	@IgnoreAuth
 	@ResponseBody
-	@RequestMapping(value = "/getAllMusician")
+	@RequestMapping(value = "/getAllMusician", method = RequestMethod.GET)
 	@ApiOperation(notes = "getAllMusician", httpMethod = "GET", value = "获取所有音乐人列表")
 	public Result getAllMusician(){
 		return ResultUtil.success(yybMusicianApiService.getAllMusician());
@@ -111,7 +114,7 @@ public class YybMusicApiController extends BaseController {
 
 	@IgnoreAuth
 	@ResponseBody
-	@RequestMapping(value = "/getAllTag")
+	@RequestMapping(value = "/getAllTag", method = RequestMethod.GET)
 	@ApiOperation(notes = "getAllTag", httpMethod = "GET", value = "获取所有标签, 子父")
 	public Result getAllTag(){
 

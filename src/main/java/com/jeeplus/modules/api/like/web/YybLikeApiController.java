@@ -60,7 +60,7 @@ public class YybLikeApiController extends BaseController {
 	public Result list(HttpServletRequest request, @RequestParam(required = false, defaultValue = "1") String startPage,
 					   @RequestParam(required = false, defaultValue = "10") String pageSize) {
 
-		ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
+		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", memebrId);
@@ -88,7 +88,7 @@ public class YybLikeApiController extends BaseController {
 	@ApiImplicitParams({@ApiImplicitParam(name = "musicId", value = "", required = true, paramType = "query",dataType = "string")})
 	public Result save(HttpServletRequest request, @RequestParam String musicId) throws Exception{
 
-		ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
+		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
 
 		Map<String, Object> param = new HashMap<>();
@@ -101,6 +101,7 @@ public class YybLikeApiController extends BaseController {
 		if (yybLike != null && StringUtils.isNotBlank(yybLike.getId())){
 			//更新
 //			yybLikeService.save(yybLike);
+			return ResultUtil.error("已经喜欢过～");
 		} else {
 			//保存
 			YybLike yybLikeSave = new YybLike();
@@ -124,7 +125,7 @@ public class YybLikeApiController extends BaseController {
 	@ApiImplicitParams({@ApiImplicitParam(name = "musicId", value = "", required = true, paramType = "query",dataType = "string")})
 	public Result cancel(HttpServletRequest request, @RequestParam String musicId) throws Exception{
 
-		ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
+		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
 
 		Map<String, Object> param = new HashMap<>();

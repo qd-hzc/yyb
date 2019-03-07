@@ -224,7 +224,7 @@ public class YybMemberApiController extends BaseController {
     @RequestMapping(value = "/getToken", method = RequestMethod.GET)
     @ApiOperation(notes = "getToken", httpMethod = "get", value = "获取token信息")
     public Result getToken(HttpServletRequest request) {
-        ApiMember yybMember = (ApiMember)request.getAttribute(LOGIN_MEMBER);
+        YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
         return ResultUtil.success(yybMember);
 
     }

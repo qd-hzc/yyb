@@ -27,6 +27,8 @@ public class YybMusicVo implements Serializable {
 
     private List<String> tagIds;
 
+    private String memberId;
+
     private String type;//排序，1时长  2发布时间 3喜欢量
 
     private String mode;//排序方式， desc， asc
@@ -133,5 +135,13 @@ public class YybMusicVo implements Serializable {
 
     public void setTagIds(List<String> tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 }

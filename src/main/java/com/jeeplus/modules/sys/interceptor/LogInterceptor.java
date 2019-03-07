@@ -107,7 +107,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
 
 		//设置userId到request里，后续根据userId，获取用户信息
-		request.setAttribute(LOGIN_MEMBER, apiMember);
+		request.setAttribute(LOGIN_MEMBER, yybMember1);
 
 		return true;
 	}
