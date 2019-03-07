@@ -33,7 +33,7 @@ public class MD5Util {
      */
 
     public static String MD5(String s) {
-        char hexDigits[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        char hexDigits[]={'L','W','B','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','X','Y','Z'};
 
         try {
             byte[] btInput = s.getBytes();
