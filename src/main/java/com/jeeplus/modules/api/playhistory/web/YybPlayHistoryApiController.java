@@ -68,7 +68,7 @@ public class YybPlayHistoryApiController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/list")
-	@ApiOperation(notes = "list", httpMethod = "POST", value = "个人浏览列表页面")
+	@ApiOperation(notes = "list", httpMethod = "GET", value = "个人浏览列表页面")
 	@ApiImplicitParams({@ApiImplicitParam(name = "startPage", value = "", required = false, paramType = "query",dataType = "string"),
 			@ApiImplicitParam(name = "pageSize", value = "", required = false, paramType = "query",dataType = "string")})
 

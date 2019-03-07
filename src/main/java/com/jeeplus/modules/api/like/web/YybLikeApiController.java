@@ -53,7 +53,7 @@ public class YybLikeApiController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/memberLikeList")
-	@ApiOperation(notes = "memberLikeList", httpMethod = "POST", value = "个人喜欢列表页面")
+	@ApiOperation(notes = "memberLikeList", httpMethod = "get", value = "个人喜欢列表页面")
 	@ApiImplicitParams({@ApiImplicitParam(name = "startPage", value = "", required = false, paramType = "query",dataType = "string"),
 			@ApiImplicitParam(name = "pageSize", value = "", required = false, paramType = "query",dataType = "string")})
 
