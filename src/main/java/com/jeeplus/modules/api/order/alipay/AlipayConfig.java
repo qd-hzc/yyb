@@ -31,7 +31,7 @@ public class AlipayConfig {
     // 支付宝网关
     public static String gatewayUrl = "https://openapi.alipaydev.com/gateway.do";
 
-    // 支付宝网关
+    // 支付宝日志
     public static String log_path = "C:\\";
 
 

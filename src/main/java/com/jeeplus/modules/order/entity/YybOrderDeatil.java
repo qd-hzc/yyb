@@ -5,9 +5,8 @@ package com.jeeplus.modules.order.entity;
 
 import com.alibaba.fastjson.JSON;
 import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.modules.order.entity.YybOrder;
 import com.jeeplus.modules.right.entity.YybRight;
-import com.jeeplus.modules.shopcart.entity.YybShopcart;
+import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;

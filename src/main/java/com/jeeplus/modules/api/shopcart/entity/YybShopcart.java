@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
-package com.jeeplus.modules.shopcart.entity;
+package com.jeeplus.modules.api.shopcart.entity;
 
 
 import com.jeeplus.core.persistence.DataEntity;
@@ -20,8 +20,11 @@ public class YybShopcart extends DataEntity<YybShopcart> {
 	private String musicTitle;		// 音乐名称
 	private Double musicPrice;		// 音乐价格
 	private String rightSelect;		// 选择的权利
+	private String rightSelectName;		// 选择的权利
 	private String usageSelect;		// 选择的用途
+	private String usageSelectName;		// 选择的用途
 	private Double musicTotal;		// 总额
+	private String musicianName;
 	
 	public YybShopcart() {
 		super();
@@ -93,5 +96,28 @@ public class YybShopcart extends DataEntity<YybShopcart> {
 	public void setMusicTotal(Double musicTotal) {
 		this.musicTotal = musicTotal;
 	}
-	
+
+	public String getMusicianName() {
+		return musicianName;
+	}
+
+	public void setMusicianName(String musicianName) {
+		this.musicianName = musicianName;
+	}
+
+	public String getRightSelectName() {
+		return rightSelectName;
+	}
+
+	public void setRightSelectName(String rightSelectName) {
+		this.rightSelectName = rightSelectName;
+	}
+
+	public String getUsageSelectName() {
+		return usageSelectName;
+	}
+
+	public void setUsageSelectName(String usageSelectName) {
+		this.usageSelectName = usageSelectName;
+	}
 }
