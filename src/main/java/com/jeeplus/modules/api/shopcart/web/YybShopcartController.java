@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -130,7 +131,7 @@ public class YybShopcartController extends BaseController {
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ApiOperation(notes = "/save", httpMethod = "post", value = "保存购物车")
 	@ApiImplicitParams({@ApiImplicitParam(name = "yybShopcartVo", value = "yybShopcartVo", required = true, paramType = "body",dataType = "body")})
-	public Result save(HttpServletRequest request, @RequestBody YybShopcartVo yybShopcartVo,
+	public Result save(HttpServletRequest request, @RequestBody @Valid YybShopcartVo yybShopcartVo,
 					   BindingResult bindingResult) throws Exception{
 
 		List<String> rightSelectName = new ArrayList<>();

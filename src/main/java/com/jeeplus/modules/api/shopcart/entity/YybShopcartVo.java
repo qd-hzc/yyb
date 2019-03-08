@@ -8,6 +8,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.core.persistence.DataEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -25,17 +26,16 @@ public class YybShopcartVo  implements Serializable {
 	@NotEmpty(message = "音乐不能为空")
 	private String musicId;		// 音乐
 
-	@NotEmpty(message = "音乐价格不能为空")
+	@DecimalMin(value="0.01", message = "音乐价格")
 	private BigDecimal musicPrice;		// 音乐价格
 
-	@Size(min = 1, message = "选择的权利不能为空")
-	@NotNull(message = "选择的权利不能为空")
+	@NotEmpty(message = "选择的权利不能为空")
 	private List<String> rightSelectList;		// 选择的权利
 
-	@Size(min = 1, message = "选择的用途不能为空")
-	@NotNull(message = "选择的用途不能为空")
+	@NotEmpty(message = "选择的用途不能为空")
 	private List<String> usageSelectList;		// 选择的用途
-	@NotEmpty(message = "总金额不能为空")
+
+	@DecimalMin(value="0.01", message = "总额不能为空")
 	private BigDecimal musicTotal;		// 总额
 
 
