@@ -128,7 +128,7 @@ public class YybShopcartController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	@ApiOperation(notes = "/save", httpMethod = "post", value = "个人购物车页面")
+	@ApiOperation(notes = "/save", httpMethod = "post", value = "保存购物车")
 	@ApiImplicitParams({@ApiImplicitParam(name = "yybShopcartVo", value = "yybShopcartVo", required = true, paramType = "body",dataType = "body")})
 	public Result save(HttpServletRequest request, @RequestBody YybShopcartVo yybShopcartVo,
 					   BindingResult bindingResult) throws Exception{
