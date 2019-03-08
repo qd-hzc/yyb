@@ -178,7 +178,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
 	public void returnResponse(HttpServletResponse response, String msg){
 
-		Result result = ResultUtil.error("1111",msg);
+		Result result = ResultUtil.error(msg);
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=utf-8");
 		PrintWriter out = null;
