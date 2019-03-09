@@ -54,10 +54,10 @@ public class OrderController extends BaseController {
     private YybOrderApiService yybOrderApiService;
 
     @ResponseBody
-    @RequestMapping(value = "/toOrder", method = RequestMethod.POST)
-    @ApiOperation(notes = "toOrder", httpMethod = "post", value = "下单")
+    @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
+    @ApiOperation(notes = "createOrder", httpMethod = "post", value = "下单")
     @ApiImplicitParams({@ApiImplicitParam(name = "YybOrderVo", value = "YybOrderVo", required = true, paramType = "body",dataType = "body")})
-    public Result toOrder(HttpServletRequest request, @RequestBody @Valid YybOrderVo yybOrderVo,
+    public Result createOrder(HttpServletRequest request, @RequestBody @Valid YybOrderVo yybOrderVo,
                           BindingResult bindingResult){
         logger.info("toOrder:request:" + JSON.toJSONString(yybOrderVo));
         try {

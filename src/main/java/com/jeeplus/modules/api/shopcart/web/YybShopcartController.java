@@ -104,24 +104,17 @@ public class YybShopcartController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ApiOperation(notes = "list", httpMethod = "get", value = "个人购物车页面")
-	@ApiImplicitParams({@ApiImplicitParam(name = "startPage", value = "", required = false, paramType = "query",dataType = "string"),
-			@ApiImplicitParam(name = "pageSize", value = "", required = false, paramType = "query",dataType = "string")})
 
-	public Result list(HttpServletRequest request, @RequestParam(required = false, defaultValue = "1") String startPage,
-					   @RequestParam(required = false, defaultValue = "10") String pageSize) {
+	public Result list(HttpServletRequest request) {
 
 		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
 		String memebrId = yybMember.getId();
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", memebrId);
 
-		PageHelper.startPage(Integer.parseInt(startPage),Integer.parseInt(pageSize));
-
 		List<YybShopcart> list = yybShopcartService.shopcartList(param);
 
-		PageInfo<YybShopcart> pageInfo = new PageInfo<>(list);
-
-		return ResultUtil.success(pageInfo);
+		return ResultUtil.success(list);
 	}
 
 	/**
