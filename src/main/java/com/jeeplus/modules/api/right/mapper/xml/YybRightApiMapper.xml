@@ -135,4 +135,8 @@
 			#{item}
 		</foreach>
 	</select>
+
+	<select id="getAll" resultType="com.jeeplus.modules.api.right.entity.YybRightDto">
+		select * FROM yyb_right
+	</select>
 </mapper>

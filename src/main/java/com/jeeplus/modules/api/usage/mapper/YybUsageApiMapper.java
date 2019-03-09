@@ -5,6 +5,7 @@ package com.jeeplus.modules.api.usage.mapper;
 
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
+import com.jeeplus.modules.api.usage.entity.YybUsageDto;
 import com.jeeplus.modules.right.entity.YybRight;
 import com.jeeplus.modules.usage.entity.YybUsage;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +21,6 @@ import java.util.List;
 public interface YybUsageApiMapper extends BaseMapper<YybUsage> {
 
     List<YybUsage> getListByIds(@Param(value = "list") List<String> usageSelectList);
+
+    List<YybUsageDto> getAll();
 }

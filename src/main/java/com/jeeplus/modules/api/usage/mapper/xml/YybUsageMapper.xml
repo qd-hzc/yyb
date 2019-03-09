@@ -138,5 +138,9 @@
 			#{item}
 		</foreach>
 	</select>
+
+	<select id="getAll" resultType="com.jeeplus.modules.api.usage.entity.YybUsageDto">
+		select * FROM yyb_usage
+	</select>
 	
 </mapper>

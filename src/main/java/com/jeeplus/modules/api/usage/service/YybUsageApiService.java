@@ -5,6 +5,7 @@ package com.jeeplus.modules.api.usage.service;
 
 import java.util.List;
 
+import com.jeeplus.modules.api.usage.entity.YybUsageDto;
 import com.jeeplus.modules.api.usage.mapper.YybUsageApiMapper;
 import com.jeeplus.modules.right.entity.YybRight;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,11 @@ public class YybUsageApiService extends CrudService<YybUsageApiMapper, YybUsage>
 		return super.findAllList(yybUsage);
 	}
 
-
 	public List<YybUsage> getListByIds(List<String> usageSelectList) {
 		return mapper.getListByIds(usageSelectList);
+	}
+
+	public List<YybUsageDto> getAll() {
+		return mapper.getAll();
 	}
 }

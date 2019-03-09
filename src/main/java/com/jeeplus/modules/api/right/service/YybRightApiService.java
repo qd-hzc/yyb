@@ -5,6 +5,7 @@ package com.jeeplus.modules.api.right.service;
 
 import java.util.List;
 
+import com.jeeplus.modules.api.right.entity.YybRightDto;
 import com.jeeplus.modules.api.right.mapper.YybRightApiMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,4 +49,8 @@ public class YybRightApiService extends CrudService<YybRightApiMapper, YybRight>
 	public List<YybRight> getListByIds(List<String> rightSelectList) {
 		return mapper.getListByIds(rightSelectList);
 	}
+
+    public List<YybRightDto> getAll() {
+		return mapper.getAll();
+    }
 }

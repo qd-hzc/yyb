@@ -16,7 +16,9 @@ import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.music.entity.YybMusicVo;
 import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.api.musician.service.YybMusicianApiService;
+import com.jeeplus.modules.api.right.service.YybRightApiService;
 import com.jeeplus.modules.api.tagcatetory.service.YybTagCategoryApiService;
+import com.jeeplus.modules.api.usage.service.YybUsageApiService;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.tagcatetory.entity.YybTagCategory;
@@ -53,7 +55,10 @@ public class YybMusicApiController extends BaseController {
 	private YybMusicianApiService yybMusicianApiService;
 	@Autowired
 	private YybTagCategoryApiService tagCategoryService;
-
+	@Autowired
+	private YybUsageApiService yybUsageApiService;
+	@Autowired
+	private YybRightApiService yybRightApiService;
 
 
 	@IgnoreAuth
@@ -144,6 +149,23 @@ public class YybMusicApiController extends BaseController {
 	}
 
 
+
+	@IgnoreAuth
+	@ResponseBody
+	@RequestMapping(value = "/getAllRight", method = RequestMethod.GET)
+	@ApiOperation(notes = "getAllRight", httpMethod = "GET", value = "获取所有权利")
+	public Result getAllRight(){
+		return ResultUtil.success(yybRightApiService.getAll());
+	}
+
+
+	@IgnoreAuth
+	@ResponseBody
+	@RequestMapping(value = "/getAllUsage", method = RequestMethod.GET)
+	@ApiOperation(notes = "getAllUsage", httpMethod = "GET", value = "获取所有用途")
+	public Result getAllUsage(){
+		return ResultUtil.success(yybUsageApiService.getAll());
+	}
 
 
 

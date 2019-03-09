@@ -5,6 +5,7 @@ package com.jeeplus.modules.api.right.mapper;
 
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
+import com.jeeplus.modules.api.right.entity.YybRightDto;
 import com.jeeplus.modules.right.entity.YybRight;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,6 @@ import java.util.List;
 public interface YybRightApiMapper extends BaseMapper<YybRight> {
 
     List<YybRight> getListByIds(@Param(value = "list") List<String> rightSelectList);
+
+    List<YybRightDto> getAll();
 }
