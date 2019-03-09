@@ -9,6 +9,8 @@ public class YybUsageDto implements Serializable {
 
     private String rate;
 
+    private String img;
+
     public String getId() {
         return id;
     }
@@ -31,5 +33,13 @@ public class YybUsageDto implements Serializable {
 
     public void setRate(String rate) {
         this.rate = rate;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }
