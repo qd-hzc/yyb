@@ -30,7 +30,7 @@ public class YybMusicianVo implements Serializable {
 	private String address;		// 地址
 
 	@NotEmpty(message = "手机不能为空")
-	@Pattern(regexp = "", message = "手机号格式有误")
+	@Pattern(regexp = "^[1]([3-9])[0-9]{9}$", message = "手机号格式有误")
 	private String phone;		// 手机
 
 	@NotEmpty(message = "邮箱不能为空")
@@ -38,6 +38,7 @@ public class YybMusicianVo implements Serializable {
 	private String mail;		// 邮箱
 
 	@NotEmpty(message = "身份证号不能为空")
+	@Pattern(regexp = "^(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$)|(^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])((\\d{4})|\\d{3}[Xx])$)$", message = "身份证号格式有误")
 	private String idCard;		// 身份证号
 
 	@NotEmpty(message = "身份证附件不能为空")
