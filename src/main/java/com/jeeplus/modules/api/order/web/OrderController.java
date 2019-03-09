@@ -63,6 +63,8 @@ public class OrderController extends BaseController {
             if (!"0000".equals(validParam.getCode())) {
                 return validParam;
             }
+
+
             yybOrderApiService.toOrder(yybOrderVo, shopcartList);
         } catch (Exception e) {
             logger.error("生成订单失败:"+e.getMessage(), e);

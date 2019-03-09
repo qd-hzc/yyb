@@ -3,17 +3,23 @@
  */
 package com.jeeplus.modules.api.order.service;
 
+import com.alibaba.fastjson.JSON;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.order.entity.YybOrderVo;
 import com.jeeplus.modules.api.order.mapper.YybOrderDeatilApiMapper;
+import com.jeeplus.modules.api.right.mapper.YybRightApiMapper;
+import com.jeeplus.modules.api.right.service.YybRightApiService;
 import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
 import com.jeeplus.modules.api.shopcart.mapper.YybShopcartApiMapper;
+import com.jeeplus.modules.api.usage.mapper.YybUsageApiMapper;
 import com.jeeplus.modules.order.entity.YybOrder;
 import com.jeeplus.modules.order.entity.YybOrderDeatil;
 import com.jeeplus.modules.order.mapper.YybOrderDeatilMapper;
 import com.jeeplus.modules.order.mapper.YybOrderMapper;
+import com.jeeplus.modules.right.entity.YybRight;
+import com.jeeplus.modules.usage.entity.YybUsage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +41,10 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 	private YybOrderDeatilApiMapper yybOrderDeatilMapper;
 	@Autowired
 	private YybShopcartApiMapper yybShopcartApiMapper;
+	@Autowired
+	private YybRightApiMapper yybRightApiMapper;
+	@Autowired
+	private YybUsageApiMapper yybUsageApiMapper;
 	
 	public YybOrder get(String id) {
 		YybOrder yybOrder = super.get(id);
@@ -93,10 +103,21 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 		List<YybOrderDeatil> yybOrderDeatils = new ArrayList<>();
 		YybOrderDeatil yybOrderDeatil;
 		for (YybShopcart shopcart : shopcartList) {
+
+			List<String> rightIds = Arrays.asList(shopcart.getRightSelect().split(","));
+			List<String> usageIds = Arrays.asList(shopcart.getUsageSelect().split(","));
+			List<YybRight> rightList = yybRightApiMapper.getListByIds(rightIds);
+			List<YybUsage> usageList = yybUsageApiMapper.getListByIds(usageIds);
+
+
+			//赋值属性购物车到订单明细
 			yybOrderDeatil = new YybOrderDeatil();
 			BeanUtils.copyProperties(shopcart, yybOrderDeatil);
+			//保存所选中的权利跟用途
+			String body = JSON.toJSONString(rightList) + JSON.toJSONString(usageList);
 
 			yybOrderDeatil.setYybShopcart(shopcart);
+			yybOrderDeatil.setRightAndUsageBody(body);
 			yybOrderDeatils.add(yybOrderDeatil);
 		}
 
@@ -113,5 +134,6 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 		}
 
 	}
-	
+
+
 }

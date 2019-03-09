@@ -38,6 +38,9 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 	private Double musicTotal;		// 总价
 
 	private String musicianName;
+	private String musicianId;
+
+	private String rightAndUsageBody;
 	
 	public YybOrderDeatil() {
 		super();
@@ -163,5 +166,21 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 
 	public void setMusicianName(String musicianName) {
 		this.musicianName = musicianName;
+	}
+
+	public String getRightAndUsageBody() {
+		return rightAndUsageBody;
+	}
+
+	public void setRightAndUsageBody(String rightAndUsageBody) {
+		this.rightAndUsageBody = rightAndUsageBody;
+	}
+
+	public String getMusicianId() {
+		return musicianId;
+	}
+
+	public void setMusicianId(String musicianId) {
+		this.musicianId = musicianId;
 	}
 }

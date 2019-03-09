@@ -15,10 +15,14 @@
 		a.music_title AS "musicTitle",
 		a.music_price AS "musicPrice",
 		a.usage_select AS "usageSelect",
+		a.usage_select_name AS "usageSelectName",
 		a.right_select AS "rightSelect",
+		a.right_select_name AS "rightSelectName",
 		a.music_total AS "musicTotal",
 		a.remarks AS "remarks",
-				
+		a.musician_id as "musicianId",
+		a.musician_name as "musicianName",
+
 				
 				
 				
@@ -97,9 +101,14 @@
 			music_title,
 			music_price,
 			usage_select,
+			usage_select_name,
 			right_select,
+			right_select_name,
 			music_total,
-			remarks
+			remarks,
+			musician_id,
+			musician_name,
+			right_and_usage_body
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -113,9 +122,14 @@
 			#{musicTitle},
 			#{musicPrice},
 			#{usageSelect},
+			#{usageSelectName},
 			#{rightSelect},
+			#{rightSelectName},
 			#{musicTotal},
-			#{remarks}
+			#{remarks},
+			#{musicianId},
+			#{musicianName},
+			#{rightAndUsageBody}
 		)
 	</insert>
 	
