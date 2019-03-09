@@ -162,7 +162,7 @@ public class YybMusicianApiController extends BaseController {
 
 		int count = yybMusicianApiService.getMemberApplyHis(param);
 
-		return ResultUtil.success(count);
+		return ResultUtil.success(count > 0 );
 	}
 
 

@@ -94,8 +94,8 @@ public class YybShopcartController extends BaseController {
 		param.put("musicId", musicId);
 
 		int count  = yybShopcartService.getCountByCodition(param);
-
-		return ResultUtil.success(count > 0);
+		Boolean isHave = count > 0;
+		return ResultUtil.success(isHave);
 	}
 
 	/**
