@@ -189,5 +189,11 @@
 	<select id="findUniqueByProperty" resultType="YybOrder" statementType="STATEMENT">
 		select * FROM yyb_order  where ${propertyName} = '${value}'
 	</select>
+
+	<update id="updateStatus">
+		UPDATE yyb_order SET
+			status = #{status}
+		WHERE id = #{orderId}
+	</update>
 	
 </mapper>

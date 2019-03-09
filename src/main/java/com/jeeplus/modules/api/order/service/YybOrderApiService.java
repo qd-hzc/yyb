@@ -16,6 +16,7 @@ import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
 import com.jeeplus.modules.api.shopcart.mapper.YybShopcartApiMapper;
 import com.jeeplus.modules.api.usage.entity.YybUsageDto;
 import com.jeeplus.modules.api.usage.mapper.YybUsageApiMapper;
+import com.jeeplus.modules.like.entity.YybLike;
 import com.jeeplus.modules.order.entity.YybOrder;
 import com.jeeplus.modules.order.entity.YybOrderDeatil;
 import com.jeeplus.modules.order.mapper.YybOrderDeatilMapper;
@@ -91,6 +92,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 		super.delete(yybOrder);
 		yybOrderDeatilMapper.delete(new YybOrderDeatil(yybOrder));
 	}
+
 
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void toOrder(YybOrderVo yybOrderVo, List<YybShopcart> shopcartList, String memberId) {
@@ -169,4 +171,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 	}
 
 
+	public void updateStatus(Map<String, Object> param) {
+		mapper.updateStatus(param);
+	}
 }

@@ -7,6 +7,8 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.order.entity.YybOrder;
 
+import java.util.Map;
+
 /**
  * 订单MAPPER接口
  * @author lwb
@@ -14,5 +16,6 @@ import com.jeeplus.modules.order.entity.YybOrder;
  */
 @MyBatisMapper
 public interface YybOrderMapper extends BaseMapper<YybOrder> {
-	
+
+    void updateStatus(Map<String, Object> param);
 }

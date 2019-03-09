@@ -23,15 +23,10 @@ import com.jeeplus.modules.usage.entity.YybUsage;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,7 +54,7 @@ public class OrderController extends BaseController {
     private YybOrderApiService yybOrderApiService;
 
     @ResponseBody
-    @RequestMapping(value = "/toOrder")
+    @RequestMapping(value = "/toOrder", method = RequestMethod.POST)
     @ApiOperation(notes = "toOrder", httpMethod = "post", value = "下单")
     @ApiImplicitParams({@ApiImplicitParam(name = "YybOrderVo", value = "YybOrderVo", required = true, paramType = "body",dataType = "body")})
     public Result toOrder(HttpServletRequest request, @RequestBody @Valid YybOrderVo yybOrderVo,
@@ -85,6 +80,40 @@ public class OrderController extends BaseController {
         }
         return ResultUtil.success();
     }
+
+
+    /**
+     * 取消个人喜欢
+     */
+    @ResponseBody
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    @ApiOperation(notes = "cancel", httpMethod = "post", value = "取消")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "订单id", required = true, paramType = "form",dataType = "string")})
+    public Result cancel(HttpServletRequest request, @RequestParam String orderId) throws Exception{
+
+        YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+        String memebrId = yybMember.getId();
+
+        YybOrder yybOrder = yybOrderApiService.get(orderId);
+        if (yybOrder == null || yybOrder.getStatus() != 1) {
+            return ResultUtil.error("获取订单状态异常");
+        }
+
+        if (!memebrId.equals(yybOrder.getMemberId())) {
+            return ResultUtil.error("用户校验异常");
+        }
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("status", 2);
+        param.put("orderId", orderId);
+
+
+        yybOrderApiService.updateStatus(param);
+
+        return ResultUtil.success();
+    }
+
+
 
 
     /**
