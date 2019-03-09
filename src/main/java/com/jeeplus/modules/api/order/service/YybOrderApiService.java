@@ -170,7 +170,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 		return JSON.toJSONString(yybRightDtoList) + JSON.toJSONString(yybUsageDtoList);
 	}
 
-
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void updateStatus(Map<String, Object> param) {
 		mapper.updateStatus(param);
 	}
