@@ -20,6 +20,9 @@ import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.order.entity.YybOrder;
 import com.jeeplus.modules.right.entity.YybRight;
 import com.jeeplus.modules.usage.entity.YybUsage;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,16 +60,20 @@ public class OrderController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/toOrder")
-    public Result toOrder(HttpServletRequest request,@RequestBody  @Valid YybOrderVo yybOrderVo,
+    @ApiOperation(notes = "toOrder", httpMethod = "post", value = "下单")
+    @ApiImplicitParams({@ApiImplicitParam(name = "YybOrderVo", value = "YybOrderVo", required = true, paramType = "body",dataType = "body")})
+    public Result toOrder(HttpServletRequest request, @RequestBody @Valid YybOrderVo yybOrderVo,
                           BindingResult bindingResult){
         logger.info("toOrder:request:" + JSON.toJSONString(yybOrderVo));
         try {
             YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
             String memebrId = yybMember.getId();
 
-            List<YybShopcart> shopcartList = new ArrayList<>();
             //校验参数, 返回购物车
-            Result validParam = this.validParam(yybOrderVo, bindingResult, shopcartList, memebrId);
+            Result validParam = this.validParam(yybOrderVo, bindingResult, memebrId);
+
+            List<YybShopcart> shopcartList = yybShopcartApiService.getListByIds(yybOrderVo.getShopcartIds());
+
             if (!"0000".equals(validParam.getCode())) {
                 return validParam;
             }
@@ -76,9 +83,6 @@ public class OrderController extends BaseController {
             logger.error("生成订单失败:"+e.getMessage(), e);
             return ResultUtil.error("生成订单失败");
         }
-
-
-
         return ResultUtil.success();
     }
 
@@ -182,7 +186,7 @@ public class OrderController extends BaseController {
     }
 
 
-    private Result validParam(YybOrderVo yybOrderVo, BindingResult bindingResult, List<YybShopcart> yybShopcartList, String memberId) {
+    private Result validParam(YybOrderVo yybOrderVo, BindingResult bindingResult, String memberId) {
         //校验参数,出错抛出异常
         if (bindingResult.hasErrors()) {
             logger.error("参数错误.(" + bindingResult.getFieldError().getDefaultMessage() + ")");
@@ -192,7 +196,7 @@ public class OrderController extends BaseController {
         //个人
         if (1 == yybOrderVo.getMemberType()) {
             if (StringUtils.isEmpty(yybOrderVo.getIdCard()) || StringUtils.isEmpty(yybOrderVo.getIdCardAttach())
-                    || null == yybOrderVo.getMemberSex() || yybOrderVo.getMemberSex() != 1 || yybOrderVo.getMemberSex() != 2){
+                    || null == yybOrderVo.getMemberSex() || (yybOrderVo.getMemberSex() != 1 && yybOrderVo.getMemberSex() != 2)){
                 logger.error("下单：个人信息不全");
                 return ResultUtil.error("个人信息不全");
             }
@@ -204,7 +208,7 @@ public class OrderController extends BaseController {
         }
 
         //金额校验
-        yybShopcartList = yybShopcartApiService.getListByIds(yybOrderVo.getShopcartIds());
+        List<YybShopcart> yybShopcartList = yybShopcartApiService.getListByIds(yybOrderVo.getShopcartIds());
 
         //计算总额
         BigDecimal calOrderAmount = BigDecimal.ZERO;
@@ -214,6 +218,12 @@ public class OrderController extends BaseController {
                 logger.error("下单：我的收藏异常");
 
                 return ResultUtil.error("我的收藏异常");
+            }
+
+            if (!StringUtils.isEmpty(yybShopcart.getOrderId())) {
+                logger.error("下单：存在收藏已下单");
+
+                return ResultUtil.error("存在收藏已下单");
             }
 
             YybMusic yybMusic = yybMusicApiService.get(yybShopcart.getMusicId());

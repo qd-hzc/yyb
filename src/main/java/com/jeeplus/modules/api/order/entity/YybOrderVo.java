@@ -1,6 +1,7 @@
 package com.jeeplus.modules.api.order.entity;
 
 
+import com.jeeplus.common.utils.base.annotation.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.DecimalMin;
@@ -16,19 +17,19 @@ public class YybOrderVo implements Serializable {
     @NotEmpty(message = "购物车不能为空")
     private List<String> shopcartIds;
 
-    @NotEmpty(message = "订单总额不能为空")
+    @NotNull
     @DecimalMin(value = "0.01", message = "用户类型值有误")
     private BigDecimal orderAmount;
 
-    @NotEmpty(message = "用户类型不能为空")
+    @NotNull
     @Min(value = 1, message = "用户类型值有误")
     @Max(value = 2, message = "用户类型值有误")
-    private Integer memberType;
+    private Integer memberType;//1个人 2公司
 
     @NotEmpty(message = "姓名不能为空")
     private String memberName;		// 购买人姓名
 
-    private Integer memberSex;
+    private Integer memberSex;  //1男 2女
 
     @NotEmpty(message = "地址不能为空")
     private String memberAddress;		// 地址

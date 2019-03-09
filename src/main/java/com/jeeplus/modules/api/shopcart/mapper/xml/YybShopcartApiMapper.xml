@@ -19,7 +19,8 @@
 		a.music_total AS "musicTotal",
 		a.musician_name AS "musicianName",
 		a.right_select_name AS "rightSelectName",
-		a.usage_select_name AS "usageSelectName"
+		a.usage_select_name AS "usageSelectName",
+		a.order_id AS "orderId"
 	</sql>
 	
 	<sql id="yybShopcartJoins">

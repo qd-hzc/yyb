@@ -25,6 +25,7 @@ public class YybShopcart extends DataEntity<YybShopcart> {
 	private String usageSelectName;		// 选择的用途
 	private Double musicTotal;		// 总额
 	private String musicianName;    //音乐人
+	private String orderId;
 	
 	public YybShopcart() {
 		super();
@@ -119,5 +120,13 @@ public class YybShopcart extends DataEntity<YybShopcart> {
 
 	public void setUsageSelectName(String usageSelectName) {
 		this.usageSelectName = usageSelectName;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 }
