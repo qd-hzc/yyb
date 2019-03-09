@@ -36,6 +36,8 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 	private String rightSelectName;
 
 	private Double musicTotal;		// 总价
+
+	private String musicianName;
 	
 	public YybOrderDeatil() {
 		super();
@@ -98,37 +100,21 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 		return usageSelect;
 	}
 
-	public void setUsageSelect(String usageSelect) {
-		this.usageSelect = usageSelect;
-		if (StringUtils.isNotBlank(usageSelect)){
-			List<YybUsage> list = JSON.parseArray(usageSelect, YybUsage.class);
-			this.usageList = list;
-			String nameAll = "";
-			for (YybUsage yybUsage:list) {
-				nameAll = nameAll + yybUsage.getName() + ":" + yybUsage.getRate() + "; ";
-			}
-			this.usageSelectName = nameAll;
-		}
-	}
+
 	
 	@ExcelField(title="权利", align=2, sort=12)
 	public String getRightSelect() {
 		return rightSelect;
 	}
 
+	public void setUsageSelect(String usageSelect) {
+		this.usageSelect = usageSelect;
+	}
+
 	public void setRightSelect(String rightSelect) {
 		this.rightSelect = rightSelect;
-		if (StringUtils.isNotBlank(rightSelect)){
-			List<YybRight> list = JSON.parseArray(rightSelect, YybRight.class);
-			this.rightList = list;
-			String nameAll = "";
-			for (YybRight yybRight:list) {
-				nameAll = nameAll + yybRight.getName() + ":" + yybRight.getRate() + "; ";
-			}
-			this.rightSelectName = nameAll;
-		}
 	}
-	
+
 	@ExcelField(title="总价", align=2, sort=13)
 	public Double getMusicTotal() {
 		return musicTotal;
@@ -170,9 +156,12 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 		this.rightSelectName = rightSelectName;
 	}
 
-	public static void main(String[] args) {
-		String usageSelect = "[{'name':1, 'rate':1, 'id':1},{'name':2, 'rate':2, 'id':2}]";
-		List<YybUsage> list = JSON.parseArray(usageSelect, YybUsage.class);
-		System.out.println(list);
+
+	public String getMusicianName() {
+		return musicianName;
+	}
+
+	public void setMusicianName(String musicianName) {
+		this.musicianName = musicianName;
 	}
 }

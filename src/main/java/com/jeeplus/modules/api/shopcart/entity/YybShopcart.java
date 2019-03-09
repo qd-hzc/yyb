@@ -24,7 +24,7 @@ public class YybShopcart extends DataEntity<YybShopcart> {
 	private String usageSelect;		// 选择的用途
 	private String usageSelectName;		// 选择的用途
 	private Double musicTotal;		// 总额
-	private String musicianName;
+	private String musicianName;    //音乐人
 	
 	public YybShopcart() {
 		super();

@@ -21,7 +21,7 @@ public class YybOrder extends DataEntity<YybOrder> {
 	private static final long serialVersionUID = 1L;
 	private String orderNo;		// 订单号
 	private String tradeNo;		// 交易流水号
-	private Integer status;		// 状态
+	private Integer status;		// 状态 1未支付 2已取消 3已支付
 	private Date orderTime;		// 下单时间
 	private Date payTime;		// 支付时间
 	private Integer payType;		// 支付类型
@@ -37,6 +37,7 @@ public class YybOrder extends DataEntity<YybOrder> {
 	private Integer memberType;		// 用户类型
 	private String phone;		// 手机号
 	private String companyId;
+	private Integer memberSex;
 	private List<YybOrderDeatil> yybOrderDeatilList = Lists.newArrayList();		// 子表列表
 	
 	public YybOrder() {
@@ -216,5 +217,13 @@ public class YybOrder extends DataEntity<YybOrder> {
 
 	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
+	}
+
+	public Integer getMemberSex() {
+		return memberSex;
+	}
+
+	public void setMemberSex(Integer memberSex) {
+		this.memberSex = memberSex;
 	}
 }

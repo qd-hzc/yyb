@@ -26,7 +26,7 @@ public class YybShopcartVo  implements Serializable {
 	@NotEmpty(message = "音乐不能为空")
 	private String musicId;		// 音乐
 
-	@DecimalMin(value="0.01", message = "音乐价格")
+	@DecimalMin(value="0.01", message = "音乐价格不能少于0.01")
 	private BigDecimal musicPrice;		// 音乐价格
 
 	@NotEmpty(message = "选择的权利不能为空")
@@ -35,7 +35,7 @@ public class YybShopcartVo  implements Serializable {
 	@NotEmpty(message = "选择的用途不能为空")
 	private List<String> usageSelectList;		// 选择的用途
 
-	@DecimalMin(value="0.01", message = "总额不能为空")
+	@DecimalMin(value="0.01", message = "总额不能为空不能少于0.01")
 	private BigDecimal musicTotal;		// 总额
 
 

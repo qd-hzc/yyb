@@ -24,4 +24,6 @@ public interface YybShopcartApiMapper extends BaseMapper<YybShopcart> {
     int getCountByCodition(Map<String, Object> param);
 
     List<YybShopcart> getListByIds(@Param(value = "list") List<String> ids);
+
+    void updateOrderId(Map<String, Object> shopcartParam);
 }

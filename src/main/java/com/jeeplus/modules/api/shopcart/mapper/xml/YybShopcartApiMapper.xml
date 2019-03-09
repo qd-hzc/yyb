@@ -141,8 +141,15 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
-	
+
+	<update id="updateOrderId">
+		UPDATE yyb_shopcart SET
+			order_id = #{orderId}
+		WHERE id = #{shopcartId}
+
+	</update>
+
+
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="YybShopcart" statementType="STATEMENT">
 		select * FROM yyb_shopcart  where ${propertyName} = '${value}'

@@ -1,24 +1,79 @@
 package com.jeeplus.modules.api.order.web;
 
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.internal.util.StringUtils;
 import com.jeeplus.core.web.BaseController;
+import com.jeeplus.core.web.Result;
+import com.jeeplus.core.web.ResultUtil;
+import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.api.order.alipay.AlipayConfig;
 import com.jeeplus.modules.api.order.alipay.AlipayUtil;
+import com.jeeplus.modules.api.order.entity.YybOrderVo;
+import com.jeeplus.modules.api.order.service.YybOrderApiService;
+import com.jeeplus.modules.api.right.service.YybRightApiService;
+import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
+import com.jeeplus.modules.api.shopcart.service.YybShopcartApiService;
+import com.jeeplus.modules.api.usage.service.YybUsageApiService;
+import com.jeeplus.modules.music.entity.YybMusic;
+import com.jeeplus.modules.order.entity.YybOrder;
+import com.jeeplus.modules.right.entity.YybRight;
+import com.jeeplus.modules.usage.entity.YybUsage;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/api/order")
 public class OrderController extends BaseController {
+
+
+    @Autowired
+    private YybShopcartApiService yybShopcartApiService;
+    @Autowired
+    private YybMusicApiService  yybMusicApiService;
+    @Autowired
+    private YybUsageApiService yybUsageApiService;
+    @Autowired
+    private YybRightApiService yybRightApiService;
+    @Autowired
+    private YybOrderApiService yybOrderApiService;
+
+    @ResponseBody
+    @RequestMapping(value = "/toOrder")
+    public Result toOrder(HttpServletRequest request,@RequestBody  @Valid YybOrderVo yybOrderVo,
+                          BindingResult bindingResult){
+
+        try {
+            List<YybShopcart> shopcartList = new ArrayList<>();
+            //校验参数, 返回购物车
+            Result validParam = this.validParam(yybOrderVo, bindingResult, shopcartList);
+            if (!"0000".equals(validParam.getCode())) {
+                return validParam;
+            }
+            yybOrderApiService.toOrder(yybOrderVo, shopcartList);
+        } catch (Exception e) {
+            logger.error("生成订单失败:"+e.getMessage(), e);
+            return ResultUtil.error("生成订单失败");
+        }
+
+
+
+        return ResultUtil.success();
+    }
+
 
     /**
      * 会员列表页面
@@ -118,6 +173,79 @@ public class OrderController extends BaseController {
         }
     }
 
+
+    private Result validParam(YybOrderVo yybOrderVo, BindingResult bindingResult, List<YybShopcart> yybShopcartList) {
+        //校验参数,出错抛出异常
+        if (bindingResult.hasErrors()) {
+            logger.error("参数错误.(" + bindingResult.getFieldError().getDefaultMessage() + ")");
+            return ResultUtil.error("参数错误.(" + bindingResult.getFieldError().getDefaultMessage() + ")");
+        }
+
+        //个人
+        if (1 == yybOrderVo.getMemberType()) {
+            if (StringUtils.isEmpty(yybOrderVo.getIdCard()) || StringUtils.isEmpty(yybOrderVo.getIdCardAttach())
+                    || null == yybOrderVo.getMemberSex() || yybOrderVo.getMemberSex() != 1 || yybOrderVo.getMemberSex() != 2){
+                return ResultUtil.error("个人信息不全");
+            }
+        } else {
+            if (StringUtils.isEmpty(yybOrderVo.getOrgCode()) || StringUtils.isEmpty(yybOrderVo.getOrgCodeAttach())){
+                return ResultUtil.error("公司信息不全");
+            }
+        }
+
+        //金额校验
+        yybShopcartList = yybShopcartApiService.getListByIds(yybOrderVo.getShopcartIds());
+
+        //计算总额
+        BigDecimal calOrderAmount = BigDecimal.ZERO;
+        for (YybShopcart yybShopcart : yybShopcartList) {
+            YybMusic yybMusic = yybMusicApiService.get(yybShopcart.getMusicId());
+            if (yybMusic == null || com.jeeplus.common.utils.StringUtils.isBlank(yybMusic.getId())) {
+                return ResultUtil.error("获取音乐失败");
+            }
+
+            BigDecimal musicPrice = BigDecimal.valueOf(yybShopcart.getMusicPrice());
+            if (musicPrice.compareTo(BigDecimal.valueOf(yybMusic.getPrice())) != 0) {
+                return ResultUtil.error("音乐价格异常");
+            }
+
+
+            List<String> rightIds = Arrays.asList(yybShopcart.getRightSelect().split(","));
+            List<String> usageIds = Arrays.asList(yybShopcart.getUsageSelect().split(","));
+            List<YybRight> rightList = yybRightApiService.getListByIds(rightIds);
+            List<YybUsage> usageList = yybUsageApiService.getListByIds(usageIds);
+            if (rightIds.size() != rightList.size() ||
+                    usageIds.size() != usageList.size()) {
+                return ResultUtil.error("获取权利或用途异常");
+            }
+
+            BigDecimal rightTotal = BigDecimal.ZERO;
+            for (YybRight right : rightList) {
+                rightTotal = rightTotal.add(BigDecimal.valueOf(right.getRate()));
+            }
+            BigDecimal usageTotal = BigDecimal.ZERO;
+            for (YybUsage yybUsage : usageList) {
+                usageTotal = usageTotal.add(BigDecimal.valueOf(yybUsage.getRate()));
+            }
+
+            if (BigDecimal.ZERO.compareTo(rightTotal) == 0 || BigDecimal.ZERO.compareTo(usageTotal) == 0) {
+                return ResultUtil.error("选择权利或用途比率异常");
+            }
+
+            BigDecimal musicTotal = (rightTotal.add(usageTotal)).multiply(musicPrice).setScale(2, BigDecimal.ROUND_HALF_UP);
+            calOrderAmount = calOrderAmount.add(musicTotal);
+            if (musicTotal.compareTo(BigDecimal.valueOf(yybShopcart.getMusicTotal())) != 0) {
+                return ResultUtil.error("商品:["+yybShopcart.getMusicTitle()+"]金额发生变动, 请重新加入购物车");
+            }
+
+        }
+
+        if (yybOrderVo.getOrderAmount().compareTo(calOrderAmount) != 0) {
+            return ResultUtil.error("订单总额不符");
+        }
+
+        return ResultUtil.success();
+    }
 
 
 
