@@ -22,7 +22,8 @@
 		a.company_id AS "companyId",
 		a.type AS "type",
 		a.company_name AS "companyName",
-		a.status AS "status"
+		a.status AS "status",
+		a.member_id AS "memberId"
 	</sql>
 	
 	<sql id="yybMusicianJoins">
@@ -196,7 +197,7 @@
 
 	<select id="getMemberApplyHis" resultType="java.lang.Integer">
 	  select count(*) FROM yyb_musician  where
-	  type = 1 and (status = 1 or status = 2) and
+	  type = 2 and (status = 1 or status = 2) and
 	  member_id = #{memebrId}
 	</select>
 
