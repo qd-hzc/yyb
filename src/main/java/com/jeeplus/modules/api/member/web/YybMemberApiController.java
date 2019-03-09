@@ -2,6 +2,8 @@ package com.jeeplus.modules.api.member.web;
 
 
 import com.jeeplus.common.annotation.IgnoreAuth;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.*;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
@@ -9,6 +11,9 @@ import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.member.entity.ApiMember;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.api.member.service.YybMemberApiService;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.security.SystemAuthorizingRealm;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -20,9 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static com.jeeplus.common.utils.ValidateCode.SESSION_KEY_FOR_CODE_SMS;
@@ -148,10 +157,10 @@ public class YybMemberApiController extends BaseController {
             return ResultUtil.error("用户或密码错误");
         }
 
-        yybMember.setPassword(null);
         ApiMember apiMember = new ApiMember();
-        BeanUtils.copyProperties(apiMember, yybMember);
 
+        apiMember.setId(yybMember.getId());
+        apiMember.setPhone(yybMember.getPhone());
         //给用户jwt加密生成token
         String token = JWT.sign(apiMember, 12L * 60L * 60L * 1000L);
         yybMember.setToken(token);
@@ -209,7 +218,9 @@ public class YybMemberApiController extends BaseController {
 
         yybMember.setPassword(null);
         ApiMember apiMember = new ApiMember();
-        BeanUtils.copyProperties(apiMember, yybMember);
+
+        apiMember.setId(yybMember.getId());
+        apiMember.setPhone(yybMember.getPhone());
 
         //给用户jwt加密生成token
         String token = JWT.sign(apiMember, 12L * 60L * 60L * 1000L);
@@ -249,6 +260,35 @@ public class YybMemberApiController extends BaseController {
         return ResultUtil.success();
     }
 
+
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(notes = "upload", httpMethod = "POST", value = "文件上传")
+    @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "file", required = true, paramType = "form",dataType = "file")})
+    public Result webupload(HttpServletRequest request, MultipartFile file) throws IllegalStateException, IOException {
+        String uploadPath = request.getParameter("uploadPath");
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH )+1;
+        SystemAuthorizingRealm.Principal principal = (SystemAuthorizingRealm.Principal) UserUtils.getPrincipal();
+        String fileUrl = Global.getAttachmentUrl()+uploadPath+"/"+year+"/"+month+"/";
+        String fileDir = Global.getAttachmentDir()+uploadPath+"/"+year+"/"+month+"/";
+        String url = "";
+        // 判断文件是否为空
+        if (!file.isEmpty()) {
+            // 文件保存路径
+            // 转存文件
+            FileUtils.createDirectory(fileDir);
+            String name = file.getOriginalFilename();
+            String filePath = fileDir +  name;
+            File newFile = FileUtils.getAvailableFile(filePath,0);
+            file.transferTo(newFile);
+
+            url = fileUrl+ newFile.getName();
+        }
+        return ResultUtil.success(url);
+    }
 
 
 

@@ -225,6 +225,10 @@
 			and a.publish_time &lt;= #{publishTimeEnd} and a.publish_time &gt;= #{publishTimeBegin}
 		</if>
 
+		<if test="musicianId != null and musicianId != ''">
+			and yybMusician.id = #{musicianId}
+		</if>
+
 		<if test="tagNames != null and tagNames.size() > 0">
 			<foreach item="item" collection="tagNames">
 				and CONCAT(';',a.tag_name,';') like concat('%;',#{item},';%')

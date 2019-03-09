@@ -29,9 +29,9 @@ public class YybMusician extends DataEntity<YybMusician> {
 	private String idCardAttach;		// 身份证附件
 	private String production;		// 作品
 	private String companyId;		// 归属公司
-	private Integer type;		// 类型
+	private Integer type;		// 类型  1公司音乐人 2独立音乐人
 	private String companyName;		// 归属公司
-	private Integer status;		// 音乐人状态
+	private Integer status;		// 独立音乐人状态  1待审核 2通过 3驳回
 	private String memberId;		// 申请人
 	private List<YybMusicianAlbum> yybMusicianAlbumList = Lists.newArrayList();		// 子表列表
 	

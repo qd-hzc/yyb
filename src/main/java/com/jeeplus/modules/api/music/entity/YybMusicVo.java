@@ -15,6 +15,8 @@ public class YybMusicVo implements Serializable {
 
     private String musicianName;
 
+    private String musicianId;
+
     private String publishTimeBegin;
 
     private String publishTimeEnd;
@@ -143,5 +145,13 @@ public class YybMusicVo implements Serializable {
 
     public void setMemberId(String memberId) {
         this.memberId = memberId;
+    }
+
+    public String getMusicianId() {
+        return musicianId;
+    }
+
+    public void setMusicianId(String musicianId) {
+        this.musicianId = musicianId;
     }
 }

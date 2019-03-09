@@ -11,6 +11,7 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
+import com.jeeplus.modules.api.musician.entity.YybMusicianVo;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.musician.entity.YybMusician;
 import com.jeeplus.modules.musician.service.YybMusicianService;
@@ -22,20 +23,22 @@ import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import com.jeeplus.modules.sysparam.service.SysParamService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.UUID;
+import javax.validation.Valid;
+import java.util.*;
 
 import static com.jeeplus.modules.sys.interceptor.LogInterceptor.LOGIN_MEMBER;
 
@@ -119,7 +122,7 @@ public class YybMusicianApiController extends BaseController {
 		yybMusician.setId(id);
 		yybMusician.setStatus(2);
 		yybMusician.setCompanyId(officeId);
-		yybMusician.setCompanyName("音乐人"+yybMusician.getName());
+		yybMusician.setCompanyName("独立音乐人"+yybMusician.getName());
 		yybMusicianService.save(yybMusician);
 
 		j.setMsg("通过音乐人成功，请牢记此独立音乐人后台登陆账号："+adminLoginName+"  密码：123456");
@@ -145,21 +148,67 @@ public class YybMusicianApiController extends BaseController {
 
 
 
+	@ResponseBody
+	@RequestMapping(value = "isHave", method = RequestMethod.GET)
+	@ApiOperation(notes = "isHave", httpMethod = "get", value = "判断改用户是否申请过音乐人或通过音乐人")
+
+	public Result isHave(HttpServletRequest request){
+		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+
+		//判断用户处于再申请， 通过的数量
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", yybMember.getId());
+
+		int count = yybMusicianService.getMemberApplyHis(param);
+
+		return ResultUtil.success(count);
+	}
+
+
+
 	/**
-	 * 保存音乐人
+	 * 保存独立音乐人
 	 */
 	@ResponseBody
-	@RequestMapping(value = "save")
-	public Result save(HttpServletRequest request, YybMusician yybMusician) throws Exception{
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	@ApiOperation(notes = "save", httpMethod = "post", value = "保存独立音乐人")
+	@ApiImplicitParams({@ApiImplicitParam(name = "yybMusicianVo", value = "yybMusicianVo", required = true, paramType = "body",dataType = "body")})
+
+	public Result save(HttpServletRequest request, @RequestBody @Valid YybMusicianVo yybMusicianVo, BindingResult bindingResult) throws Exception{
+
+		//校验参数,出错抛出异常
+		if (bindingResult.hasErrors()) {
+			logger.error("参数错误.(" + bindingResult.getFieldError().getDefaultMessage() + ")");
+			return ResultUtil.error("参数错误.(" + bindingResult.getFieldError().getDefaultMessage() + ")");
+		}
+
 
 		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+
+
+		//判断用户处于再申请， 通过的数量
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", yybMember.getId());
+
+		int count = yybMusicianService.getMemberApplyHis(param);
+
+		if (count > 0) {
+			return ResultUtil.error("您已申请过独立音乐人");
+		}
+
+		YybMusician yybMusician = new YybMusician();
+
+		BeanUtils.copyProperties(yybMusicianVo, yybMusician);
+		yybMusician.setMemberId(yybMember.getId());
 		yybMusician.setType(2);
 		yybMusician.setStatus(1);
-
 		yybMusician.setMemberId(yybMember.getId());
-		yybMusicianService.save(yybMusician);//保存
+
+		yybMusicianService.save(yybMusician);
+
 		return ResultUtil.success();
 	}
+
 
 	private String getLoginName(String loginName){
 		if (systemService.getUserByLoginName(loginName) == null) {

@@ -4,6 +4,7 @@
 package com.jeeplus.modules.musician.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,4 +79,8 @@ public class YybMusicianService extends CrudService<YybMusicianMapper, YybMusici
 	public void updateStatus(YybMusician yybMusician) {
 		yybMusicianMapper.updateStatus(yybMusician);
 	}
+
+    public int getMemberApplyHis(Map<String, Object> param) {
+		return mapper.getMemberApplyHis(param);
+    }
 }
