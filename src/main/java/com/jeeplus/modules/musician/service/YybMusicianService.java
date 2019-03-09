@@ -79,8 +79,4 @@ public class YybMusicianService extends CrudService<YybMusicianMapper, YybMusici
 	public void updateStatus(YybMusician yybMusician) {
 		yybMusicianMapper.updateStatus(yybMusician);
 	}
-
-    public int getMemberApplyHis(Map<String, Object> param) {
-		return mapper.getMemberApplyHis(param);
-    }
 }

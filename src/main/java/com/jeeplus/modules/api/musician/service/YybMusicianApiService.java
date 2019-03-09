@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 音乐人Service
@@ -82,4 +83,9 @@ public class YybMusicianApiService extends CrudService<YybMusicianApiMapper, Yyb
     public List<YybMusician> getAllMusician() {
 		return yybMusicianMapper.getAllMusician();
     }
+
+
+	public int getMemberApplyHis(Map<String, Object> param) {
+		return mapper.getMemberApplyHis(param);
+	}
 }

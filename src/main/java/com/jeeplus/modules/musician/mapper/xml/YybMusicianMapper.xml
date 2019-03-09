@@ -195,11 +195,6 @@
 		WHERE id = #{id}
 	</update>
 
-	<select id="getMemberApplyHis" resultType="java.lang.Integer">
-	  select count(*) FROM yyb_musician  where
-	  type = 2 and (status = 1 or status = 2) and
-	  member_id = #{memebrId}
-	</select>
 
 
 	

@@ -19,5 +19,4 @@ public interface YybMusicianMapper extends BaseMapper<YybMusician> {
 
     void updateStatus(YybMusician yybMusician);
 
-    int getMemberApplyHis(Map<String, Object> param);
 }

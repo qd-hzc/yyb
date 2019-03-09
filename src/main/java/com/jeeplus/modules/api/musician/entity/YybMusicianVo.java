@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.List;
 
@@ -29,9 +30,11 @@ public class YybMusicianVo implements Serializable {
 	private String address;		// 地址
 
 	@NotEmpty(message = "手机不能为空")
+	@Pattern(regexp = "", message = "手机号格式有误")
 	private String phone;		// 手机
 
 	@NotEmpty(message = "邮箱不能为空")
+	@Email(message = "邮箱格式有误")
 	private String mail;		// 邮箱
 
 	@NotEmpty(message = "身份证号不能为空")

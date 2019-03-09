@@ -12,6 +12,7 @@ import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.musician.entity.YybMusicianVo;
+import com.jeeplus.modules.api.musician.service.YybMusicianApiService;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.musician.entity.YybMusician;
 import com.jeeplus.modules.musician.service.YybMusicianService;
@@ -52,7 +53,7 @@ import static com.jeeplus.modules.sys.interceptor.LogInterceptor.LOGIN_MEMBER;
 public class YybMusicianApiController extends BaseController {
 
 	@Autowired
-	private YybMusicianService yybMusicianService;
+	private YybMusicianApiService yybMusicianApiService;
 	@Autowired
 	private OfficeService officeService;
 	@Autowired
@@ -69,7 +70,7 @@ public class YybMusicianApiController extends BaseController {
     @RequestMapping(value = "pass")
     public AjaxJson pass(String id) {
         AjaxJson j = new AjaxJson();
-        YybMusician yybMusician = yybMusicianService.get(id);
+        YybMusician yybMusician = yybMusicianApiService.get(id);
 
 		Office parent = new Office();
 		parent.setId(Global.getConfig("office.music"));
@@ -123,7 +124,7 @@ public class YybMusicianApiController extends BaseController {
 		yybMusician.setStatus(2);
 		yybMusician.setCompanyId(officeId);
 		yybMusician.setCompanyName("独立音乐人"+yybMusician.getName());
-		yybMusicianService.save(yybMusician);
+		yybMusicianApiService.save(yybMusician);
 
 		j.setMsg("通过音乐人成功，请牢记此独立音乐人后台登陆账号："+adminLoginName+"  密码：123456");
         return j;
@@ -141,7 +142,7 @@ public class YybMusicianApiController extends BaseController {
         YybMusician yybMusician = new YybMusician();
         yybMusician.setId(id);
         yybMusician.setStatus(3);
-        yybMusicianService.updateStatus(yybMusician);
+		yybMusicianApiService.updateStatus(yybMusician);
         j.setMsg("拒绝音乐人成功");
         return j;
     }
@@ -159,7 +160,7 @@ public class YybMusicianApiController extends BaseController {
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", yybMember.getId());
 
-		int count = yybMusicianService.getMemberApplyHis(param);
+		int count = yybMusicianApiService.getMemberApplyHis(param);
 
 		return ResultUtil.success(count);
 	}
@@ -190,7 +191,7 @@ public class YybMusicianApiController extends BaseController {
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", yybMember.getId());
 
-		int count = yybMusicianService.getMemberApplyHis(param);
+		int count = yybMusicianApiService.getMemberApplyHis(param);
 
 		if (count > 0) {
 			return ResultUtil.error("您已申请过独立音乐人");
@@ -204,7 +205,7 @@ public class YybMusicianApiController extends BaseController {
 		yybMusician.setStatus(1);
 		yybMusician.setMemberId(yybMember.getId());
 
-		yybMusicianService.save(yybMusician);
+		yybMusicianApiService.save(yybMusician);
 
 		return ResultUtil.success();
 	}

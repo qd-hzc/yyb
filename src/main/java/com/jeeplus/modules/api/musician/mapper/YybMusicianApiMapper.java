@@ -8,6 +8,7 @@ import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.musician.entity.YybMusician;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 音乐人MAPPER接口
@@ -20,4 +21,6 @@ public interface YybMusicianApiMapper extends BaseMapper<YybMusician> {
     void updateStatus(YybMusician yybMusician);
 
     List<YybMusician> getAllMusician();
+
+    int getMemberApplyHis(Map<String, Object> param);
 }
