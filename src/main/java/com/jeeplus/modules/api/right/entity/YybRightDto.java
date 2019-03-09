@@ -7,7 +7,7 @@ public class YybRightDto implements Serializable {
 
     private String name;
 
-    private String rate;
+    private Double rate;
 
     public String getId() {
         return id;
@@ -25,11 +25,11 @@ public class YybRightDto implements Serializable {
         this.name = name;
     }
 
-    public String getRate() {
+    public Double getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 }

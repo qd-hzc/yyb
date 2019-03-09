@@ -1,5 +1,6 @@
 package com.jeeplus.modules.api.order.web;
 
+import com.alibaba.fastjson.JSON;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.internal.util.StringUtils;
 import com.jeeplus.core.web.BaseController;
@@ -14,6 +15,7 @@ import com.jeeplus.modules.api.right.service.YybRightApiService;
 import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
 import com.jeeplus.modules.api.shopcart.service.YybShopcartApiService;
 import com.jeeplus.modules.api.usage.service.YybUsageApiService;
+import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.order.entity.YybOrder;
 import com.jeeplus.modules.right.entity.YybRight;
@@ -35,6 +37,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static com.jeeplus.modules.sys.interceptor.LogInterceptor.LOGIN_MEMBER;
+
 @Controller
 @RequestMapping(value = "/api/order")
 public class OrderController extends BaseController {
@@ -55,17 +59,19 @@ public class OrderController extends BaseController {
     @RequestMapping(value = "/toOrder")
     public Result toOrder(HttpServletRequest request,@RequestBody  @Valid YybOrderVo yybOrderVo,
                           BindingResult bindingResult){
-
+        logger.info("toOrder:request:" + JSON.toJSONString(yybOrderVo));
         try {
+            YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+            String memebrId = yybMember.getId();
+
             List<YybShopcart> shopcartList = new ArrayList<>();
             //校验参数, 返回购物车
-            Result validParam = this.validParam(yybOrderVo, bindingResult, shopcartList);
+            Result validParam = this.validParam(yybOrderVo, bindingResult, shopcartList, memebrId);
             if (!"0000".equals(validParam.getCode())) {
                 return validParam;
             }
 
-
-            yybOrderApiService.toOrder(yybOrderVo, shopcartList);
+            yybOrderApiService.toOrder(yybOrderVo, shopcartList, memebrId);
         } catch (Exception e) {
             logger.error("生成订单失败:"+e.getMessage(), e);
             return ResultUtil.error("生成订单失败");
@@ -176,7 +182,7 @@ public class OrderController extends BaseController {
     }
 
 
-    private Result validParam(YybOrderVo yybOrderVo, BindingResult bindingResult, List<YybShopcart> yybShopcartList) {
+    private Result validParam(YybOrderVo yybOrderVo, BindingResult bindingResult, List<YybShopcart> yybShopcartList, String memberId) {
         //校验参数,出错抛出异常
         if (bindingResult.hasErrors()) {
             logger.error("参数错误.(" + bindingResult.getFieldError().getDefaultMessage() + ")");
@@ -187,10 +193,12 @@ public class OrderController extends BaseController {
         if (1 == yybOrderVo.getMemberType()) {
             if (StringUtils.isEmpty(yybOrderVo.getIdCard()) || StringUtils.isEmpty(yybOrderVo.getIdCardAttach())
                     || null == yybOrderVo.getMemberSex() || yybOrderVo.getMemberSex() != 1 || yybOrderVo.getMemberSex() != 2){
+                logger.error("下单：个人信息不全");
                 return ResultUtil.error("个人信息不全");
             }
         } else {
             if (StringUtils.isEmpty(yybOrderVo.getOrgCode()) || StringUtils.isEmpty(yybOrderVo.getOrgCodeAttach())){
+                logger.error("下单：公司信息不全");
                 return ResultUtil.error("公司信息不全");
             }
         }
@@ -201,13 +209,24 @@ public class OrderController extends BaseController {
         //计算总额
         BigDecimal calOrderAmount = BigDecimal.ZERO;
         for (YybShopcart yybShopcart : yybShopcartList) {
+
+            if (!memberId.equals(yybShopcart.getMemberId())) {
+                logger.error("下单：我的收藏异常");
+
+                return ResultUtil.error("我的收藏异常");
+            }
+
             YybMusic yybMusic = yybMusicApiService.get(yybShopcart.getMusicId());
             if (yybMusic == null || com.jeeplus.common.utils.StringUtils.isBlank(yybMusic.getId())) {
+                logger.error("下单：获取音乐失败");
+
                 return ResultUtil.error("获取音乐失败");
             }
 
             BigDecimal musicPrice = BigDecimal.valueOf(yybShopcart.getMusicPrice());
             if (musicPrice.compareTo(BigDecimal.valueOf(yybMusic.getPrice())) != 0) {
+                logger.error("下单：音乐价格异常");
+
                 return ResultUtil.error("音乐价格异常");
             }
 
@@ -218,6 +237,8 @@ public class OrderController extends BaseController {
             List<YybUsage> usageList = yybUsageApiService.getListByIds(usageIds);
             if (rightIds.size() != rightList.size() ||
                     usageIds.size() != usageList.size()) {
+                logger.error("下单：获取权利或用途异常");
+
                 return ResultUtil.error("获取权利或用途异常");
             }
 
@@ -231,18 +252,24 @@ public class OrderController extends BaseController {
             }
 
             if (BigDecimal.ZERO.compareTo(rightTotal) == 0 || BigDecimal.ZERO.compareTo(usageTotal) == 0) {
+                logger.error("下单：选择权利或用途比率异常");
+
                 return ResultUtil.error("选择权利或用途比率异常");
             }
 
             BigDecimal musicTotal = (rightTotal.add(usageTotal)).multiply(musicPrice).setScale(2, BigDecimal.ROUND_HALF_UP);
             calOrderAmount = calOrderAmount.add(musicTotal);
             if (musicTotal.compareTo(BigDecimal.valueOf(yybShopcart.getMusicTotal())) != 0) {
+                logger.error("商品:["+yybShopcart.getMusicTitle()+"]金额发生变动, 请重新加入购物车");
+
                 return ResultUtil.error("商品:["+yybShopcart.getMusicTitle()+"]金额发生变动, 请重新加入购物车");
             }
 
         }
 
         if (yybOrderVo.getOrderAmount().compareTo(calOrderAmount) != 0) {
+            logger.error("下单：订单总额不符");
+
             return ResultUtil.error("订单总额不符");
         }
 

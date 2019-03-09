@@ -89,7 +89,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 	}
 
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
-	public void toOrder(YybOrderVo yybOrderVo, List<YybShopcart> shopcartList) {
+	public void toOrder(YybOrderVo yybOrderVo, List<YybShopcart> shopcartList, String memberId) {
 
 		YybOrder yybOrder = new YybOrder();
 		BeanUtils.copyProperties(yybOrderVo, yybOrder);
@@ -99,6 +99,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 		yybOrder.setOrderNo("yyb" + System.currentTimeMillis() + RandomStringUtils.random(6, false, true));
 		yybOrder.setOrderTime(new Date());
 		yybOrder.setOrderAmount(yybOrderVo.getOrderAmount().doubleValue());
+		yybOrder.setMemberId(memberId);
 
 		List<YybOrderDeatil> yybOrderDeatils = new ArrayList<>();
 		YybOrderDeatil yybOrderDeatil;

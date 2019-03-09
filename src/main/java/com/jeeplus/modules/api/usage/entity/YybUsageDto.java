@@ -7,7 +7,7 @@ public class YybUsageDto implements Serializable {
 
     private String name;
 
-    private String rate;
+    private Double rate;
 
     private String img;
 
@@ -27,11 +27,11 @@ public class YybUsageDto implements Serializable {
         this.name = name;
     }
 
-    public String getRate() {
+    public Double getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(Double rate) {
         this.rate = rate;
     }
 
