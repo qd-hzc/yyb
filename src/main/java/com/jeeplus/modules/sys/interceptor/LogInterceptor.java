@@ -100,7 +100,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 
 		//token为空
 		if(StringUtils.isBlank(token)){
-			returnResponse(response, "token不能为空");
+			returnResponse(response, "token不能为空", "1111");
 		}
 
 		ApiMember apiMember = JWT.unsign(token, ApiMember.class);
@@ -112,14 +112,14 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 		String memberId = request.getParameter("memberId");
 		if (StringUtils.isNotBlank(memberId)) {
 			if (!memberId.equals(apiMember.getId())) {
-				returnResponse(response, "登陆信息有误");
+				returnResponse(response, "登陆信息有误", "1111");
 			}
 		}
 
 		//校验数据库中的用户信息
 		YybMember yybMember1 = yybMemberApiService.get(apiMember.getId());
 		if (yybMember1 == null) {
-			returnResponse(response, "登陆信息有误");
+			returnResponse(response, "登陆信息有误", "1111");
 		}
 
 
