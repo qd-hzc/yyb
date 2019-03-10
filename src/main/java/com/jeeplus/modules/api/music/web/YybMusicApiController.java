@@ -21,6 +21,7 @@ import com.jeeplus.modules.api.tagcatetory.service.YybTagCategoryApiService;
 import com.jeeplus.modules.api.usage.service.YybUsageApiService;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.music.entity.YybMusic;
+import com.jeeplus.modules.musician.entity.YybMusician;
 import com.jeeplus.modules.tagcatetory.entity.YybTagCategory;
 import com.jeeplus.modules.tagcatetory.service.YybTagCategoryService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -113,7 +114,7 @@ public class YybMusicApiController extends BaseController {
 	@RequestMapping(value = "/getAllMusician", method = RequestMethod.GET)
 	@ApiOperation(notes = "getAllMusician", httpMethod = "GET", value = "获取所有音乐人列表")
 	public Result getAllMusician(){
-		return ResultUtil.success(yybMusicianApiService.getAllMusician());
+		return ResultUtil.success(yybMusicianApiService.getAllMusician(new HashMap<>()));
 	}
 
 
@@ -146,6 +147,21 @@ public class YybMusicApiController extends BaseController {
 		}
 
 		return ResultUtil.success(result);
+	}
+
+	@IgnoreAuth
+	@ResponseBody
+	@RequestMapping(value = "/getTagData")
+	public Map<String, Object> getTagData(@RequestParam(required = false) String name, @RequestParam(required = false) String parentName) {
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("name", name);
+		map.put("parentName", parentName);
+
+		List<YybTagCategory> list = tagCategoryService.getTagData(map);
+		Page page = new Page();
+		page.setList(list);
+		return getBootstrapData(page);
 	}
 
 

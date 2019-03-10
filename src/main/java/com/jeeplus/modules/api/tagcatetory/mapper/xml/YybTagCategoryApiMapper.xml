@@ -118,6 +118,26 @@
 	</select>
 
 
+	<select id="getTagData" resultType="YybTagCategory">
+		SELECT
+		a.id AS "id",
+		a.name AS "name",
+		a.sort AS "sort",
+		a.parent_id AS "parentId",
+		b.name as "parentName"
+		FROM yyb_tag_category a
+		left join yyb_tag_category b on a.parent_id = b.id
+		where
+			a.del_flag = 0 and a.parent_id != 0
+			<if test="name != null and name != ''">
+				and a.name like concat('%',#{name},'%')
+			</if>
+			<if test="parentName != null and parentName != ''">
+				and b.name like concat('%',#{parentName},'%')
+			</if>
+		ORDER BY a.parent_id, a.sort ASC
+	</select>
+
 	<select id="findAllList" resultType="YybTagCategory">
 		SELECT
 		<include refid="yybTagCategoryColumns"/>

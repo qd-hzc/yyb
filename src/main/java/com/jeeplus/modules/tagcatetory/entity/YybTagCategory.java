@@ -24,6 +24,16 @@ public class YybTagCategory extends TreeEntity<YybTagCategory> {
 
 	private String parentId;
 
+	private String parentName;
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
+	}
+
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}

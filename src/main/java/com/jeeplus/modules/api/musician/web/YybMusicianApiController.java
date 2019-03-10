@@ -70,12 +70,15 @@ public class YybMusicianApiController extends BaseController {
 	/**
 	 * 音乐人列表数据
 	 */
+	@IgnoreAuth
 	@ResponseBody
 	@RequestMapping(value = "dataPass")
-	public Map<String, Object> data(YybMusician yybMusician, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public Map<String, Object> data(@RequestParam(required = false) String name) {
 
+		Map<String, Object> map = new HashMap<>();
+		map.put("name", name);
 
-		List<YybMusician> list = yybMusicianApiService.getAllMusician();
+		List<YybMusician> list = yybMusicianApiService.getAllMusician(map);
 		Page page = new Page();
 		page.setList(list);
 		return getBootstrapData(page);

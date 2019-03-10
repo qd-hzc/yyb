@@ -4,9 +4,11 @@
 package com.jeeplus.modules.api.tagcatetory.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.modules.api.tagcatetory.mapper.YybTagCategoryApiMapper;
+import com.jeeplus.modules.musician.entity.YybMusician;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,4 +59,8 @@ public class YybTagCategoryApiService extends TreeService<YybTagCategoryApiMappe
 	public List<YybTagCategory> findAll(YybTagCategory yybTagCategory) {
 		return mapper.findAll(yybTagCategory);
 	}
+
+    public List<YybTagCategory> getTagData(Map<String, Object> map) {
+		return mapper.getTagData(map);
+    }
 }

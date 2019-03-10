@@ -74,7 +74,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>标签：</label></td>
 					<td class="width-35">
-						<sys:gridselect isMultiSelected="true" url="${ctx}/tagcatetory/yybTagCategory/data" id="yybTagCategory" name="yybTagCategory.id" value="${yybMusic.yybTagCategory.id}" labelName="yybTagCategory.name" labelValue="${yybMusic.yybTagCategory.name}"
+						<sys:gridselect isMultiSelected="true" url="${host}/api/music/getTagData" id="yybTagCategory" name="yybTagCategory.id" value="${yybMusic.yybTagCategory.id}" labelName="yybTagCategory.name" labelValue="${yybMusic.yybTagCategory.name}"
 							 title="选择标签" cssClass="form-control required" fieldLabels="名称|父标签" fieldKeys="name|parentName" searchLabels="名称" searchKeys="name" ></sys:gridselect>
 					</td>
                     <td class="width-15 active"><label class="pull-right"><font color="red">*</font>时长：<span style="color: red">(秒)</span></label></td>

@@ -20,7 +20,7 @@ public interface YybMusicianApiMapper extends BaseMapper<YybMusician> {
 
     void updateStatus(YybMusician yybMusician);
 
-    List<YybMusician> getAllMusician();
+    List<YybMusician> getAllMusician(Map<String, Object> map);
 
     int getMemberApplyHis(Map<String, Object> param);
 }

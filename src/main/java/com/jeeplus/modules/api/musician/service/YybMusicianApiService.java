@@ -80,8 +80,8 @@ public class YybMusicianApiService extends CrudService<YybMusicianApiMapper, Yyb
 		yybMusicianMapper.updateStatus(yybMusician);
 	}
 
-    public List<YybMusician> getAllMusician() {
-		return yybMusicianMapper.getAllMusician();
+    public List<YybMusician> getAllMusician(Map<String, Object> map) {
+		return yybMusicianMapper.getAllMusician(map);
     }
 
 
