@@ -125,6 +125,8 @@ public class YybMusicController extends BaseController {
             yybMusic.setIsExcellentCaseTime(new Date());
         }
         yybMusic.setMusicianName(yybMusic.getYybMusician().getName());
+		yybMusic.setCompanyId(yybMusic.getYybMusician().getCompanyId());
+		yybMusic.setCompanyName(yybMusic.getYybMusician().getCompanyName());
         yybMusic.setAlbumName(yybMusic.getYybMusicianAlbum().getName());
 
 
