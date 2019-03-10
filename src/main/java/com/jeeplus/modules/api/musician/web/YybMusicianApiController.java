@@ -8,6 +8,7 @@ import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.HanyuPinyinHelper;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
@@ -34,10 +35,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -60,7 +63,23 @@ public class YybMusicianApiController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private SysParamService sysParamService;
-	
+
+
+
+
+	/**
+	 * 音乐人列表数据
+	 */
+	@ResponseBody
+	@RequestMapping(value = "dataPass")
+	public Map<String, Object> data(YybMusician yybMusician, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+
+		List<YybMusician> list = yybMusicianApiService.getAllMusician();
+		Page page = new Page();
+		page.setList(list);
+		return getBootstrapData(page);
+	}
 
     /**
      * 通过音乐人

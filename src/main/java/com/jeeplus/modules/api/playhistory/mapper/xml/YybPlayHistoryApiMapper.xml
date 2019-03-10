@@ -133,7 +133,9 @@
 		b.play_count AS "yybMusic.playCount",
 		b.like_count AS "yybMusic.likeCount",
 		b.tag_name as "yybMusic.tagName",
-		c.name as "yybMusic.musicianName"
+		c.name as "yybMusic.musicianName",
+		(select count(*) from yyb_like where yyb_like.member_id = #{memberId} and yyb_like.music_id = a.music_id) as "yybMusic.isLike"
+
 		FROM yyb_play_history a
 		left join yyb_music b on a.music_id = b.id
 		left join yyb_musician c on b.musician_id = c.id

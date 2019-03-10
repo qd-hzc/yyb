@@ -432,7 +432,6 @@ $(document).ready(function() {
                     jp.error(data.msg);
                 }
             })
-
         })
 	}
 
