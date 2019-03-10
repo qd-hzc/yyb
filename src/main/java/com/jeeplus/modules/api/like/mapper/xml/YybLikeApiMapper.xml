@@ -134,8 +134,8 @@
 		b.play_count AS "yybMusic.playCount",
 		b.like_count AS "yybMusic.likeCount",
 		b.tag_name as "yybMusic.tagName",
-		c.name as "yybMusic.musicianName"
-
+		c.name as "yybMusic.musicianName",
+		1 as "yybMusic.isLike"
 
 
 		FROM yyb_like a
