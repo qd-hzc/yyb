@@ -132,7 +132,7 @@ $(document).ready(function() {
 		        sortable: true,
 		        sortName: 'url',
 		        formatter:function(value, row , index){
-		        	if (value == undefined || value == "" || value == null) {return "";}; var valueArray = value.split("|");
+		        	var valueArray = value.split("|");
 		        	var labelArray = [];
 		        	for(var i =0 ; i<valueArray.length; i++){
 		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
@@ -206,6 +206,23 @@ $(document).ready(function() {
 		        title: '收藏量',
 		        sortable: true,
 		        sortName: 'likeCount'
+		       
+		    }
+			,{
+		        field: 'caseIntroduction',
+		        title: '介绍',
+		        sortable: true,
+		        sortName: 'caseIntroduction'
+		       
+		    }
+			,{
+		        field: 'isExcellentCase',
+		        title: '优秀案例',
+		        sortable: true,
+		        sortName: 'isExcellentCase',
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('music_is_excellent_case'))}, value, "-");
+		        }
 		       
 		    }
 		     ]

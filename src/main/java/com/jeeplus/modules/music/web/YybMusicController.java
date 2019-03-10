@@ -6,6 +6,7 @@ package com.jeeplus.modules.music.web;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ import com.jeeplus.modules.music.service.YybMusicService;
 /**
  * 音乐Controller
  * @author lwb
- * @version 2019-02-19
+ * @version 2019-03-10
  */
 @Controller
 @RequestMapping(value = "${adminPath}/music/yybMusic")
@@ -75,15 +76,15 @@ public class YybMusicController extends BaseController {
 		model.addAttribute("yybMusic", yybMusic);
 		return "modules/music/yybMusicList";
 	}
-
-	/**
+	
+		/**
 	 * 音乐列表数据
 	 */
 	@ResponseBody
 	@RequiresPermissions("music:yybMusic:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybMusic yybMusic, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<YybMusic> page = yybMusicService.findPage(new Page<YybMusic>(request, response), yybMusic);
+		Page<YybMusic> page = yybMusicService.findPage(new Page<YybMusic>(request, response), yybMusic); 
 		return getBootstrapData(page);
 	}
 
@@ -119,6 +120,14 @@ public class YybMusicController extends BaseController {
 			yybMusic.setTagName(name);
 
 		}
+
+		if (1 == yybMusic.getIsExcellentCase()) {
+            yybMusic.setIsExcellentCaseTime(new Date());
+        }
+        yybMusic.setMusicianName(yybMusic.getYybMusician().getName());
+        yybMusic.setAlbumName(yybMusic.getYybMusicianAlbum().getName());
+
+
 		AjaxJson j = new AjaxJson();
 		/**
 		 * 后台hibernate-validation插件校验

@@ -16,7 +16,7 @@ import com.jeeplus.modules.music.mapper.YybMusicMapper;
 /**
  * 音乐Service
  * @author lwb
- * @version 2019-02-19
+ * @version 2019-03-10
  */
 @Service
 @Transactional(readOnly = true)

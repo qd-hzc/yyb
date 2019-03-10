@@ -10,7 +10,7 @@ import com.jeeplus.modules.music.entity.YybMusic;
 /**
  * 音乐MAPPER接口
  * @author lwb
- * @version 2019-02-19
+ * @version 2019-03-10
  */
 @MyBatisMapper
 public interface YybMusicMapper extends BaseMapper<YybMusic> {

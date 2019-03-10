@@ -21,7 +21,18 @@
 		a.remarks AS "remarks",
 		a.play_count AS "playCount",
 		a.like_count AS "likeCount",
-		a.tag_name as tagName,
+		a.is_circle AS "isCircle",
+		a.musician_name AS "musicianName",
+		a.company_id AS "companyId",
+		a.company_name AS "companyName",
+		a.is_like AS "isLike",
+		a.seller_count AS "sellerCount",
+		a.album_name AS "albumName",
+		a.case_introduction AS "caseIntroduction",
+		a.is_excellent_case AS "isExcellentCase",
+		a.is_excellent_case_time AS "isExcellentCaseTime",
+		a.tag_name AS "tagName",
+				
 				
 				
 				
@@ -130,6 +141,16 @@
 			remarks,
 			play_count,
 			like_count,
+			is_circle,
+			musician_name,
+			company_id,
+			company_name,
+			is_like,
+			seller_count,
+			album_name,
+			case_introduction,
+			is_excellent_case,
+			is_excellent_case_time,
 			tag_name
 		) VALUES (
 			#{id},
@@ -150,6 +171,16 @@
 			#{remarks},
 			#{playCount},
 			#{likeCount},
+			#{isCircle},
+			#{musicianName},
+			#{companyId},
+			#{companyName},
+			#{isLike},
+			#{sellerCount},
+			#{albumName},
+			#{caseIntroduction},
+			#{isExcellentCase},
+			#{isExcellentCaseTime},
 			#{tagName}
 		)
 	</insert>
@@ -170,6 +201,16 @@
 			remarks = #{remarks},
 			play_count = #{playCount},
 			like_count = #{likeCount},
+			is_circle = #{isCircle},
+			musician_name = #{musicianName},
+			company_id = #{companyId},
+			company_name = #{companyName},
+			is_like = #{isLike},
+			seller_count = #{sellerCount},
+			album_name = #{albumName},
+			case_introduction = #{caseIntroduction},
+			is_excellent_case = #{isExcellentCase},
+			is_excellent_case_time = #{isExcellentCaseTime},
 			tag_name = #{tagName}
 		WHERE id = #{id}
 	</update>

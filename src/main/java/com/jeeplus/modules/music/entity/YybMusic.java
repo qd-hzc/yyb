@@ -16,7 +16,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 音乐Entity
  * @author lwb
- * @version 2019-02-19
+ * @version 2019-03-10
  */
 public class YybMusic extends DataEntity<YybMusic> {
 	
@@ -28,15 +28,21 @@ public class YybMusic extends DataEntity<YybMusic> {
 	private String url;		// 地址
 	private String img;		// 图片
 	private YybTagCategory yybTagCategory;		// 标签
-	private String tagName; //标签名称
 	private String musicTime;		// 时长
 	private Date publishTime;		// 发布时间
 	private Integer playCount;		// 播放量
 	private Integer likeCount;		// 收藏量
-	private String musicianName;
-	private Integer isCircle;
-
-	private int isLike;//是否喜欢
+	private Integer isCircle;		// 是否循环
+	private String musicianName;		// 音乐人名
+	private String companyId;		// 公司
+	private String companyName;		// 公司名
+	private Integer isLike;		// 是否喜欢
+	private String sellerCount;		// 销量
+	private String albumName;		// 专辑名
+	private String caseIntroduction;		// 介绍
+	private Integer isExcellentCase;		// 优秀案例
+	private Date isExcellentCaseTime;		// 优秀案例时间
+	private String tagName;		// 标签名
 	
 	public YybMusic() {
 		super();
@@ -103,6 +109,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 		this.img = img;
 	}
 	
+	@NotNull(message="标签不能为空")
 	@ExcelField(title="标签", fieldType=YybTagCategory.class, value="yybTagCategory.name", align=2, sort=12)
 	public YybTagCategory getYybTagCategory() {
 		return yybTagCategory;
@@ -149,32 +156,9 @@ public class YybMusic extends DataEntity<YybMusic> {
 	public void setLikeCount(Integer likeCount) {
 		this.likeCount = likeCount;
 	}
-
-	public String getTagName() {
-		return tagName;
-	}
-
-	public void setTagName(String tagName) {
-		this.tagName = tagName;
-	}
-
-	public String getMusicianName() {
-		return musicianName;
-	}
-
-	public void setMusicianName(String musicianName) {
-		this.musicianName = musicianName;
-	}
-
-	public int getIsLike() {
-		return isLike;
-	}
-
-	public void setIsLike(int isLike) {
-		this.isLike = isLike;
-	}
-
-
+	
+	@NotNull(message="是否循环不能为空")
+	@ExcelField(title="是否循环", dictType="music_is_circle", align=2, sort=18)
 	public Integer getIsCircle() {
 		return isCircle;
 	}
@@ -182,4 +166,97 @@ public class YybMusic extends DataEntity<YybMusic> {
 	public void setIsCircle(Integer isCircle) {
 		this.isCircle = isCircle;
 	}
+	
+	@ExcelField(title="音乐人名", align=2, sort=19)
+	public String getMusicianName() {
+		return musicianName;
+	}
+
+	public void setMusicianName(String musicianName) {
+		this.musicianName = musicianName;
+	}
+	
+	@ExcelField(title="公司", align=2, sort=20)
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
+	
+	@ExcelField(title="公司名", align=2, sort=21)
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	
+	@ExcelField(title="是否喜欢", align=2, sort=22)
+	public Integer getIsLike() {
+		return isLike;
+	}
+
+	public void setIsLike(Integer isLike) {
+		this.isLike = isLike;
+	}
+	
+	@ExcelField(title="销量", align=2, sort=23)
+	public String getSellerCount() {
+		return sellerCount;
+	}
+
+	public void setSellerCount(String sellerCount) {
+		this.sellerCount = sellerCount;
+	}
+	
+	@ExcelField(title="专辑名", align=2, sort=24)
+	public String getAlbumName() {
+		return albumName;
+	}
+
+	public void setAlbumName(String albumName) {
+		this.albumName = albumName;
+	}
+	
+	@ExcelField(title="介绍", align=2, sort=25)
+	public String getCaseIntroduction() {
+		return caseIntroduction;
+	}
+
+	public void setCaseIntroduction(String caseIntroduction) {
+		this.caseIntroduction = caseIntroduction;
+	}
+	
+	@NotNull(message="优秀案例不能为空")
+	@ExcelField(title="优秀案例", dictType="music_is_excellent_case", align=2, sort=26)
+	public Integer getIsExcellentCase() {
+		return isExcellentCase;
+	}
+
+	public void setIsExcellentCase(Integer isExcellentCase) {
+		this.isExcellentCase = isExcellentCase;
+	}
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@ExcelField(title="优秀案例时间", align=2, sort=27)
+	public Date getIsExcellentCaseTime() {
+		return isExcellentCaseTime;
+	}
+
+	public void setIsExcellentCaseTime(Date isExcellentCaseTime) {
+		this.isExcellentCaseTime = isExcellentCaseTime;
+	}
+	
+	@ExcelField(title="标签名", align=2, sort=28)
+	public String getTagName() {
+		return tagName;
+	}
+
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+	
 }
