@@ -33,12 +33,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 	private Integer playCount;		// 播放量
 	private Integer likeCount;		// 收藏量
 	private Integer isCircle;		// 是否循环
-	private String musicianName;		// 音乐人名
-	private String companyId;		// 公司
-	private String companyName;		// 公司名
-	private Integer isLike;		// 是否喜欢
 	private String sellerCount;		// 销量
-	private String albumName;		// 专辑名
 	private String caseIntroduction;		// 介绍
 	private Integer isExcellentCase;		// 优秀案例
 	private Date isExcellentCaseTime;		// 优秀案例时间
@@ -167,43 +162,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 		this.isCircle = isCircle;
 	}
 	
-	@ExcelField(title="音乐人名", align=2, sort=19)
-	public String getMusicianName() {
-		return musicianName;
-	}
-
-	public void setMusicianName(String musicianName) {
-		this.musicianName = musicianName;
-	}
-	
-	@ExcelField(title="公司", align=2, sort=20)
-	public String getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-	
-	@ExcelField(title="公司名", align=2, sort=21)
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-	
-	@ExcelField(title="是否喜欢", align=2, sort=22)
-	public Integer getIsLike() {
-		return isLike;
-	}
-
-	public void setIsLike(Integer isLike) {
-		this.isLike = isLike;
-	}
-	
-	@ExcelField(title="销量", align=2, sort=23)
+	@ExcelField(title="销量", align=2, sort=19)
 	public String getSellerCount() {
 		return sellerCount;
 	}
@@ -212,16 +171,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 		this.sellerCount = sellerCount;
 	}
 	
-	@ExcelField(title="专辑名", align=2, sort=24)
-	public String getAlbumName() {
-		return albumName;
-	}
-
-	public void setAlbumName(String albumName) {
-		this.albumName = albumName;
-	}
-	
-	@ExcelField(title="介绍", align=2, sort=25)
+	@ExcelField(title="介绍", align=2, sort=20)
 	public String getCaseIntroduction() {
 		return caseIntroduction;
 	}
@@ -231,7 +181,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 	}
 	
 	@NotNull(message="优秀案例不能为空")
-	@ExcelField(title="优秀案例", dictType="music_is_excellent_case", align=2, sort=26)
+	@ExcelField(title="优秀案例", dictType="music_is_excellent_case", align=2, sort=21)
 	public Integer getIsExcellentCase() {
 		return isExcellentCase;
 	}
@@ -241,7 +191,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 	}
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@ExcelField(title="优秀案例时间", align=2, sort=27)
+	@ExcelField(title="优秀案例时间", align=2, sort=22)
 	public Date getIsExcellentCaseTime() {
 		return isExcellentCaseTime;
 	}
@@ -250,7 +200,7 @@ public class YybMusic extends DataEntity<YybMusic> {
 		this.isExcellentCaseTime = isExcellentCaseTime;
 	}
 	
-	@ExcelField(title="标签名", align=2, sort=28)
+	@ExcelField(title="标签名", align=2, sort=23)
 	public String getTagName() {
 		return tagName;
 	}
