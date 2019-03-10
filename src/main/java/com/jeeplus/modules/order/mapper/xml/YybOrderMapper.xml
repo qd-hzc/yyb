@@ -190,6 +190,21 @@
 		select * FROM yyb_order  where ${propertyName} = '${value}'
 	</select>
 
+
+	<select id="list" resultType="YybOrder" >
+		SELECT
+		<include refid="yybOrderColumns"/>
+		FROM yyb_order a
+
+		<include refid="yybOrderJoins"/>
+		where
+		a.del_flag = 0 and a.member_id = #{memberId}
+		<if test="status != null">
+			and a.status = ${status}
+		</if>
+		ORDER BY a.create_date DESC
+	</select>
+
 	<update id="updateStatus">
 		UPDATE yyb_order SET
 			status = #{status}

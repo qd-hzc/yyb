@@ -3,6 +3,8 @@ package com.jeeplus.modules.api.order.web;
 import com.alibaba.fastjson.JSON;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.internal.util.StringUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
@@ -15,6 +17,7 @@ import com.jeeplus.modules.api.right.service.YybRightApiService;
 import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
 import com.jeeplus.modules.api.shopcart.service.YybShopcartApiService;
 import com.jeeplus.modules.api.usage.service.YybUsageApiService;
+import com.jeeplus.modules.like.entity.YybLike;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.order.entity.YybOrder;
@@ -83,8 +86,13 @@ public class OrderController extends BaseController {
     }
 
 
+
+
+
+
+
     /**
-     * 取消个人喜欢
+     * 取消订单
      */
     @ResponseBody
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
@@ -114,6 +122,28 @@ public class OrderController extends BaseController {
         return ResultUtil.success();
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ApiOperation(notes = "list", httpMethod = "GET", value = "列表")
+    public Result list(HttpServletRequest request, @RequestParam(required = false) Integer status ,
+                       @RequestParam(required = false, defaultValue = "1") String startPage,
+                       @RequestParam(required = false, defaultValue = "10") String pageSize){
+        YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+        String memebrId = yybMember.getId();
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("status", status);
+        param.put("memberId", memebrId);
+
+        List<YybOrder> list = yybOrderApiService.list(param);
+
+        PageHelper.startPage(Integer.parseInt(startPage),Integer.parseInt(pageSize));
+
+        PageInfo<YybOrder> pageInfo = new PageInfo<>(list);
+
+        return ResultUtil.success(pageInfo);
+    }
 
 
 

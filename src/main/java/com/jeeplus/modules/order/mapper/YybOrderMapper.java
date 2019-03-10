@@ -7,6 +7,7 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.order.entity.YybOrder;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +18,4 @@ import java.util.Map;
 @MyBatisMapper
 public interface YybOrderMapper extends BaseMapper<YybOrder> {
 
-    void updateStatus(Map<String, Object> param);
-
-    void cancelOvertimeOrder();
 }

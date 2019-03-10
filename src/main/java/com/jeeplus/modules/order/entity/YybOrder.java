@@ -37,6 +37,9 @@ public class YybOrder extends DataEntity<YybOrder> {
 	private Integer memberType;		// 用户类型
 	private String phone;		// 手机号
 	private String companyId;
+	private String companyName;
+	private String musicianName;
+	private String albumName;
 	private Integer memberSex;
 	private List<YybOrderDeatil> yybOrderDeatilList = Lists.newArrayList();		// 子表列表
 	
@@ -225,5 +228,29 @@ public class YybOrder extends DataEntity<YybOrder> {
 
 	public void setMemberSex(Integer memberSex) {
 		this.memberSex = memberSex;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getMusicianName() {
+		return musicianName;
+	}
+
+	public void setMusicianName(String musicianName) {
+		this.musicianName = musicianName;
+	}
+
+	public String getAlbumName() {
+		return albumName;
+	}
+
+	public void setAlbumName(String albumName) {
+		this.albumName = albumName;
 	}
 }

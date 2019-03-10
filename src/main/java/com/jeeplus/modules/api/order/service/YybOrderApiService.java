@@ -8,6 +8,7 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.order.entity.YybOrderVo;
+import com.jeeplus.modules.api.order.mapper.YybOrderApiMapper;
 import com.jeeplus.modules.api.order.mapper.YybOrderDeatilApiMapper;
 import com.jeeplus.modules.api.right.entity.YybRightDto;
 import com.jeeplus.modules.api.right.mapper.YybRightApiMapper;
@@ -39,7 +40,7 @@ import java.util.*;
  */
 @Service
 @Transactional(readOnly = true)
-public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
+public class YybOrderApiService extends CrudService<YybOrderApiMapper, YybOrder> {
 
 	@Autowired
 	private YybOrderDeatilApiMapper yybOrderDeatilMapper;
@@ -180,5 +181,9 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void cancelOvertimeOrder() {
 		mapper.cancelOvertimeOrder();
+	}
+
+	public List<YybOrder> list(Map<String, Object> param) {
+		return mapper.list(param);
 	}
 }

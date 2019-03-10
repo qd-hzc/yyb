@@ -22,7 +22,9 @@
 		a.remarks AS "remarks",
 		a.musician_id as "musicianId",
 		a.musician_name as "musicianName",
-
+		a.company_id as companyId,
+		a.company_name as companyName,
+		a.album_name as albumName
 				
 				
 				
@@ -108,7 +110,10 @@
 			remarks,
 			musician_id,
 			musician_name,
-			right_and_usage_body
+			right_and_usage_body,
+						company_id,
+			company_name,
+			album_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -129,7 +134,10 @@
 			#{remarks},
 			#{musicianId},
 			#{musicianName},
-			#{rightAndUsageBody}
+			#{rightAndUsageBody},
+						#{companyId},
+			#{companyName},
+			#{albumName}
 		)
 	</insert>
 	

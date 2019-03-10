@@ -17,7 +17,7 @@
 		a.pay_type AS "payType",
 		a.order_amount AS "orderAmount",
 		a.pay_amount AS "payAmount",
-		a.memer_id AS "memberId",
+		a.member_id AS "memberId",
 		a.member_name AS "memberName",
 		a.member_address AS "memberAddress",
 		a.id_card AS "idCard",
@@ -106,7 +106,7 @@
 			pay_type,
 			order_amount,
 			pay_amount,
-			memer_id,
+			member_id,
 			member_name,
 			member_address,
 			id_card,
@@ -116,7 +116,7 @@
 			member_type,
 			phone,
 			remarks,
-			company_id
+			member_sex
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -142,7 +142,7 @@
 			#{memberType},
 			#{phone},
 			#{remarks},
-			#{companyId}
+			#{memberSex}
 		)
 	</insert>
 	
@@ -158,7 +158,7 @@
 			pay_type = #{payType},
 			order_amount = #{orderAmount},
 			pay_amount = #{payAmount},
-			memer_id = #{memberId},
+			member_id = #{memberId},
 			member_name = #{memberName},
 			member_address = #{memberAddress},
 			id_card = #{idCard},
@@ -191,5 +191,31 @@
 		select * FROM yyb_order  where ${propertyName} = '${value}'
 	</select>
 
+
+	<select id="list" resultType="YybOrder" >
+		SELECT
+		<include refid="yybOrderColumns"/>
+		FROM yyb_order a
+
+		where
+		a.del_flag = 0 and a.member_id = #{memberId}
+		<if test="status != null">
+			and a.status = ${status}
+		</if>
+		ORDER BY a.create_date DESC
+	</select>
+
+	<update id="updateStatus">
+		UPDATE yyb_order SET
+			status = #{status}
+		WHERE id = #{orderId}
+	</update>
+
+
+	<update id="cancelOvertimeOrder">
+		UPDATE yyb_order SET
+			status = 2
+		WHERE status = 1 and DATEDIFF(now(), order_time)>=3
+	</update>
 	
 </mapper>

@@ -40,6 +40,11 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 	private String musicianName;
 	private String musicianId;
 
+	private String albumName;
+
+	private String companyName;
+	private String companyId;
+
 	private String rightAndUsageBody;
 	
 	public YybOrderDeatil() {
@@ -182,5 +187,29 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 
 	public void setMusicianId(String musicianId) {
 		this.musicianId = musicianId;
+	}
+
+	public String getAlbumName() {
+		return albumName;
+	}
+
+	public void setAlbumName(String albumName) {
+		this.albumName = albumName;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 }
