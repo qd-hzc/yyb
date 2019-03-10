@@ -21,7 +21,15 @@
 		a.remarks AS "remarks",
 		a.play_count AS "playCount",
 		a.like_count AS "likeCount",
-		a.tag_name as tagName,
+		a.is_circle AS "isCircle",
+		a.is_like AS "isLike",
+		a.seller_count AS "sellerCount",
+		a.album_name AS "albumName",
+		a.case_introduction AS "caseIntroduction",
+		a.is_excellent_case AS "isExcellentCase",
+		a.is_excellent_case_time AS "isExcellentCaseTime",
+		a.tag_name AS "tagName",
+
 				
 				
 				
@@ -29,9 +37,10 @@
 				
 				
 				
-		yybMusician.name AS "yybMusician.name",
-				
-		yybMusicianAlbum.name AS "yybMusicianAlbum.name"
+		yybMusician.name AS "musicianName",
+		yybMusician.company_id As companyId,
+		yybMusician.company_name As companyName,
+		yybMusicianAlbum.name AS "albumName"
 	</sql>
 	
 	<sql id="yybMusicJoins">
@@ -228,6 +237,11 @@
 		<if test="musicianId != null and musicianId != ''">
 			and yybMusician.id = #{musicianId}
 		</if>
+
+		<if test="isCircle != null and isCircle != ''">
+			and a.is_circle = #{isCircle}
+		</if>
+
 
 		<if test="tagNames != null and tagNames.size() > 0">
 			<foreach item="item" collection="tagNames">

@@ -31,6 +31,8 @@ public class YybMusicVo implements Serializable {
 
     private String memberId;
 
+    private Integer isCircle;//1是 2否
+
     private String type;//排序，1时长  2发布时间 3喜欢量
 
     private String mode;//排序方式， desc， asc
@@ -152,6 +154,16 @@ public class YybMusicVo implements Serializable {
     }
 
     public void setMusicianId(String musicianId) {
+
         this.musicianId = musicianId;
+    }
+
+
+    public Integer getIsCircle() {
+        return isCircle;
+    }
+
+    public void setIsCircle(Integer isCircle) {
+        this.isCircle = isCircle;
     }
 }

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.musician.entity.YybMusician;
+import com.jeeplus.modules.musician.service.YybMusicianService;
 import com.jeeplus.modules.tagcatetory.entity.YybTagCategory;
 import com.jeeplus.modules.tagcatetory.service.YybTagCategoryService;
 import org.apache.shiro.authz.annotation.Logical;
@@ -54,6 +56,8 @@ public class YybMusicController extends BaseController {
 
 	@Autowired
 	private YybTagCategoryService yybTagCategoryService;
+	@Autowired
+    private YybMusicianService yybMusicianService;
 
 	@ModelAttribute
 	public YybMusic get(@RequestParam(required=false) String id) {
@@ -124,11 +128,6 @@ public class YybMusicController extends BaseController {
 		if (1 == yybMusic.getIsExcellentCase()) {
             yybMusic.setIsExcellentCaseTime(new Date());
         }
-        yybMusic.setMusicianName(yybMusic.getYybMusician().getName());
-		yybMusic.setCompanyId(yybMusic.getYybMusician().getCompanyId());
-		yybMusic.setCompanyName(yybMusic.getYybMusician().getCompanyName());
-        yybMusic.setAlbumName(yybMusic.getYybMusicianAlbum().getName());
-
 
 		AjaxJson j = new AjaxJson();
 		/**

@@ -77,7 +77,7 @@
 						<sys:gridselect isMultiSelected="true" url="${ctx}/tagcatetory/yybTagCategory/data" id="yybTagCategory" name="yybTagCategory.id" value="${yybMusic.yybTagCategory.id}" labelName="yybTagCategory.name" labelValue="${yybMusic.yybTagCategory.name}"
 							 title="选择标签" cssClass="form-control required" fieldLabels="名称" fieldKeys="name" searchLabels="名称" searchKeys="name" ></sys:gridselect>
 					</td>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>时长：</label></td>
+                    <td class="width-15 active"><label class="pull-right"><font color="red">*</font>时长：<span style="color: red">(秒)</span></label></td>
 					<td class="width-35">
 						<form:input path="musicTime" htmlEscape="false"    class="form-control required"/>
 					</td>
@@ -98,10 +98,19 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>是否循环：</label></td>
+					<td class="width-35">
+						<form:select path="isCircle" class="form-control required">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('music_is_circle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
+					</td>
 					<td class="width-15 active"><label class="pull-right">介绍：</label></td>
 					<td class="width-35">
 						<form:input path="caseIntroduction" htmlEscape="false"    class="form-control "/>
 					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>优秀案例：</label></td>
 					<td class="width-35">
 						<form:select path="isExcellentCase" class="form-control required">
@@ -109,7 +118,9 @@
 							<form:options items="${fns:getDictList('music_is_excellent_case')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</td>
-				</tr>
+					<td class="width-15 active"></td>
+		   			<td class="width-35" ></td>
+		  		</tr>
 		 	</tbody>
 		</table>
 	</form:form>

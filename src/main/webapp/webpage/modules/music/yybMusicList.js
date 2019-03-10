@@ -209,6 +209,16 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+		        field: 'isCircle',
+		        title: '是否循环',
+		        sortable: true,
+		        sortName: 'isCircle',
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('music_is_circle'))}, value, "-");
+		        }
+		       
+		    }
+			,{
 		        field: 'caseIntroduction',
 		        title: '介绍',
 		        sortable: true,
