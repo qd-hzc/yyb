@@ -95,7 +95,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 
 
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
-	public void toOrder(YybOrderVo yybOrderVo, List<YybShopcart> shopcartList, String memberId) {
+	public String toOrder(YybOrderVo yybOrderVo, List<YybShopcart> shopcartList, String memberId) {
 
 		YybOrder yybOrder = new YybOrder();
 		BeanUtils.copyProperties(yybOrderVo, yybOrder);
@@ -147,6 +147,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 			yybShopcartApiMapper.updateOrderId(shopcartParam);
 		}
 
+		return orderId;
 	}
 
 
@@ -173,5 +174,10 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public void updateStatus(Map<String, Object> param) {
 		mapper.updateStatus(param);
+	}
+
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public void cancelOvertimeOrder() {
+		mapper.cancelOvertimeOrder();
 	}
 }

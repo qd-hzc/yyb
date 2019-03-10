@@ -18,4 +18,6 @@ import java.util.Map;
 public interface YybOrderMapper extends BaseMapper<YybOrder> {
 
     void updateStatus(Map<String, Object> param);
+
+    void cancelOvertimeOrder();
 }

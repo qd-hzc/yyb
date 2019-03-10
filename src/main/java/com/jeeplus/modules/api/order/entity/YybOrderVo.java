@@ -18,7 +18,7 @@ public class YybOrderVo implements Serializable {
     private List<String> shopcartIds;
 
     @NotNull
-    @DecimalMin(value = "0.01", message = "用户类型值有误")
+    @DecimalMin(value = "0.01", message = "订单金额有误")
     private BigDecimal orderAmount;
 
     @NotNull

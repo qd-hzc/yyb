@@ -195,5 +195,12 @@
 			status = #{status}
 		WHERE id = #{orderId}
 	</update>
+
+
+	<update id="cancelOvertimeOrder">
+		UPDATE yyb_order SET
+			status = 2
+		WHERE status = 1 and DATEDIFF(now(), order_time)>=3
+	</update>
 	
 </mapper>

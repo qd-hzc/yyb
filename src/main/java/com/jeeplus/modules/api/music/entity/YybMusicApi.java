@@ -1,25 +1,25 @@
 /**
  * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
-package com.jeeplus.modules.music.entity;
+package com.jeeplus.modules.api.music.entity;
 
-import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.modules.musician.entity.YybMusician;
 import com.jeeplus.modules.musician.entity.YybMusicianAlbum;
 import com.jeeplus.modules.tagcatetory.entity.YybTagCategory;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-import com.jeeplus.core.persistence.DataEntity;
-import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * 音乐Entity
  * @author lwb
  * @version 2019-02-19
  */
-public class YybMusic extends DataEntity<YybMusic> {
-	
+public class YybMusicApi extends DataEntity<YybMusicApi> {
+
 	private static final long serialVersionUID = 1L;
 	private String title;		// 歌名
 	private Double price;		// 价格
@@ -34,15 +34,14 @@ public class YybMusic extends DataEntity<YybMusic> {
 	private Integer playCount;		// 播放量
 	private Integer likeCount;		// 收藏量
 	private String musicianName;
-	private Integer isCircle;
 
 	private int isLike;//是否喜欢
-	
-	public YybMusic() {
+
+	public YybMusicApi() {
 		super();
 	}
 
-	public YybMusic(String id){
+	public YybMusicApi(String id){
 		super(id);
 	}
 
@@ -172,14 +171,5 @@ public class YybMusic extends DataEntity<YybMusic> {
 
 	public void setIsLike(int isLike) {
 		this.isLike = isLike;
-	}
-
-
-	public Integer getIsCircle() {
-		return isCircle;
-	}
-
-	public void setIsCircle(Integer isCircle) {
-		this.isCircle = isCircle;
 	}
 }

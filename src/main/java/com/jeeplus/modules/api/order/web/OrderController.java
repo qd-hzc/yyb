@@ -60,6 +60,7 @@ public class OrderController extends BaseController {
     public Result createOrder(HttpServletRequest request, @RequestBody @Valid YybOrderVo yybOrderVo,
                           BindingResult bindingResult){
         logger.info("toOrder:request:" + JSON.toJSONString(yybOrderVo));
+        String orderId = "";
         try {
             YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
             String memebrId = yybMember.getId();
@@ -73,12 +74,12 @@ public class OrderController extends BaseController {
                 return validParam;
             }
 
-            yybOrderApiService.toOrder(yybOrderVo, shopcartList, memebrId);
+            orderId = yybOrderApiService.toOrder(yybOrderVo, shopcartList, memebrId);
         } catch (Exception e) {
             logger.error("生成订单失败:"+e.getMessage(), e);
             return ResultUtil.error("生成订单失败");
         }
-        return ResultUtil.success();
+        return ResultUtil.success(orderId);
     }
 
 
