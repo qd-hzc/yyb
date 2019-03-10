@@ -105,7 +105,8 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 		yybOrder.setId(orderId);
 		//支付状态:未支付
 		yybOrder.setStatus(1);
-		yybOrder.setOrderNo("yyb" + System.currentTimeMillis() + RandomStringUtils.random(6, false, true));
+		String orderNo = "yyb" + System.currentTimeMillis() + RandomStringUtils.random(6, false, true);
+		yybOrder.setOrderNo(orderNo);
 		yybOrder.setOrderTime(new Date());
 		yybOrder.setOrderAmount(yybOrderVo.getOrderAmount().doubleValue());
 		yybOrder.setMemberId(memberId);
@@ -147,7 +148,7 @@ public class YybOrderApiService extends CrudService<YybOrderMapper, YybOrder> {
 			yybShopcartApiMapper.updateOrderId(shopcartParam);
 		}
 
-		return orderId;
+		return orderNo;
 	}
 
 
