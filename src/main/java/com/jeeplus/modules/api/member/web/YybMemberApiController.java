@@ -267,13 +267,11 @@ public class YybMemberApiController extends BaseController {
     @ApiOperation(notes = "upload", httpMethod = "POST", value = "文件上传")
     @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "file", required = true, paramType = "form",dataType = "file")})
     public Result webupload(HttpServletRequest request, MultipartFile file) throws IllegalStateException, IOException {
-        String uploadPath = "yyb";
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH )+1;
-        SystemAuthorizingRealm.Principal principal = (SystemAuthorizingRealm.Principal) UserUtils.getPrincipal();
-        String fileUrl = uploadPath+"/"+year+"/"+month+"/";
-        String fileDir = uploadPath+"/"+year+"/"+month+"/";
+        String fileUrl = Global.getUserfilesBaseDir()+"/"+year+"/"+month+"/";
+        String fileDir = Global.getUserfilesBaseDir()+"/"+year+"/"+month+"/";
         String url = "";
         // 判断文件是否为空
         if (!file.isEmpty()) {
