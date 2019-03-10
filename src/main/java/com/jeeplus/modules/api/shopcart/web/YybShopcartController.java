@@ -147,6 +147,9 @@ public class YybShopcartController extends BaseController {
 		YybMusic yybMusic = yybMusicApiService.get(yybShopcartVo.getMusicId());
 		yybShopcart.setMusicTitle(yybMusic.getTitle());
 		yybShopcart.setMusicianName(yybMusic.getYybMusician().getName());
+		yybShopcart.setCompanyId(yybMusic.getCompanyId());
+		yybShopcart.setCompanyName(yybMusic.getCompanyName());
+		yybShopcart.setAlbumName(yybMusic.getAlbumName());
 
 		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
 		yybShopcart.setMemberId(yybMember.getId());

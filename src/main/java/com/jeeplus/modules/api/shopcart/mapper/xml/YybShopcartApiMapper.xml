@@ -20,7 +20,10 @@
 		a.musician_name AS "musicianName",
 		a.right_select_name AS "rightSelectName",
 		a.usage_select_name AS "usageSelectName",
-		a.order_id AS "orderId"
+		a.order_id AS "orderId",
+		a.company_id as companyId,
+		a.company_name as companyName,
+		a.album_name as albumName
 	</sql>
 	
 	<sql id="yybShopcartJoins">
@@ -92,7 +95,10 @@
 			music_total,
 			musician_name,
 			right_select_name,
-			usage_select_name
+			usage_select_name,
+			company_id,
+			company_name,
+			album_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -110,7 +116,10 @@
 			#{musicTotal},
 			#{musicianName},
 			#{rightSelectName},
-			#{usageSelectName}
+			#{usageSelectName},
+			#{companyId},
+			#{companyName},
+			#{albumName}
 		)
 	</insert>
 	

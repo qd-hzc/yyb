@@ -26,6 +26,9 @@ public class YybShopcart extends DataEntity<YybShopcart> {
 	private Double musicTotal;		// 总额
 	private String musicianName;    //音乐人
 	private String orderId;
+	private String companyId;
+	private String companyName;
+	private String albumName;
 	
 	public YybShopcart() {
 		super();
@@ -128,5 +131,29 @@ public class YybShopcart extends DataEntity<YybShopcart> {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getAlbumName() {
+		return albumName;
+	}
+
+	public void setAlbumName(String albumName) {
+		this.albumName = albumName;
 	}
 }
