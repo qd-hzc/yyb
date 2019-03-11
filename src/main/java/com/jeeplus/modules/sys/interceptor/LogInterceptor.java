@@ -127,6 +127,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 		YybMember yybMember1 = new YybMember();
 		yybMember1.setId(apiMember.getId());
 		yybMember1.setPhone(apiMember.getPhone());
+		yybMember1.setTags(apiMember.getTags());
 		//设置userId到request里，后续根据userId，获取用户信息
 		request.setAttribute(LOGIN_MEMBER, yybMember1);
 
