@@ -59,7 +59,7 @@ public class YybMemberApiController extends BaseController {
         //存入会话session
         Object sessionCode = httpSession.getAttribute("CODE");
         if (sessionCode == null) {
-            return ResultUtil.error("验证码有误");
+            return ResultUtil.error("请先获取验证码");
         }
 
         if (!imgCode.toLowerCase().equals(sessionCode.toString())){
