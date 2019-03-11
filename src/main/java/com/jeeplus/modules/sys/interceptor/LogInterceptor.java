@@ -116,13 +116,16 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 			}
 		}
 
-		//校验数据库中的用户信息
+		/*//校验数据库中的用户信息
 		YybMember yybMember1 = yybMemberApiService.get(apiMember.getId());
 		if (yybMember1 == null) {
 			returnResponse(response, "登陆信息有误", "1111");
 		}
+*/
 
-
+		YybMember yybMember1 = new YybMember();
+		yybMember1.setId(apiMember.getId());
+		yybMember1.setPhone(apiMember.getPhone());
 		//设置userId到request里，后续根据userId，获取用户信息
 		request.setAttribute(LOGIN_MEMBER, yybMember1);
 
