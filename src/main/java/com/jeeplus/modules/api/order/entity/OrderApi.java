@@ -24,7 +24,7 @@ public class OrderApi extends DataEntity<OrderApi> {
 	private Integer status;		// 状态 1未支付 2已取消 3已支付
 	private Date orderTime;		// 下单时间
 	private Date payTime;		// 支付时间
-	private Integer payType;		// 支付类型
+	private Integer payType;		// 支付类型 1支付宝 2微信
 	private Double orderAmount;		// 订单金额
 	private Double payAmount;		// 支付金额
 	private String memberId;		// 会员

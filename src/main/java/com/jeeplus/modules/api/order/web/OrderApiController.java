@@ -272,12 +272,10 @@ public class OrderApiController extends BaseController {
                 Map<String, Object> param = new HashMap<>();
                 param.put("orderId", orderId);
                 param.put("tradeNo", trade_no);
-
-                yybOrderApiService.updateTradeNo(param);
-
-
                 param.put("status", 3);
-                yybOrderApiService.updateStatus(param);
+                param.put("payType", 1);
+                param.put("payTime", new Date());
+                yybOrderApiService.updatePay(param);
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
             }

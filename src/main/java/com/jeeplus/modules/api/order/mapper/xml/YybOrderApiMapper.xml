@@ -220,9 +220,12 @@
 	</update>
 
 
-	<update id="updateTradeNo">
+	<update id="updatePay">
 		UPDATE yyb_order SET
-			trade_no = #{tradeNo}
+			trade_no = #{tradeNo},
+			status = #{status},
+			pay_type  = #{payType},
+			pay_time = #{payTime}
 		WHERE id = #{orderId}
 	</update>
 

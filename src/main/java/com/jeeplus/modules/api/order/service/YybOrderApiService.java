@@ -189,7 +189,7 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi>
 	}
 
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
-	public void updateTradeNo(Map<String, Object> param) {
-		mapper.updateTradeNo(param);
+	public void updatePay(Map<String, Object> param) {
+		mapper.updatePay(param);
 	}
 }

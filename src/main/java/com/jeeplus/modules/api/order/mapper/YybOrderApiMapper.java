@@ -24,5 +24,6 @@ public interface YybOrderApiMapper extends BaseMapper<OrderApi> {
 
     List<OrderApi> list(Map<String, Object> param);
 
-    void updateTradeNo(Map<String, Object> param);
+
+    void updatePay(Map<String, Object> param);
 }
