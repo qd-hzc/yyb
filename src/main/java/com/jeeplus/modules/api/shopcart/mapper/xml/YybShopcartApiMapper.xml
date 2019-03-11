@@ -173,6 +173,15 @@
 		order By a.create_date desc
 	</select>
 
+
+	<select id="shopcartListCount" resultType="java.lang.Integer">
+		select
+		count(*)
+		FROM yyb_shopcart a
+		where (a.order_id is null or a.order_id = "")  and a.member_id = #{memberId}
+		order By a.create_date desc
+	</select>
+
 	<select id="getCountByCodition" resultType="java.lang.Integer">
 		select count(*) FROM yyb_shopcart a
 		where (a.order_id is null or a.order_id = "") and  a.member_id = #{memberId} and a.music_id = #{musicId}

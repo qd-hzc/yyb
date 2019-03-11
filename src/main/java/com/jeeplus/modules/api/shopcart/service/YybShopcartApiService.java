@@ -56,4 +56,9 @@ public class YybShopcartApiService extends CrudService<YybShopcartApiMapper, Yyb
 	public List<YybShopcart> getListByIds(List<String> ids) {
 		return mapper.getListByIds(ids);
 	}
+
+	public Integer shopcartListCount(Map<String, Object> param) {
+		return mapper.shopcartListCount(param);
+
+	}
 }

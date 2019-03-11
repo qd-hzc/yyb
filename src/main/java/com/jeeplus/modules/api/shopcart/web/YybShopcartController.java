@@ -117,6 +117,25 @@ public class YybShopcartController extends BaseController {
 		return ResultUtil.success(list);
 	}
 
+
+	/**
+	 * 个人购物车列表页面
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/count", method = RequestMethod.GET)
+	@ApiOperation(notes = "count", httpMethod = "get", value = "个人购物车数量")
+	public Result count(HttpServletRequest request) {
+
+		YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+		String memebrId = yybMember.getId();
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", memebrId);
+
+		Integer count = yybShopcartService.shopcartListCount(param);
+
+		return ResultUtil.success(count);
+	}
+
 	/**
 	 * 保存购物车
 	 */
