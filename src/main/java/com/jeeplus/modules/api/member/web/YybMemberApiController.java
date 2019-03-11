@@ -270,8 +270,8 @@ public class YybMemberApiController extends BaseController {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH )+1;
-        String fileUrl = Global.getUserfilesBaseDir()+"/"+year+"/"+month+"/";
-        String fileDir = Global.getUserfilesBaseDir()+"/"+year+"/"+month+"/";
+        String fileUrl = Global.getAttachmentUrlApi()+"/"+year+"/"+month+"/";
+        String fileDir = Global.getAttachmentDirApi()+"/"+year+"/"+month+"/";
         String url = "";
         // 判断文件是否为空
         if (!file.isEmpty()) {

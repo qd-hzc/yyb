@@ -114,6 +114,16 @@ public class Global {
 		return dir;
 	}
 
+
+	/**
+	 * 程序附件物理存储地址
+	 * @return
+	 */
+	public static String getAttachmentDirApi(){
+		String dir = Global.getUserfilesBaseDir() + Global.USERFILES_BASE_URL  + "/程序附件/";
+		FileUtils.createDirectory(dir);
+		return dir;
+	}
 	/**
 	 * 程序附件网络访问地址
 	 * @return
@@ -122,6 +132,15 @@ public class Global {
 
 		SystemAuthorizingRealm.Principal principal = (SystemAuthorizingRealm.Principal) UserUtils.getPrincipal();
 		return  Servlets.getRequest().getContextPath() + Global.USERFILES_BASE_URL + principal + "/程序附件/";
+	}
+
+	/**
+	 * 程序附件网络访问地址
+	 * @return
+	 */
+	public static String getAttachmentUrlApi(){
+
+		return  Servlets.getRequest().getContextPath() + Global.USERFILES_BASE_URL + "/程序附件/";
 	}
 
 	/**
