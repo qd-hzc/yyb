@@ -125,6 +125,10 @@ public class OrderApiController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ApiOperation(notes = "list", httpMethod = "GET", value = "列表")
+    @ApiImplicitParams({@ApiImplicitParam(name = "startPage", value = "", required = false, paramType = "query",dataType = "string"),
+            @ApiImplicitParam(name = "pageSize", value = "", required = false, paramType = "query",dataType = "string"),
+            @ApiImplicitParam(name = "status", value = "status:0:未支付 1:已取消 2:已支付", required = false, paramType = "query",dataType = "string")})
+
     public Result list(HttpServletRequest request, @RequestParam(required = false) Integer status ,
                        @RequestParam(required = false, defaultValue = "1") String startPage,
                        @RequestParam(required = false, defaultValue = "10") String pageSize){

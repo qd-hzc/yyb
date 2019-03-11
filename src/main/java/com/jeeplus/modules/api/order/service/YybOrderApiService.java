@@ -49,7 +49,7 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi>
 	
 	public OrderApi get(String id) {
 		OrderApi orderApi = super.get(id);
-		orderApi.setOrderDeatilApiList(yybOrderDeatilMapper.findList(new OrderDeatilApi(orderApi)));
+		orderApi.setDetailList(yybOrderDeatilMapper.findList(new OrderDeatilApi(orderApi)));
 		return orderApi;
 	}
 	
@@ -64,7 +64,7 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi>
 	@Transactional(readOnly = false)
 	public void save(OrderApi orderApi) {
 		super.save(orderApi);
-		for (OrderDeatilApi orderDeatilApi : orderApi.getOrderDeatilApiList()){
+		for (OrderDeatilApi orderDeatilApi : orderApi.getDetailList()){
 			if (orderDeatilApi.getId() == null){
 				continue;
 			}

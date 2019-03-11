@@ -4,7 +4,7 @@
 
 
 	<resultMap id="OrderAndDetailResultMap" type="com.jeeplus.modules.api.order.entity.OrderApi">
-		<collection property="orderDeatilApiList" javaType="java.util.List" column="id"
+		<collection property="detailList" javaType="java.util.List" column="id"
 					ofType="com.jeeplus.modules.api.order.entity.OrderDeatilApi"
 					select="com.jeeplus.modules.api.order.mapper.YybOrderDeatilApiMapper.listByOrderId">
 		</collection>

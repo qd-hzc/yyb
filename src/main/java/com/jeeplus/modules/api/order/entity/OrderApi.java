@@ -41,7 +41,7 @@ public class OrderApi extends DataEntity<OrderApi> {
 	private String musicianName;
 	private String albumName;
 	private Integer memberSex;
-	private List<OrderDeatilApi> orderDeatilApiList = Lists.newArrayList();		// 子表列表
+	private List<OrderDeatilApi> detailList = Lists.newArrayList();		// 子表列表
 	
 	public OrderApi() {
 		super();
@@ -205,13 +205,13 @@ public class OrderApi extends DataEntity<OrderApi> {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	public List<OrderDeatilApi> getOrderDeatilApiList() {
-		return orderDeatilApiList;
+
+	public List<OrderDeatilApi> getDetailList() {
+		return detailList;
 	}
 
-	public void setOrderDeatilApiList(List<OrderDeatilApi> orderDeatilApiList) {
-		this.orderDeatilApiList = orderDeatilApiList;
+	public void setDetailList(List<OrderDeatilApi> detailList) {
+		this.detailList = detailList;
 	}
 
 	public String getCompanyId() {
