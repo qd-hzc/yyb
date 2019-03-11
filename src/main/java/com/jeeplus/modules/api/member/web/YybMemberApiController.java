@@ -211,6 +211,7 @@ public class YybMemberApiController extends BaseController {
         }
 
 
+
         YybMember yybMember = yybMemberApiService.getByLoginName(phone);
         if (yybMember == null) {
             return ResultUtil.error("获取用户失败");
