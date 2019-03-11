@@ -337,7 +337,6 @@ public class YybMemberApiController extends BaseController {
         }
 
         if (imgCode.toLowerCase().equals(sessionCode.toString())){
-            session.removeAttribute("CODE");
             return ResultUtil.success(true);
         } else {
             return ResultUtil.success(false);
