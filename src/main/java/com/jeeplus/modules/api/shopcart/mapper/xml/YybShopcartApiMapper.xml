@@ -179,7 +179,34 @@
 	</select>
 
 	<select id="getListByIds"  resultType="YybShopcart">
-		select * FROM yyb_shopcart a where id in
+		select
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.member_id AS "memberId",
+		a.music_id AS "musicId",
+		a.music_title AS "musicTitle",
+		a.music_price AS "musicPrice",
+		a.right_select AS "rightSelect",
+		a.usage_select AS "usageSelect",
+		a.music_total AS "musicTotal",
+		a.right_select_name AS "rightSelectName",
+		a.usage_select_name AS "usageSelectName",
+		a.order_id AS "orderId",
+		a.company_id as companyId,
+		a.company_name as companyName,
+		a.album_name as albumName ,
+		c.name AS "musicianName",
+		c.id as "musicianId"
+
+		FROM yyb_shopcart a
+		left join yyb_music b on a.music_id = b.id
+		left join yyb_musician c on c.id = b.musician_id
+		where a.id in
 		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
 			#{item}
 		</foreach>

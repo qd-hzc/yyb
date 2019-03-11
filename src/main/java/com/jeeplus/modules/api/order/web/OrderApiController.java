@@ -41,7 +41,7 @@ import static com.jeeplus.modules.sys.interceptor.LogInterceptor.LOGIN_MEMBER;
 
 @Controller
 @RequestMapping(value = "/api/order")
-public class OrderController extends BaseController {
+public class OrderApiController extends BaseController {
 
 
     @Autowired
@@ -274,15 +274,15 @@ public class OrderController extends BaseController {
         for (YybShopcart yybShopcart : yybShopcartList) {
 
             if (!memberId.equals(yybShopcart.getMemberId())) {
-                logger.error("下单：我的收藏异常");
+                logger.error("下单：我的购物车异常");
 
-                return ResultUtil.error("我的收藏异常");
+                return ResultUtil.error("我的购物车异常");
             }
 
             if (!StringUtils.isEmpty(yybShopcart.getOrderId())) {
-                logger.error("下单：存在收藏已下单");
+                logger.error("下单：购物车已下单");
 
-                return ResultUtil.error("存在收藏已下单");
+                return ResultUtil.error("购物车已下单");
             }
 
             YybMusic yybMusic = yybMusicApiService.get(yybShopcart.getMusicId());
