@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
-package com.jeeplus.modules.order.entity;
+package com.jeeplus.modules.api.order.entity;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeeplus.modules.api.order.mapper.YybOrderApiMapper">
-    
+
+
+	<resultMap id="OrderAndDetailResultMap" type="com.jeeplus.modules.api.order.entity.YybOrder">
+		<collection property="yybOrderDeatilList" javaType="java.util.List" column="id"
+					ofType="com.jeeplus.modules.api.order.entity.YybOrderDeatil"
+					select="com.jeeplus.modules.api.order.mapper.YybOrderDeatilApiMapper.listByOrderId">
+		</collection>
+	</resultMap>
+
 	<sql id="yybOrderColumns">
 		a.id AS "id",
 		a.create_by AS "createBy.id",
@@ -192,7 +200,7 @@
 	</select>
 
 
-	<select id="list" resultType="YybOrder" >
+	<select id="list" resultMap="OrderAndDetailResultMap">
 		SELECT
 		<include refid="yybOrderColumns"/>
 		FROM yyb_order a

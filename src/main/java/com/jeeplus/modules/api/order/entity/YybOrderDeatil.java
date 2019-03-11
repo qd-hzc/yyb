@@ -1,10 +1,8 @@
 /**
  * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
-package com.jeeplus.modules.order.entity;
+package com.jeeplus.modules.api.order.entity;
 
-import com.alibaba.fastjson.JSON;
-import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.right.entity.YybRight;
 import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
 

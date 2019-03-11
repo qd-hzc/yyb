@@ -5,7 +5,9 @@ package com.jeeplus.modules.api.order.mapper;
 
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
-import com.jeeplus.modules.order.entity.YybOrderDeatil;
+import com.jeeplus.modules.api.order.entity.YybOrderDeatil;
+
+import java.util.List;
 
 /**
  * 订单详情MAPPER接口
@@ -14,5 +16,5 @@ import com.jeeplus.modules.order.entity.YybOrderDeatil;
  */
 @MyBatisMapper
 public interface YybOrderDeatilApiMapper extends BaseMapper<YybOrderDeatil> {
-	
+    List<YybOrderDeatil> listByOrderId(String orderId);
 }

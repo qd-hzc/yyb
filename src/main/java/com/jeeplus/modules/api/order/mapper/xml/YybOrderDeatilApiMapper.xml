@@ -4,13 +4,9 @@
     
 	<sql id="yybOrderDeatilColumns">
 		a.id AS "id",
-		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
-		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.del_flag AS "delFlag",
-		a.order_id AS "yybOrder.id",
-		a.shopcart_id AS "yybShopcart.id",
 		a.music_id AS "musicId",
 		a.music_title AS "musicTitle",
 		a.music_price AS "musicPrice",
@@ -25,13 +21,6 @@
 		a.company_id as companyId,
 		a.company_name as companyName,
 		a.album_name as albumName
-				
-				
-				
-				
-				
-		b.order_no AS "yybOrder.orderNo",
-		b.trade_no AS "yybOrder.tradeNo"
 	</sql>
 	
 	<sql id="yybOrderDeatilJoins">
@@ -190,5 +179,12 @@
 	<select id="findUniqueByProperty" resultType="YybOrderDeatil" statementType="STATEMENT">
 		select * FROM yyb_order_detail  where ${propertyName} = '${value}'
 	</select>
-	
+
+	<select id="listByOrderId" parameterType="java.lang.String" resultType="com.jeeplus.modules.api.order.entity.YybOrderDeatil">
+		SELECT
+		<include refid="yybOrderDeatilColumns"/>
+		FROM yyb_order_detail a
+		where a.order_id = #{orderId}
+	</select>
+
 </mapper>
