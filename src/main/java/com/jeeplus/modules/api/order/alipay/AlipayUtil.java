@@ -8,7 +8,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 
 public class AlipayUtil {
 
-    public static String pay(String money,String info,String name,String orderId) throws Exception{
+    public static String pay(String money,String info,String name,String orderId, String orderNo) throws Exception{
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
 
@@ -37,8 +37,9 @@ public class AlipayUtil {
 		//商品描述，可空
 		String body = new String(request.getParameter("WIDbody").getBytes("ISO-8859-1"),"UTF-8");*/
 
-        alipayRequest.setBizContent("{\"out_trade_no\":\""+ orderId +"\","
+        alipayRequest.setBizContent("{\"out_trade_no\":\""+ orderNo +"\","
                 + "\"total_amount\":\""+ money +"\","
+                + "\"orderId\":\""+ orderId +"\","
                 + "\"subject\":\""+ name +"\","
                 + "\"body\":\""+ info +"\","
                 + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");

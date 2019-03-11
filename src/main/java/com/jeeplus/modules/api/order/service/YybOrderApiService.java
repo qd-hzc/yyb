@@ -182,4 +182,14 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi>
 	public List<OrderApi> list(Map<String, Object> param) {
 		return mapper.list(param);
 	}
+
+
+	public List<OrderDeatilApi> getDetailListByOrderId(String id){
+		return yybOrderDeatilMapper.listByOrderId(id);
+	}
+
+	@Transactional(readOnly = false, rollbackFor = Exception.class)
+	public void updateTradeNo(Map<String, Object> param) {
+		mapper.updateTradeNo(param);
+	}
 }

@@ -220,6 +220,13 @@
 	</update>
 
 
+	<update id="updateTradeNo">
+		UPDATE yyb_order SET
+			trade_no = #{tradeNo}
+		WHERE id = #{orderId}
+	</update>
+
+
 	<update id="cancelOvertimeOrder">
 		UPDATE yyb_order SET
 			status = 2

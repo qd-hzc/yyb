@@ -12,6 +12,7 @@ import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.api.order.alipay.AlipayConfig;
 import com.jeeplus.modules.api.order.alipay.AlipayUtil;
 import com.jeeplus.modules.api.order.entity.OrderApi;
+import com.jeeplus.modules.api.order.entity.OrderDeatilApi;
 import com.jeeplus.modules.api.order.entity.YybOrderVo;
 import com.jeeplus.modules.api.order.service.YybOrderApiService;
 import com.jeeplus.modules.api.right.service.YybRightApiService;
@@ -151,28 +152,56 @@ public class OrderApiController extends BaseController {
 
 
     /**
-     * 会员列表页面
+     * 支付宝支付
      */
     @ResponseBody
-    @RequestMapping(value = "/pay")
-    public String pay(HttpServletResponse response) {
+    @RequestMapping(value = "/pay", method = RequestMethod.POST)
+    @ApiOperation(notes = "pay", httpMethod = "POST", value = "列表")
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "orderId", required = true, paramType = "query",dataType = "string")})
+    public Result pay(HttpServletRequest request, @RequestParam String orderId) {
+
+        logger.info("pay:request:" + (orderId));
+
+        YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
+        String memberId = yybMember.getId();
+
         //商户订单号，商户网站订单系统中唯一订单号，必填
-        String orderId = new String("test12312311");
+        OrderApi orderApi = yybOrderApiService.get(orderId);
+        if (orderApi == null || orderApi.getStatus() != 1) {
+            logger.error("支付：订单状态异常");
+            return ResultUtil.error("订单状态异常");
+        }
+
+        if (!orderApi.getMemberId().equals(memberId)) {
+            logger.error("支付：订单异常");
+            return ResultUtil.error("订单异常");
+        }
+
+        List<OrderDeatilApi> deatilList = yybOrderApiService.getDetailListByOrderId(orderId);
+        for (OrderDeatilApi orderDeatilApi : deatilList) {
+            YybMusic yybMusic = yybMusicApiService.get(orderDeatilApi.getMusicId());
+            if (yybMusic == null || yybMusic.getId() ==null || "1".equals(yybMusic.getDelFlag())) {
+                logger.error("支付：音乐状态异常");
+                return ResultUtil.error("音乐状态异常");
+            }
+        }
+
         //付款金额，必填
-        String money = new String("100");
+        String money = orderApi.getOrderAmount().toString();
+        String orderNo = orderApi.getOrderNo();
         //订单名称，必填
-        String name = new String("123");
+        String name = new String("音乐邦版权购买");
         //商品描述，可空
-        String info = new String("123123");
+        String info = new String("音乐邦版权购买");
         String result= "";
         try {
-            result = AlipayUtil.pay(money, info, name, orderId);
+            result = AlipayUtil.pay(money, info, name, orderId, orderNo);
             System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result;
+        return ResultUtil.success(result);
     }
 
 
@@ -186,6 +215,9 @@ public class OrderApiController extends BaseController {
     @RequestMapping(value="/notify_url",method= RequestMethod.POST)
     @ResponseBody
     public String notify(HttpServletRequest request,HttpServletResponse response) throws Exception {
+
+        logger.info("支付宝回调参数：" + JSON.toJSONString(request.getParameterMap()));
+
         //获取支付宝POST过来反馈信息
         Map<String,String> params = new HashMap<String,String>();
         Map<String,String[]> requestParams = request.getParameterMap();
@@ -203,6 +235,8 @@ public class OrderApiController extends BaseController {
         }
 
         boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
+        logger.info("支付宝验签成功");
+
 
         //——请在这里编写您的程序（以下代码仅作参考）——
 	/* 实际验证过程建议商户务必添加以下校验：
@@ -213,7 +247,9 @@ public class OrderApiController extends BaseController {
 	*/
         if(signVerified) {//验证成功
             //商户订单号
-            String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+            String out_trade_no = new String(request.getParameter("orderNo").getBytes("ISO-8859-1"),"UTF-8");
+
+            String orderId = new String(request.getParameter("orderId").getBytes("ISO-8859-1"),"UTF-8");
 
             //支付宝交易号
             String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
@@ -233,6 +269,15 @@ public class OrderApiController extends BaseController {
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
 
+                Map<String, Object> param = new HashMap<>();
+                param.put("orderId", orderId);
+                param.put("tradeNo", trade_no);
+
+                yybOrderApiService.updateTradeNo(param);
+
+
+                param.put("status", 3);
+                yybOrderApiService.updateStatus(param);
                 //注意：
                 //付款完成后，支付宝系统发送该交易状态通知
             }
