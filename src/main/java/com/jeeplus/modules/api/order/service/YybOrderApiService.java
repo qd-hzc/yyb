@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSON;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
+import com.jeeplus.modules.api.order.entity.OrderApi;
 import com.jeeplus.modules.api.order.entity.YybOrderVo;
 import com.jeeplus.modules.api.order.mapper.YybOrderApiMapper;
 import com.jeeplus.modules.api.order.mapper.YybOrderDeatilApiMapper;
@@ -16,8 +17,7 @@ import com.jeeplus.modules.api.shopcart.entity.YybShopcart;
 import com.jeeplus.modules.api.shopcart.mapper.YybShopcartApiMapper;
 import com.jeeplus.modules.api.usage.entity.YybUsageDto;
 import com.jeeplus.modules.api.usage.mapper.YybUsageApiMapper;
-import com.jeeplus.modules.api.order.entity.YybOrder;
-import com.jeeplus.modules.api.order.entity.YybOrderDeatil;
+import com.jeeplus.modules.api.order.entity.OrderDeatilApi;
 import com.jeeplus.modules.right.entity.YybRight;
 import com.jeeplus.modules.usage.entity.YybUsage;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -35,7 +35,7 @@ import java.util.*;
  */
 @Service
 @Transactional(readOnly = true)
-public class YybOrderApiService extends CrudService<YybOrderApiMapper, YybOrder> {
+public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi> {
 
 	@Autowired
 	private YybOrderDeatilApiMapper yybOrderDeatilMapper;
@@ -47,69 +47,69 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, YybOrder>
 	private YybUsageApiMapper yybUsageApiMapper;
 
 	
-	public YybOrder get(String id) {
-		YybOrder yybOrder = super.get(id);
-		yybOrder.setYybOrderDeatilList(yybOrderDeatilMapper.findList(new YybOrderDeatil(yybOrder)));
-		return yybOrder;
+	public OrderApi get(String id) {
+		OrderApi orderApi = super.get(id);
+		orderApi.setOrderDeatilApiList(yybOrderDeatilMapper.findList(new OrderDeatilApi(orderApi)));
+		return orderApi;
 	}
 	
-	public List<YybOrder> findList(YybOrder yybOrder) {
-		return super.findList(yybOrder);
+	public List<OrderApi> findList(OrderApi orderApi) {
+		return super.findList(orderApi);
 	}
 	
-	public Page<YybOrder> findPage(Page<YybOrder> page, YybOrder yybOrder) {
-		return super.findPage(page, yybOrder);
+	public Page<OrderApi> findPage(Page<OrderApi> page, OrderApi orderApi) {
+		return super.findPage(page, orderApi);
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(YybOrder yybOrder) {
-		super.save(yybOrder);
-		for (YybOrderDeatil yybOrderDeatil : yybOrder.getYybOrderDeatilList()){
-			if (yybOrderDeatil.getId() == null){
+	public void save(OrderApi orderApi) {
+		super.save(orderApi);
+		for (OrderDeatilApi orderDeatilApi : orderApi.getOrderDeatilApiList()){
+			if (orderDeatilApi.getId() == null){
 				continue;
 			}
-			if (YybOrderDeatil.DEL_FLAG_NORMAL.equals(yybOrderDeatil.getDelFlag())){
-				if (StringUtils.isBlank(yybOrderDeatil.getId())){
-					yybOrderDeatil.setYybOrder(yybOrder);
-					yybOrderDeatil.preInsert();
-					yybOrderDeatilMapper.insert(yybOrderDeatil);
+			if (OrderDeatilApi.DEL_FLAG_NORMAL.equals(orderDeatilApi.getDelFlag())){
+				if (StringUtils.isBlank(orderDeatilApi.getId())){
+					orderDeatilApi.setOrderApi(orderApi);
+					orderDeatilApi.preInsert();
+					yybOrderDeatilMapper.insert(orderDeatilApi);
 				}else{
-					yybOrderDeatil.preUpdate();
-					yybOrderDeatilMapper.update(yybOrderDeatil);
+					orderDeatilApi.preUpdate();
+					yybOrderDeatilMapper.update(orderDeatilApi);
 				}
 			}else{
-				yybOrderDeatilMapper.delete(yybOrderDeatil);
+				yybOrderDeatilMapper.delete(orderDeatilApi);
 			}
 		}
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(YybOrder yybOrder) {
-		super.delete(yybOrder);
-		yybOrderDeatilMapper.delete(new YybOrderDeatil(yybOrder));
+	public void delete(OrderApi orderApi) {
+		super.delete(orderApi);
+		yybOrderDeatilMapper.delete(new OrderDeatilApi(orderApi));
 	}
 
 
 	@Transactional(readOnly = false, rollbackFor = Exception.class)
 	public String toOrder(YybOrderVo yybOrderVo, List<YybShopcart> shopcartList, String memberId) {
 
-		YybOrder yybOrder = new YybOrder();
-		BeanUtils.copyProperties(yybOrderVo, yybOrder);
+		OrderApi orderApi = new OrderApi();
+		BeanUtils.copyProperties(yybOrderVo, orderApi);
 
 		//订单id
 		String orderId = UUID.randomUUID().toString().replace("-","");
-		yybOrder.setId(orderId);
+		orderApi.setId(orderId);
 		//支付状态:未支付
-		yybOrder.setStatus(1);
+		orderApi.setStatus(1);
 		String orderNo = "yyb" + System.currentTimeMillis() + RandomStringUtils.random(6, false, true);
-		yybOrder.setOrderNo(orderNo);
-		yybOrder.setOrderTime(new Date());
-		yybOrder.setOrderAmount(yybOrderVo.getOrderAmount().doubleValue());
-		yybOrder.setMemberId(memberId);
+		orderApi.setOrderNo(orderNo);
+		orderApi.setOrderTime(new Date());
+		orderApi.setOrderAmount(yybOrderVo.getOrderAmount().doubleValue());
+		orderApi.setMemberId(memberId);
 
 
-		List<YybOrderDeatil> yybOrderDeatils = new ArrayList<>();
-		YybOrderDeatil yybOrderDeatil;
+		List<OrderDeatilApi> orderDeatilApis = new ArrayList<>();
+		OrderDeatilApi orderDeatilApi;
 		for (YybShopcart shopcart : shopcartList) {
 
 			List<String> rightIds = Arrays.asList(shopcart.getRightSelect().split(","));
@@ -119,21 +119,21 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, YybOrder>
 
 
 			//赋值属性购物车到订单明细
-			yybOrderDeatil = new YybOrderDeatil();
-			BeanUtils.copyProperties(shopcart, yybOrderDeatil);
+			orderDeatilApi = new OrderDeatilApi();
+			BeanUtils.copyProperties(shopcart, orderDeatilApi);
 
 			//保存所选中的权利跟用途
 			String body = this.getRightUsageBody(rightList, usageList);
 
-			yybOrderDeatil.setYybOrder(yybOrder);
-			yybOrderDeatil.setYybShopcart(shopcart);
-			yybOrderDeatil.setRightAndUsageBody(body);
-			yybOrderDeatils.add(yybOrderDeatil);
+			orderDeatilApi.setOrderApi(orderApi);
+			orderDeatilApi.setYybShopcart(shopcart);
+			orderDeatilApi.setRightAndUsageBody(body);
+			orderDeatilApis.add(orderDeatilApi);
 			//插入订单明细
-			yybOrderDeatilMapper.insert(yybOrderDeatil);
+			yybOrderDeatilMapper.insert(orderDeatilApi);
 		}
 		//插入订单
-		mapper.insert(yybOrder);
+		mapper.insert(orderApi);
 
 		Map<String, Object> shopcartParam;
 
@@ -178,7 +178,7 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, YybOrder>
 		mapper.cancelOvertimeOrder();
 	}
 
-	public List<YybOrder> list(Map<String, Object> param) {
+	public List<OrderApi> list(Map<String, Object> param) {
 		return mapper.list(param);
 	}
 }

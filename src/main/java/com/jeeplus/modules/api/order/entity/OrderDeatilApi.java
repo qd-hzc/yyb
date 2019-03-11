@@ -17,10 +17,10 @@ import java.util.List;
  * @author lwb
  * @version 2019-02-20
  */
-public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
+public class OrderDeatilApi extends DataEntity<OrderDeatilApi> {
 	
 	private static final long serialVersionUID = 1L;
-	private YybOrder yybOrder;		// 订单 父类
+	private OrderApi orderApi;		// 订单 父类
 	private YybShopcart yybShopcart;		// 购物车
 	private String musicId;		// 音乐
 	private String musicTitle;		// 音乐名称
@@ -45,24 +45,24 @@ public class YybOrderDeatil extends DataEntity<YybOrderDeatil> {
 
 	private String rightAndUsageBody;
 	
-	public YybOrderDeatil() {
+	public OrderDeatilApi() {
 		super();
 	}
 
-	public YybOrderDeatil(String id){
+	public OrderDeatilApi(String id){
 		super(id);
 	}
 
-	public YybOrderDeatil(YybOrder yybOrder){
-		this.yybOrder = yybOrder;
+	public OrderDeatilApi(OrderApi orderApi){
+		this.orderApi = orderApi;
 	}
 
-	public YybOrder getYybOrder() {
-		return yybOrder;
+	public OrderApi getOrderApi() {
+		return orderApi;
 	}
 
-	public void setYybOrder(YybOrder yybOrder) {
-		this.yybOrder = yybOrder;
+	public void setOrderApi(OrderApi orderApi) {
+		this.orderApi = orderApi;
 	}
 	
 	@ExcelField(title="购物车", align=2, sort=7)

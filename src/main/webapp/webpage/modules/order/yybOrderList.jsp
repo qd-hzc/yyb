@@ -21,6 +21,35 @@
 	<div id="search-collapse" class="collapse">
 		<div class="accordion-inner">
 			<form:form id="searchForm" modelAttribute="yybOrder" class="form form-horizontal well clearfix">
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="订单号：">订单号：</label>
+				<form:input path="orderNo" htmlEscape="false" maxlength="64"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="状态：">状态：</label>
+				<form:select path="status"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('order_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="支付类型：">支付类型：</label>
+				<form:select path="payType"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('pay_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="购买人：">购买人：</label>
+				<form:input path="memberName" htmlEscape="false" maxlength="64"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="用户类型：">用户类型：</label>
+				<form:select path="memberType"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>

@@ -165,52 +165,10 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'memberId',
-		        title: '会员',
-		        sortable: true,
-		        sortName: 'memberId'
-		       
-		    }
-			,{
 		        field: 'memberName',
 		        title: '购买人',
 		        sortable: true,
 		        sortName: 'memberName'
-		       
-		    }
-			,{
-		        field: 'memberAddress',
-		        title: '地址',
-		        sortable: true,
-		        sortName: 'memberAddress'
-		       
-		    }
-			,{
-		        field: 'idCard',
-		        title: '身份证',
-		        sortable: true,
-		        sortName: 'idCard'
-		       
-		    }
-			,{
-		        field: 'idCardAttach',
-		        title: '身份证附件',
-		        sortable: true,
-		        sortName: 'idCardAttach'
-		       
-		    }
-			,{
-		        field: 'orgCode',
-		        title: '组织机构',
-		        sortable: true,
-		        sortName: 'orgCode'
-		       
-		    }
-			,{
-		        field: 'orgCodeAttach',
-		        title: '组织机构附件',
-		        sortable: true,
-		        sortName: 'orgCodeAttach'
 		       
 		    }
 			,{
@@ -228,6 +186,74 @@ $(document).ready(function() {
 		        title: '手机号',
 		        sortable: true,
 		        sortName: 'phone'
+		       
+		    }
+			,{
+		        field: 'memberSex',
+		        title: '性别',
+		        sortable: true,
+		        sortName: 'memberSex'
+		       
+		    }
+			,{
+		        field: 'memberAddress',
+		        title: '地址',
+		        sortable: true,
+		        sortName: 'memberAddress'
+		       
+		    }
+			,{
+		        field: 'idCard',
+		        title: '身份证',
+		        sortable: true,
+		        sortName: 'idCard'
+		       
+		    }
+		    ,{
+		        field: 'idCardAttach',
+		        title: '身份证附件',
+		        sortable: true,
+		        sortName: 'idCardAttach',
+		        formatter:function(value, row , index){
+		        	if (value == undefined || value == "" || value == null) {return "";};var valueArray = value.split("|");
+		        	var labelArray = [];
+		        	for(var i =0 ; i<valueArray.length; i++){
+		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
+		        		{
+		        			labelArray[i] = "<a href=\""+valueArray[i]+"\" url=\""+valueArray[i]+"\" target=\"_blank\">"+decodeURIComponent(valueArray[i].substring(valueArray[i].lastIndexOf("/")+1))+"</a>"
+		        		}else{
+		        			labelArray[i] = '<img   onclick="jp.showPic(\''+valueArray[i]+'\')"'+' height="50px" src="'+valueArray[i]+'">';
+		        		}
+		        	}
+		        	return labelArray.join(" ");
+		        }
+		       
+		    }
+			,{
+		        field: 'orgCode',
+		        title: '组织机构',
+		        sortable: true,
+		        sortName: 'orgCode'
+		       
+		    }
+		    ,{
+		        field: 'orgCodeAttach',
+		        title: '组织机构附件',
+		        sortable: true,
+		        sortName: 'orgCodeAttach',
+		        formatter:function(value, row , index){
+		        	if (value == undefined || value == "" || value == null) {return "";};var valueArray = value.split("|");
+		        	var labelArray = [];
+		        	for(var i =0 ; i<valueArray.length; i++){
+		        		if(!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(valueArray[i]))
+		        		{
+		        			labelArray[i] = "<a href=\""+valueArray[i]+"\" url=\""+valueArray[i]+"\" target=\"_blank\">"+decodeURIComponent(valueArray[i].substring(valueArray[i].lastIndexOf("/")+1))+"</a>"
+		        		}else{
+		        			labelArray[i] = '<img   onclick="jp.showPic(\''+valueArray[i]+'\')"'+' height="50px" src="'+valueArray[i]+'">';
+		        		}
+		        	}
+		        	return labelArray.join(" ");
+		        }
 		       
 		    }
 			,{
@@ -400,13 +426,14 @@ $(document).ready(function() {
 						<table class="ani table">
 						<thead>
 							<tr>
-								<th>订单</th>
-								<th>音乐</th>
 								<th>音乐名称</th>
 								<th>音乐单价</th>
-								<th>用途与占比</th>
-								<th>权利</th>
+								<th>音乐人</th>
+								<th>专辑</th>
+								<th>公司</th>
 								<th>总价</th>
+								<th>权利</th>
+								<th>用途</th>
 								<th>备注信息</th>
 							</tr>
 						</thead>
@@ -419,26 +446,28 @@ $(document).ready(function() {
 	<script type="text/template" id="yybOrderChild1Tpl">//<!--
 				<tr>
 					<td>
-						{{row.yybOrder.id}}
-					</td>
-
-					<td>
-						{{row.musicId}}
-					</td>
-					<td>
 						{{row.musicTitle}}
 					</td>
 					<td>
 						{{row.musicPrice}}
 					</td>
 					<td>
-						{{row.usageSelectName}}
+						{{row.musicianName}}
+					</td>
+					<td>
+						{{row.albumName}}
+					</td>
+					<td>
+						{{row.companyName}}
+					</td>
+					<td>
+						{{row.musicTotal}}
 					</td>
 					<td>
 						{{row.rightSelectName}}
 					</td>
 					<td>
-						{{row.musicTotal}}
+						{{row.usageSelectName}}
 					</td>
 					<td>
 						{{row.remarks}}

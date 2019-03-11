@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jeeplus.modules.api.order.mapper.YybOrderApiMapper">
-
-
-	<resultMap id="OrderAndDetailResultMap" type="com.jeeplus.modules.api.order.entity.OrderApi">
-		<collection property="orderDeatilApiList" javaType="java.util.List" column="id"
-					ofType="com.jeeplus.modules.api.order.entity.OrderDeatilApi"
-					select="com.jeeplus.modules.api.order.mapper.YybOrderDeatilApiMapper.listByOrderId">
-		</collection>
-	</resultMap>
-
+<mapper namespace="com.jeeplus.modules.order.mapper.YybOrderMapper">
+    
 	<sql id="yybOrderColumns">
 		a.id AS "id",
 		a.create_by AS "createBy.id",
@@ -25,18 +17,16 @@
 		a.pay_type AS "payType",
 		a.order_amount AS "orderAmount",
 		a.pay_amount AS "payAmount",
-		a.member_id AS "memberId",
 		a.member_name AS "memberName",
+		a.member_type AS "memberType",
+		a.phone AS "phone",
+		a.member_sex AS "memberSex",
 		a.member_address AS "memberAddress",
 		a.id_card AS "idCard",
 		a.id_card_attach AS "idCardAttach",
 		a.org_code AS "orgCode",
 		a.org_code_attach AS "orgCodeAttach",
-		a.member_type AS "memberType",
-		a.phone AS "phone",
-		a.remarks AS "remarks",
-		a.company_id AS "companyId",
-		a.member_sex As "memberSex"
+		a.remarks AS "remarks"
 	</sql>
 	
 	<sql id="yybOrderJoins">
@@ -44,7 +34,7 @@
 	</sql>
 	
     
-	<select id="get" resultType="OrderApi" >
+	<select id="get" resultType="YybOrder" >
 		SELECT 
 			<include refid="yybOrderColumns"/>
 		FROM yyb_order a
@@ -52,17 +42,34 @@
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="OrderApi" >
+	<select id="findList" resultType="YybOrder" >
 		SELECT 
 			<include refid="yybOrderColumns"/>
 		FROM yyb_order a
-
 		<include refid="yybOrderJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-			<if test="companyId != null and companyId != ''">
-				AND a.company_id = #{companyId}
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no LIKE 
+					<if test="dbName == 'oracle'">'%'||#{orderNo}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{orderNo}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{orderNo},'%')</if>
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="payType != null and payType != ''">
+				AND a.pay_type = #{payType}
+			</if>
+			<if test="memberName != null and memberName != ''">
+				AND a.member_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{memberName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{memberName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{memberName},'%')</if>
+			</if>
+			<if test="memberType != null and memberType != ''">
+				AND a.member_type = #{memberType}
 			</if>
 		</where>
 		<choose>
@@ -75,18 +82,14 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="OrderApi" >
+	<select id="findAllList" resultType="YybOrder" >
 		SELECT 
 			<include refid="yybOrderColumns"/>
 		FROM yyb_order a
-
 		<include refid="yybOrderJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-			<if test="companyId != null and companyId != ''">
-				AND a.company_id = #{companyId}
-			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -114,17 +117,16 @@
 			pay_type,
 			order_amount,
 			pay_amount,
-			member_id,
 			member_name,
+			member_type,
+			phone,
+			member_sex,
 			member_address,
 			id_card,
 			id_card_attach,
 			org_code,
 			org_code_attach,
-			member_type,
-			phone,
-			remarks,
-			member_sex
+			remarks
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -140,17 +142,16 @@
 			#{payType},
 			#{orderAmount},
 			#{payAmount},
-			#{memberId},
 			#{memberName},
+			#{memberType},
+			#{phone},
+			#{memberSex},
 			#{memberAddress},
 			#{idCard},
 			#{idCardAttach},
 			#{orgCode},
 			#{orgCodeAttach},
-			#{memberType},
-			#{phone},
-			#{remarks},
-			#{memberSex}
+			#{remarks}
 		)
 	</insert>
 	
@@ -166,15 +167,15 @@
 			pay_type = #{payType},
 			order_amount = #{orderAmount},
 			pay_amount = #{payAmount},
-			member_id = #{memberId},
 			member_name = #{memberName},
+			member_type = #{memberType},
+			phone = #{phone},
+			member_sex = #{memberSex},
 			member_address = #{memberAddress},
 			id_card = #{idCard},
 			id_card_attach = #{idCardAttach},
 			org_code = #{orgCode},
 			org_code_attach = #{orgCodeAttach},
-			member_type = #{memberType},
-			phone = #{phone},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
@@ -195,35 +196,8 @@
 	
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="OrderApi" statementType="STATEMENT">
+	<select id="findUniqueByProperty" resultType="YybOrder" statementType="STATEMENT">
 		select * FROM yyb_order  where ${propertyName} = '${value}'
 	</select>
-
-
-	<select id="list" resultMap="OrderAndDetailResultMap">
-		SELECT
-		<include refid="yybOrderColumns"/>
-		FROM yyb_order a
-
-		where
-		a.del_flag = 0 and a.member_id = #{memberId}
-		<if test="status != null">
-			and a.status = ${status}
-		</if>
-		ORDER BY a.create_date DESC
-	</select>
-
-	<update id="updateStatus">
-		UPDATE yyb_order SET
-			status = #{status}
-		WHERE id = #{orderId}
-	</update>
-
-
-	<update id="cancelOvertimeOrder">
-		UPDATE yyb_order SET
-			status = 2
-		WHERE status = 1 and DATEDIFF(now(), order_time)>=3
-	</update>
 	
 </mapper>

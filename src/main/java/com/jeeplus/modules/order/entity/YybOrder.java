@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2015-2020 <a href="http://www.jeeplus.org/">JeePlus</a> All rights reserved.
  */
-package com.jeeplus.modules.api.order.entity;
+package com.jeeplus.modules.order.entity;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,33 +14,28 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 订单Entity
  * @author lwb
- * @version 2019-02-20
+ * @version 2019-03-11
  */
 public class YybOrder extends DataEntity<YybOrder> {
 	
 	private static final long serialVersionUID = 1L;
 	private String orderNo;		// 订单号
 	private String tradeNo;		// 交易流水号
-	private Integer status;		// 状态 1未支付 2已取消 3已支付
+	private Integer status;		// 状态
 	private Date orderTime;		// 下单时间
 	private Date payTime;		// 支付时间
 	private Integer payType;		// 支付类型
 	private Double orderAmount;		// 订单金额
 	private Double payAmount;		// 支付金额
-	private String memberId;		// 会员
 	private String memberName;		// 购买人
+	private Integer memberType;		// 用户类型
+	private String phone;		// 手机号
+	private Integer memberSex;		// 性别
 	private String memberAddress;		// 地址
 	private String idCard;		// 身份证
 	private String idCardAttach;		// 身份证附件
 	private String orgCode;		// 组织机构
 	private String orgCodeAttach;		// 组织机构附件
-	private Integer memberType;		// 用户类型
-	private String phone;		// 手机号
-	private String companyId;
-	private String companyName;
-	private String musicianName;
-	private String albumName;
-	private Integer memberSex;
 	private List<YybOrderDeatil> yybOrderDeatilList = Lists.newArrayList();		// 子表列表
 	
 	public YybOrder() {
@@ -125,16 +120,7 @@ public class YybOrder extends DataEntity<YybOrder> {
 		this.payAmount = payAmount;
 	}
 	
-	@ExcelField(title="会员", align=2, sort=14)
-	public String getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(String memberId) {
-		this.memberId = memberId;
-	}
-	
-	@ExcelField(title="购买人", align=2, sort=15)
+	@ExcelField(title="购买人", align=2, sort=14)
 	public String getMemberName() {
 		return memberName;
 	}
@@ -143,52 +129,7 @@ public class YybOrder extends DataEntity<YybOrder> {
 		this.memberName = memberName;
 	}
 	
-	@ExcelField(title="地址", align=2, sort=16)
-	public String getMemberAddress() {
-		return memberAddress;
-	}
-
-	public void setMemberAddress(String memberAddress) {
-		this.memberAddress = memberAddress;
-	}
-	
-	@ExcelField(title="身份证", align=2, sort=17)
-	public String getIdCard() {
-		return idCard;
-	}
-
-	public void setIdCard(String idCard) {
-		this.idCard = idCard;
-	}
-	
-	@ExcelField(title="身份证附件", align=2, sort=18)
-	public String getIdCardAttach() {
-		return idCardAttach;
-	}
-
-	public void setIdCardAttach(String idCardAttach) {
-		this.idCardAttach = idCardAttach;
-	}
-	
-	@ExcelField(title="组织机构", align=2, sort=19)
-	public String getOrgCode() {
-		return orgCode;
-	}
-
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
-	}
-	
-	@ExcelField(title="组织机构附件", align=2, sort=20)
-	public String getOrgCodeAttach() {
-		return orgCodeAttach;
-	}
-
-	public void setOrgCodeAttach(String orgCodeAttach) {
-		this.orgCodeAttach = orgCodeAttach;
-	}
-	
-	@ExcelField(title="用户类型", dictType="user_type", align=2, sort=21)
+	@ExcelField(title="用户类型", dictType="user_type", align=2, sort=15)
 	public Integer getMemberType() {
 		return memberType;
 	}
@@ -197,7 +138,7 @@ public class YybOrder extends DataEntity<YybOrder> {
 		this.memberType = memberType;
 	}
 	
-	@ExcelField(title="手机号", align=2, sort=22)
+	@ExcelField(title="手机号", align=2, sort=16)
 	public String getPhone() {
 		return phone;
 	}
@@ -206,22 +147,7 @@ public class YybOrder extends DataEntity<YybOrder> {
 		this.phone = phone;
 	}
 	
-	public List<YybOrderDeatil> getYybOrderDeatilList() {
-		return yybOrderDeatilList;
-	}
-
-	public void setYybOrderDeatilList(List<YybOrderDeatil> yybOrderDeatilList) {
-		this.yybOrderDeatilList = yybOrderDeatilList;
-	}
-
-	public String getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
-	}
-
+	@ExcelField(title="性别", align=2, sort=17)
 	public Integer getMemberSex() {
 		return memberSex;
 	}
@@ -229,28 +155,57 @@ public class YybOrder extends DataEntity<YybOrder> {
 	public void setMemberSex(Integer memberSex) {
 		this.memberSex = memberSex;
 	}
-
-	public String getCompanyName() {
-		return companyName;
+	
+	@ExcelField(title="地址", align=2, sort=18)
+	public String getMemberAddress() {
+		return memberAddress;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setMemberAddress(String memberAddress) {
+		this.memberAddress = memberAddress;
+	}
+	
+	@ExcelField(title="身份证", align=2, sort=19)
+	public String getIdCard() {
+		return idCard;
 	}
 
-	public String getMusicianName() {
-		return musicianName;
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+	
+	@ExcelField(title="身份证附件", align=2, sort=20)
+	public String getIdCardAttach() {
+		return idCardAttach;
 	}
 
-	public void setMusicianName(String musicianName) {
-		this.musicianName = musicianName;
+	public void setIdCardAttach(String idCardAttach) {
+		this.idCardAttach = idCardAttach;
+	}
+	
+	@ExcelField(title="组织机构", align=2, sort=21)
+	public String getOrgCode() {
+		return orgCode;
 	}
 
-	public String getAlbumName() {
-		return albumName;
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
+	}
+	
+	@ExcelField(title="组织机构附件", align=2, sort=22)
+	public String getOrgCodeAttach() {
+		return orgCodeAttach;
 	}
 
-	public void setAlbumName(String albumName) {
-		this.albumName = albumName;
+	public void setOrgCodeAttach(String orgCodeAttach) {
+		this.orgCodeAttach = orgCodeAttach;
+	}
+	
+	public List<YybOrderDeatil> getYybOrderDeatilList() {
+		return yybOrderDeatilList;
+	}
+
+	public void setYybOrderDeatilList(List<YybOrderDeatil> yybOrderDeatilList) {
+		this.yybOrderDeatilList = yybOrderDeatilList;
 	}
 }

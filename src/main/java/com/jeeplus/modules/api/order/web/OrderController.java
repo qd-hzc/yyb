@@ -11,6 +11,7 @@ import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.api.order.alipay.AlipayConfig;
 import com.jeeplus.modules.api.order.alipay.AlipayUtil;
+import com.jeeplus.modules.api.order.entity.OrderApi;
 import com.jeeplus.modules.api.order.entity.YybOrderVo;
 import com.jeeplus.modules.api.order.service.YybOrderApiService;
 import com.jeeplus.modules.api.right.service.YybRightApiService;
@@ -19,7 +20,6 @@ import com.jeeplus.modules.api.shopcart.service.YybShopcartApiService;
 import com.jeeplus.modules.api.usage.service.YybUsageApiService;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.music.entity.YybMusic;
-import com.jeeplus.modules.api.order.entity.YybOrder;
 import com.jeeplus.modules.right.entity.YybRight;
 import com.jeeplus.modules.usage.entity.YybUsage;
 import io.swagger.annotations.ApiImplicitParam;
@@ -102,12 +102,12 @@ public class OrderController extends BaseController {
         YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
         String memebrId = yybMember.getId();
 
-        YybOrder yybOrder = yybOrderApiService.get(orderId);
-        if (yybOrder == null || yybOrder.getStatus() != 1) {
+        OrderApi orderApi = yybOrderApiService.get(orderId);
+        if (orderApi == null || orderApi.getStatus() != 1) {
             return ResultUtil.error("获取订单状态异常");
         }
 
-        if (!memebrId.equals(yybOrder.getMemberId())) {
+        if (!memebrId.equals(orderApi.getMemberId())) {
             return ResultUtil.error("用户校验异常");
         }
 
@@ -135,11 +135,11 @@ public class OrderController extends BaseController {
         param.put("status", status);
         param.put("memberId", memebrId);
 
-        List<YybOrder> list = yybOrderApiService.list(param);
+        List<OrderApi> list = yybOrderApiService.list(param);
 
         PageHelper.startPage(Integer.parseInt(startPage),Integer.parseInt(pageSize));
 
-        PageInfo<YybOrder> pageInfo = new PageInfo<>(list);
+        PageInfo<OrderApi> pageInfo = new PageInfo<>(list);
 
         return ResultUtil.success(pageInfo);
     }

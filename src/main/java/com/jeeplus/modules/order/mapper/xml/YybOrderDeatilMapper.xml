@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jeeplus.modules.api.order.mapper.YybOrderDeatilApiMapper">
+<mapper namespace="com.jeeplus.modules.order.mapper.YybOrderDeatilMapper">
     
 	<sql id="yybOrderDeatilColumns">
 		a.id AS "id",
+		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.del_flag AS "delFlag",
-		a.music_id AS "musicId",
+		a.order_id AS "yybOrder.id",
 		a.music_title AS "musicTitle",
 		a.music_price AS "musicPrice",
-		a.usage_select AS "usageSelect",
-		a.usage_select_name AS "usageSelectName",
-		a.right_select AS "rightSelect",
-		a.right_select_name AS "rightSelectName",
+		a.musician_name AS "musicianName",
+		a.album_name AS "albumName",
+		a.company_name AS "companyName",
 		a.music_total AS "musicTotal",
+		a.right_select_name AS "rightSelectName",
+		a.usage_select_name AS "usageSelectName",
 		a.remarks AS "remarks",
-		a.musician_id as "musicianId",
-		a.musician_name as "musicianName",
-		a.company_id as companyId,
-		a.company_name as companyName,
-		a.album_name as albumName
+				
+				
+				
+				
+				
+				
+		b.order_no AS "yybOrder.orderNo"
 	</sql>
 	
 	<sql id="yybOrderDeatilJoins">
@@ -29,7 +34,7 @@
 	</sql>
 	
     
-	<select id="get" resultType="OrderDeatilApi" >
+	<select id="get" resultType="YybOrderDeatil" >
 		SELECT 
 			<include refid="yybOrderDeatilColumns"/>
 		FROM yyb_order_detail a
@@ -37,7 +42,7 @@
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="OrderDeatilApi" >
+	<select id="findList" resultType="YybOrderDeatil" >
 		SELECT 
 			<include refid="yybOrderDeatilColumns"/>
 		FROM yyb_order_detail a
@@ -45,8 +50,35 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-			<if test="orderApi != null and orderApi.id != null and orderApi.id != ''">
-				AND a.order_id = #{orderApi.id}
+			<if test="yybOrder != null and yybOrder.id != null and yybOrder.id != ''">
+				AND a.order_id LIKE 
+					<if test="dbName == 'oracle'">'%'||#{yybOrder.id}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{yybOrder.id}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{yybOrder.id},'%')</if>
+			</if>
+			<if test="musicPrice != null and musicPrice != ''">
+				AND a.music_price LIKE 
+					<if test="dbName == 'oracle'">'%'||#{musicPrice}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{musicPrice}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{musicPrice},'%')</if>
+			</if>
+			<if test="musicianName != null and musicianName != ''">
+				AND a.musician_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{musicianName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{musicianName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{musicianName},'%')</if>
+			</if>
+			<if test="albumName != null and albumName != ''">
+				AND a.album_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{albumName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{albumName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{albumName},'%')</if>
+			</if>
+			<if test="companyName != null and companyName != ''">
+				AND a.company_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{companyName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{companyName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{companyName},'%')</if>
 			</if>
 		</where>
 		<choose>
@@ -59,7 +91,7 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="OrderDeatilApi" >
+	<select id="findAllList" resultType="YybOrderDeatil" >
 		SELECT 
 			<include refid="yybOrderDeatilColumns"/>
 		FROM yyb_order_detail a
@@ -87,22 +119,15 @@
 			update_date,
 			del_flag,
 			order_id,
-			shopcart_id,
-			music_id,
 			music_title,
 			music_price,
-			usage_select,
-			usage_select_name,
-			right_select,
-			right_select_name,
-			music_total,
-			remarks,
-			musician_id,
 			musician_name,
-			right_and_usage_body,
-						company_id,
+			album_name,
 			company_name,
-			album_name
+			music_total,
+			right_select_name,
+			usage_select_name,
+			remarks
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -110,23 +135,16 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{delFlag},
-			#{orderApi.id},
-			#{yybShopcart.id},
-			#{musicId},
+			#{yybOrder.id},
 			#{musicTitle},
 			#{musicPrice},
-			#{usageSelect},
-			#{usageSelectName},
-			#{rightSelect},
-			#{rightSelectName},
-			#{musicTotal},
-			#{remarks},
-			#{musicianId},
 			#{musicianName},
-			#{rightAndUsageBody},
-						#{companyId},
+			#{albumName},
 			#{companyName},
-			#{albumName}
+			#{musicTotal},
+			#{rightSelectName},
+			#{usageSelectName},
+			#{remarks}
 		)
 	</insert>
 	
@@ -134,14 +152,15 @@
 		UPDATE yyb_order_detail SET 	
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			order_id = #{orderApi.id},
-			shopcart_id = #{yybShopcart.id},
-			music_id = #{musicId},
+			order_id = #{yybOrder.id},
 			music_title = #{musicTitle},
 			music_price = #{musicPrice},
-			usage_select = #{usageSelect},
-			right_select = #{rightSelect},
+			musician_name = #{musicianName},
+			album_name = #{albumName},
+			company_name = #{companyName},
 			music_total = #{musicTotal},
+			right_select_name = #{rightSelectName},
+			usage_select_name = #{usageSelectName},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
@@ -155,7 +174,7 @@
 				WHERE id = #{id}
 			</when>
 			<otherwise>
-				WHERE order_id = #{orderApi.id}
+				WHERE order_id = #{yybOrder.id}
 			</otherwise>
 		</choose>
 	</update>
@@ -169,22 +188,15 @@
 				WHERE id = #{id}
 			</when>
 			<otherwise>
-				WHERE order_id = #{orderApi.id}
+				WHERE order_id = #{yybOrder.id}
 			</otherwise>
 		</choose>
 	</update>
 	
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="OrderDeatilApi" statementType="STATEMENT">
+	<select id="findUniqueByProperty" resultType="YybOrderDeatil" statementType="STATEMENT">
 		select * FROM yyb_order_detail  where ${propertyName} = '${value}'
 	</select>
-
-	<select id="listByOrderId" parameterType="java.lang.String" resultType="com.jeeplus.modules.api.order.entity.OrderDeatilApi">
-		SELECT
-		<include refid="yybOrderDeatilColumns"/>
-		FROM yyb_order_detail a
-		where a.order_id = #{orderId}
-	</select>
-
+	
 </mapper>

@@ -119,13 +119,26 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">会员：</label></td>
-					<td class="width-35">
-						<form:input path="memberId" htmlEscape="false"    class="form-control "/>
-					</td>
 					<td class="width-15 active"><label class="pull-right">购买人：</label></td>
 					<td class="width-35">
 						<form:input path="memberName" htmlEscape="false"    class="form-control "/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">用户类型：</label></td>
+					<td class="width-35">
+						<form:select path="memberType" class="form-control ">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">手机号：</label></td>
+					<td class="width-35">
+						<form:input path="phone" htmlEscape="false"    class="form-control "/>
+					</td>
+					<td class="width-15 active"><label class="pull-right">性别：</label></td>
+					<td class="width-35">
+						<form:input path="memberSex" htmlEscape="false"    class="form-control "/>
 					</td>
 				</tr>
 				<tr>
@@ -141,7 +154,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">身份证附件：</label></td>
 					<td class="width-35">
-						<form:input path="idCardAttach" htmlEscape="false"    class="form-control "/>
+						<sys:fileUpload path="idCardAttach"  value="${yybOrder.idCardAttach}" type="file" uploadPath="/order/yybOrder"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">组织机构：</label></td>
 					<td class="width-35">
@@ -151,20 +164,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">组织机构附件：</label></td>
 					<td class="width-35">
-						<form:input path="orgCodeAttach" htmlEscape="false"    class="form-control "/>
-					</td>
-					<td class="width-15 active"><label class="pull-right">用户类型：</label></td>
-					<td class="width-35">
-						<form:select path="memberType" class="form-control ">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
-					</td>
-				</tr>
-				<tr>
-					<td class="width-15 active"><label class="pull-right">手机号：</label></td>
-					<td class="width-35">
-						<form:input path="phone" htmlEscape="false"    class="form-control "/>
+						<sys:fileUpload path="orgCodeAttach"  value="${yybOrder.orgCodeAttach}" type="file" uploadPath="/order/yybOrder"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
@@ -185,13 +185,14 @@
 				<thead>
 					<tr>
 						<th class="hide"></th>
-						<th>购物车</th>
-						<th>音乐</th>
 						<th>音乐名称</th>
 						<th>音乐单价</th>
-						<th>用途</th>
-						<th>权利</th>
+						<th>音乐人</th>
+						<th>专辑</th>
+						<th>公司</th>
 						<th>总价</th>
+						<th>权利</th>
+						<th>用途</th>
 						<th>备注信息</th>
 						<th width="10">&nbsp;</th>
 					</tr>
@@ -207,16 +208,6 @@
 					</td>
 					
 					<td>
-						<input id="yybOrderDeatilList{{idx}}_yybShopcart" name="yybOrderDeatilList[{{idx}}].yybShopcart.id" type="text" value="{{row.yybShopcart.id}}"    class="form-control "/>
-					</td>
-					
-					
-					<td>
-						<input id="yybOrderDeatilList{{idx}}_musicId" name="yybOrderDeatilList[{{idx}}].musicId" type="text" value="{{row.musicId}}"    class="form-control "/>
-					</td>
-					
-					
-					<td>
 						<input id="yybOrderDeatilList{{idx}}_musicTitle" name="yybOrderDeatilList[{{idx}}].musicTitle" type="text" value="{{row.musicTitle}}"    class="form-control "/>
 					</td>
 					
@@ -227,17 +218,32 @@
 					
 					
 					<td>
-						<input id="yybOrderDeatilList{{idx}}_usageSelect" name="yybOrderDeatilList[{{idx}}].usageSelect" type="text" value="{{row.usageSelect}}"    class="form-control "/>
+						<input id="yybOrderDeatilList{{idx}}_musicianName" name="yybOrderDeatilList[{{idx}}].musicianName" type="text" value="{{row.musicianName}}"    class="form-control "/>
 					</td>
 					
 					
 					<td>
-						<input id="yybOrderDeatilList{{idx}}_rightSelect" name="yybOrderDeatilList[{{idx}}].rightSelect" type="text" value="{{row.rightSelect}}"    class="form-control "/>
+						<input id="yybOrderDeatilList{{idx}}_albumName" name="yybOrderDeatilList[{{idx}}].albumName" type="text" value="{{row.albumName}}"    class="form-control "/>
+					</td>
+					
+					
+					<td>
+						<input id="yybOrderDeatilList{{idx}}_companyName" name="yybOrderDeatilList[{{idx}}].companyName" type="text" value="{{row.companyName}}"    class="form-control "/>
 					</td>
 					
 					
 					<td>
 						<input id="yybOrderDeatilList{{idx}}_musicTotal" name="yybOrderDeatilList[{{idx}}].musicTotal" type="text" value="{{row.musicTotal}}"    class="form-control "/>
+					</td>
+					
+					
+					<td>
+						<input id="yybOrderDeatilList{{idx}}_rightSelectName" name="yybOrderDeatilList[{{idx}}].rightSelectName" type="text" value="{{row.rightSelectName}}"    class="form-control "/>
+					</td>
+					
+					
+					<td>
+						<input id="yybOrderDeatilList{{idx}}_usageSelectName" name="yybOrderDeatilList[{{idx}}].usageSelectName" type="text" value="{{row.usageSelectName}}"    class="form-control "/>
 					</td>
 					
 					
