@@ -292,7 +292,7 @@ public class YybMemberApiController extends BaseController {
     @IgnoreAuth
     @RequestMapping(value = "/genCode", method = RequestMethod.GET)
     @ApiOperation(notes = "/genCode", httpMethod = "get", value = "获取验证码")
-    public void genCode(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void genCode(HttpSession session, HttpServletResponse response) throws Exception{
         response.setHeader("Pragma", "No-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
@@ -316,8 +316,7 @@ public class YybMemberApiController extends BaseController {
     @ApiOperation(notes = "validCode", httpMethod = "POST", value = "校验验证码")
     @ApiImplicitParams({@ApiImplicitParam(name = "code", value = "code", required = true, paramType = "string",dataType = "string")})
 
-    public Result validCode(HttpSession session, HttpServletRequest request,
-                          HttpServletResponse response, @RequestParam String code) throws Exception{
+    public Result validCode(HttpSession session, @RequestParam String code){
         //存入会话session
         Object sessionCode = session.getAttribute("CODE");
         if (sessionCode == null) {

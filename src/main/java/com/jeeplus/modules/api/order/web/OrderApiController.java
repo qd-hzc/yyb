@@ -156,7 +156,7 @@ public class OrderApiController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/alipay", method = RequestMethod.POST)
-    @ApiOperation(notes = "alipay", httpMethod = "POST", value = "列表")
+    @ApiOperation(notes = "alipay", httpMethod = "POST", value = "支付宝支付")
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "orderId", required = true, paramType = "query",dataType = "string")})
     public Result pay(HttpServletRequest request, @RequestParam String orderId) {
 
