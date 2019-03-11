@@ -21,10 +21,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -288,6 +285,56 @@ public class YybMemberApiController extends BaseController {
         }
         return ResultUtil.success(url);
     }
+
+
+
+
+    @IgnoreAuth
+    @RequestMapping(value = "/genCode", method = RequestMethod.GET)
+    @ApiOperation(notes = "/genCode", httpMethod = "get", value = "获取验证码")
+    public void genCode(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+
+        //生成随机字串
+        String verifyCode = ValidationCode.generateVerifyCode(4);
+        //存入会话session
+        session.setAttribute("CODE", verifyCode.toLowerCase());
+
+        //生成图片
+        int width = 100;//宽
+        int height = 40;//高
+        ValidationCode.outputImage(width, height, response.getOutputStream(), verifyCode);
+    }
+
+
+    @IgnoreAuth
+    @RequestMapping(value = "/validCode", method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(notes = "validCode", httpMethod = "POST", value = "校验验证码")
+    @ApiImplicitParams({@ApiImplicitParam(name = "code", value = "code", required = true, paramType = "string",dataType = "string")})
+
+    public Result validCode(HttpSession session, HttpServletRequest request,
+                          HttpServletResponse response, @RequestParam String code) throws Exception{
+        //存入会话session
+        Object sessionCode = session.getAttribute("CODE");
+        if (sessionCode == null) {
+            return ResultUtil.error("验证码有误");
+        }
+
+        if (code.toLowerCase().equals(sessionCode.toString())){
+            session.removeAttribute("CODE");
+            return ResultUtil.success(true);
+        } else {
+            return ResultUtil.success(false);
+        }
+
+    }
+
+
+
 
 
 
