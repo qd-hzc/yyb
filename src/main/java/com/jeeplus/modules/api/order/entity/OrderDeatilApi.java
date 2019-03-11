@@ -47,6 +47,10 @@ public class OrderDeatilApi extends DataEntity<OrderDeatilApi> {
 
 
 	private String orderNo;
+
+	private String musicImg;
+
+	private String musicUrl;
 	public OrderDeatilApi() {
 		super();
 	}
@@ -219,5 +223,21 @@ public class OrderDeatilApi extends DataEntity<OrderDeatilApi> {
 
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
+	}
+
+	public String getMusicImg() {
+		return musicImg;
+	}
+
+	public void setMusicImg(String musicImg) {
+		this.musicImg = musicImg;
+	}
+
+	public String getMusicUrl() {
+		return musicUrl;
+	}
+
+	public void setMusicUrl(String musicUrl) {
+		this.musicUrl = musicUrl;
 	}
 }

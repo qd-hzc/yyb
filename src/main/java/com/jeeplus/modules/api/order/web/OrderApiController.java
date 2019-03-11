@@ -141,9 +141,9 @@ public class OrderApiController extends BaseController {
         param.put("status", status);
         param.put("memberId", memebrId);
 
-        List<OrderApi> list = yybOrderApiService.list(param);
-
         PageHelper.startPage(Integer.parseInt(startPage),Integer.parseInt(pageSize));
+
+        List<OrderApi> list = yybOrderApiService.list(param);
 
         PageInfo<OrderApi> pageInfo = new PageInfo<>(list);
 
@@ -159,7 +159,7 @@ public class OrderApiController extends BaseController {
     @RequestMapping(value = "/alipay", method = RequestMethod.POST)
     @ApiOperation(notes = "alipay", httpMethod = "POST", value = "支付宝支付")
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "orderId", required = true, paramType = "query",dataType = "string")})
-    public Result pay(HttpServletRequest request, @RequestParam String orderId) {
+    public String pay(HttpServletRequest request, @RequestParam String orderId) {
 
         logger.info("pay:request:" + (orderId));
 
@@ -170,12 +170,12 @@ public class OrderApiController extends BaseController {
         OrderApi orderApi = yybOrderApiService.get(orderId);
         if (orderApi == null || orderApi.getStatus() != 1) {
             logger.error("支付：订单状态异常");
-            return ResultUtil.error("订单状态异常");
+            return ("订单状态异常");
         }
 
         if (!orderApi.getMemberId().equals(memberId)) {
             logger.error("支付：订单异常");
-            return ResultUtil.error("订单异常");
+            return ("订单异常");
         }
 
         List<OrderDeatilApi> deatilList = yybOrderApiService.getDetailListByOrderId(orderId);
@@ -183,7 +183,7 @@ public class OrderApiController extends BaseController {
             YybMusic yybMusic = yybMusicApiService.get(orderDeatilApi.getMusicId());
             if (yybMusic == null || yybMusic.getId() ==null || "1".equals(yybMusic.getDelFlag())) {
                 logger.error("支付：音乐状态异常");
-                return ResultUtil.error("音乐状态异常");
+                return ("音乐状态异常");
             }
         }
 
@@ -202,7 +202,7 @@ public class OrderApiController extends BaseController {
             e.printStackTrace();
         }
 
-        return ResultUtil.success(result);
+        return result;
     }
 
 

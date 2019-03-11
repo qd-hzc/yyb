@@ -20,7 +20,9 @@
 		a.musician_name as "musicianName",
 		a.company_id as companyId,
 		a.company_name as companyName,
-		a.album_name as albumName
+		a.album_name as albumName,
+		b.img as musicImg,
+		b.url as musicUrl
 	</sql>
 	
 	<sql id="yybOrderDeatilJoins">
@@ -185,7 +187,7 @@
 	<select id="listByOrderId" parameterType="java.lang.String" resultType="com.jeeplus.modules.api.order.entity.OrderDeatilApi">
 		SELECT
 		<include refid="yybOrderDeatilColumns"/>
-		FROM yyb_order_detail a
+		FROM yyb_order_detail a left join yyb_music b on a.music_id = b.id
 		where a.order_id = #{orderId}
 	</select>
 

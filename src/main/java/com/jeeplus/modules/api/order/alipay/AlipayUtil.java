@@ -39,7 +39,6 @@ public class AlipayUtil {
 
         alipayRequest.setBizContent("{\"out_trade_no\":\""+ orderNo +"\","
                 + "\"total_amount\":\""+ money +"\","
-                + "\"orderId\":\""+ orderId +"\","
                 + "\"subject\":\""+ name +"\","
                 + "\"body\":\""+ info +"\","
                 + "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
