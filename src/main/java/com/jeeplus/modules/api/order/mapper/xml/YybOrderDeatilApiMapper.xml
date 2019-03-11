@@ -102,7 +102,8 @@
 			right_and_usage_body,
 						company_id,
 			company_name,
-			album_name
+			album_name,
+			order_no
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -126,7 +127,8 @@
 			#{rightAndUsageBody},
 						#{companyId},
 			#{companyName},
-			#{albumName}
+			#{albumName},
+			#{orderNo}
 		)
 	</insert>
 	

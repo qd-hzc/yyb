@@ -128,6 +128,7 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi>
 			orderDeatilApi.setOrderApi(orderApi);
 			orderDeatilApi.setYybShopcart(shopcart);
 			orderDeatilApi.setRightAndUsageBody(body);
+			orderDeatilApi.setOrderNo(orderNo);
 			orderDeatilApis.add(orderDeatilApi);
 			//插入订单明细
 			yybOrderDeatilMapper.insert(orderDeatilApi);

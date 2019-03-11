@@ -44,7 +44,9 @@ public class OrderDeatilApi extends DataEntity<OrderDeatilApi> {
 	private String companyId;
 
 	private String rightAndUsageBody;
-	
+
+
+	private String orderNo;
 	public OrderDeatilApi() {
 		super();
 	}
@@ -209,5 +211,13 @@ public class OrderDeatilApi extends DataEntity<OrderDeatilApi> {
 
 	public void setCompanyId(String companyId) {
 		this.companyId = companyId;
+	}
+
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 }

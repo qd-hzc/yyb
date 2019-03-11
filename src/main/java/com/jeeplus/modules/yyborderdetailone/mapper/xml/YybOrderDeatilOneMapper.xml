@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.yyborderdetailone.mapper.YybOrderDeatilOneMapper">
+    
+	<sql id="yybOrderDeatilOneColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.order_no AS "orderNo",
+		a.music_title AS "musicTitle",
+		a.music_price AS "musicPrice",
+		a.musician_name AS "musicianName",
+		a.album_name AS "albumName",
+		a.company_name AS "companyName",
+		a.music_total AS "musicTotal",
+		a.right_select_name AS "rightSelectName",
+		a.usage_select_name AS "usageSelectName",
+		a.remarks AS "remarks"
+	</sql>
+	
+	<sql id="yybOrderDeatilOneJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="YybOrderDeatilOne" >
+		SELECT 
+			<include refid="yybOrderDeatilOneColumns"/>
+		FROM yyb_order_detail a
+		<include refid="yybOrderDeatilOneJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="YybOrderDeatilOne" >
+		SELECT 
+			<include refid="yybOrderDeatilOneColumns"/>
+		FROM yyb_order_detail a
+		<include refid="yybOrderDeatilOneJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="orderNo != null and orderNo != ''">
+				AND a.order_no LIKE 
+					<if test="dbName == 'oracle'">'%'||#{orderNo}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{orderNo}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{orderNo},'%')</if>
+			</if>
+			<if test="musicPrice != null and musicPrice != ''">
+				AND a.music_price LIKE 
+					<if test="dbName == 'oracle'">'%'||#{musicPrice}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{musicPrice}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{musicPrice},'%')</if>
+			</if>
+			<if test="musicianName != null and musicianName != ''">
+				AND a.musician_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{musicianName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{musicianName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{musicianName},'%')</if>
+			</if>
+			<if test="albumName != null and albumName != ''">
+				AND a.album_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{albumName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{albumName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{albumName},'%')</if>
+			</if>
+			<if test="companyName != null and companyName != ''">
+				AND a.company_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{companyName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{companyName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{companyName},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="YybOrderDeatilOne" >
+		SELECT 
+			<include refid="yybOrderDeatilOneColumns"/>
+		FROM yyb_order_detail a
+		<include refid="yybOrderDeatilOneJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO yyb_order_detail(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			order_no,
+			music_title,
+			music_price,
+			musician_name,
+			album_name,
+			company_name,
+			music_total,
+			right_select_name,
+			usage_select_name,
+			remarks
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{orderNo},
+			#{musicTitle},
+			#{musicPrice},
+			#{musicianName},
+			#{albumName},
+			#{companyName},
+			#{musicTotal},
+			#{rightSelectName},
+			#{usageSelectName},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE yyb_order_detail SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			order_no = #{orderNo},
+			music_title = #{musicTitle},
+			music_price = #{musicPrice},
+			musician_name = #{musicianName},
+			album_name = #{albumName},
+			company_name = #{companyName},
+			music_total = #{musicTotal},
+			right_select_name = #{rightSelectName},
+			usage_select_name = #{usageSelectName},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM yyb_order_detail
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE yyb_order_detail SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="YybOrderDeatilOne" statementType="STATEMENT">
+		select * FROM yyb_order_detail  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
