@@ -5,6 +5,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.internal.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jeeplus.common.annotation.IgnoreAuth;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
@@ -212,6 +213,7 @@ public class OrderApiController extends BaseController {
      * @return
      * @throws IOException
      */
+    @IgnoreAuth
     @RequestMapping(value="/notify_url",method= RequestMethod.POST)
     @ResponseBody
     public String notify(HttpServletRequest request,HttpServletResponse response) throws Exception {
