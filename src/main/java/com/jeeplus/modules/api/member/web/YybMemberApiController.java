@@ -51,8 +51,21 @@ public class YybMemberApiController extends BaseController {
     @RequestMapping(value = "/sendSms", method = RequestMethod.POST)
     @ApiOperation(notes = "sendSms", httpMethod = "POST", value = "短信发送")
     @ApiImplicitParams({@ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query",dataType = "string"),
-            @ApiImplicitParam(name = "type", value = "类型，1:注册， 2：重置密码 3:手机号登陆", required = true, paramType = "query",dataType = "string")})
-    public Result sendSms(HttpSession httpSession, String phone, @RequestParam String type) {
+            @ApiImplicitParam(name = "type", value = "类型，1:注册， 2：重置密码 3:手机号登陆", required = true, paramType = "query",dataType = "string"),
+            @ApiImplicitParam(name = "imgCode", value = "图形验证码", required = true, paramType = "query",dataType = "string")})
+    public Result sendSms(HttpSession httpSession, String phone, @RequestParam String type, @RequestParam String imgCode) {
+
+
+        //存入会话session
+        Object sessionCode = httpSession.getAttribute("CODE");
+        if (sessionCode == null) {
+            return ResultUtil.error("验证码有误");
+        }
+
+        if (!imgCode.toLowerCase().equals(sessionCode.toString())){
+            return ResultUtil.error("验证码有误");
+        }
+        httpSession.removeAttribute("CODE");
 
         if (!("1".equals(type) || "2".equals(type) || "3".equals(type))){
             return ResultUtil.error("类型有误");
@@ -311,19 +324,19 @@ public class YybMemberApiController extends BaseController {
 
 
     @IgnoreAuth
-    @RequestMapping(value = "/validCode", method = RequestMethod.POST)
+    @RequestMapping(value = "/validImgCode", method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(notes = "validCode", httpMethod = "POST", value = "校验验证码")
-    @ApiImplicitParams({@ApiImplicitParam(name = "code", value = "code", required = true, paramType = "string",dataType = "string")})
+    @ApiOperation(notes = "validImgCode", httpMethod = "POST", value = "校验验证码")
+    @ApiImplicitParams({@ApiImplicitParam(name = "imgCode", value = "imgCode", required = true, paramType = "string",dataType = "string")})
 
-    public Result validCode(HttpSession session, @RequestParam String code){
+    public Result validCode(HttpSession session, @RequestParam String imgCode){
         //存入会话session
         Object sessionCode = session.getAttribute("CODE");
         if (sessionCode == null) {
             return ResultUtil.error("验证码有误");
         }
 
-        if (code.toLowerCase().equals(sessionCode.toString())){
+        if (imgCode.toLowerCase().equals(sessionCode.toString())){
             session.removeAttribute("CODE");
             return ResultUtil.success(true);
         } else {
