@@ -235,5 +235,12 @@
 			status = 2
 		WHERE status = 1 and DATEDIFF(now(), order_time)>=3
 	</update>
-	
+
+	<select id="getByOrderNo" resultType="OrderApi">
+		SELECT
+		<include refid="yybOrderColumns"/>
+		FROM yyb_order a
+		<include refid="yybOrderJoins"/>
+		WHERE a.order_no = #{orderNo}
+	</select>
 </mapper>

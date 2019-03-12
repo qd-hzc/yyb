@@ -194,4 +194,8 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi>
 	public void updatePay(Map<String, Object> param) {
 		mapper.updatePay(param);
 	}
+
+    public OrderApi getByOrderNo(String orderNo) {
+		return mapper.getByOrderNo(orderNo);
+    }
 }

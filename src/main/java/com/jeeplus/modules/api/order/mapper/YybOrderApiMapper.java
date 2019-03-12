@@ -26,4 +26,6 @@ public interface YybOrderApiMapper extends BaseMapper<OrderApi> {
 
 
     void updatePay(Map<String, Object> param);
+
+    OrderApi getByOrderNo(String orderNo);
 }

@@ -129,7 +129,7 @@ public class OrderApiController extends BaseController {
     @ApiOperation(notes = "list", httpMethod = "GET", value = "列表")
     @ApiImplicitParams({@ApiImplicitParam(name = "startPage", value = "", required = false, paramType = "query",dataType = "string"),
             @ApiImplicitParam(name = "pageSize", value = "", required = false, paramType = "query",dataType = "string"),
-            @ApiImplicitParam(name = "status", value = "status:0:未支付 1:已取消 2:已支付", required = false, paramType = "query",dataType = "string")})
+            @ApiImplicitParam(name = "status", value = "status:1:未支付 2:已取消 3:已支付", required = false, paramType = "query",dataType = "string")})
 
     public Result list(HttpServletRequest request, @RequestParam(required = false) Integer status ,
                        @RequestParam(required = false, defaultValue = "1") String startPage,
@@ -158,16 +158,14 @@ public class OrderApiController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/alipay", method = RequestMethod.POST)
     @ApiOperation(notes = "alipay", httpMethod = "POST", value = "支付宝支付")
-    @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "orderId", required = true, paramType = "query",dataType = "string")})
-    public String pay(HttpServletRequest request, @RequestParam String orderId) {
-
-        Map<String, Object> returnMap = new HashMap<>();
+    @ApiImplicitParams({@ApiImplicitParam(name = "orderNo", value = "orderNo", required = true, paramType = "query",dataType = "string")})
+    public String pay(HttpServletRequest request, @RequestParam String orderNo) {
 
         YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
         String memberId = yybMember.getId();
 
         //商户订单号，商户网站订单系统中唯一订单号，必填
-        OrderApi orderApi = yybOrderApiService.get(orderId);
+        OrderApi orderApi = yybOrderApiService.getByOrderNo(orderNo);
         if (orderApi == null || orderApi.getStatus() != 1) {
             logger.error("支付：订单状态异常");
             return JSON.toJSONString(ResultUtil.error("订单状态异常"));
@@ -178,7 +176,7 @@ public class OrderApiController extends BaseController {
             return JSON.toJSONString(ResultUtil.error("订单异常"));
         }
 
-        List<OrderDeatilApi> deatilList = yybOrderApiService.getDetailListByOrderId(orderId);
+        List<OrderDeatilApi> deatilList = yybOrderApiService.getDetailListByOrderId(orderApi.getId());
         for (OrderDeatilApi orderDeatilApi : deatilList) {
             YybMusic yybMusic = yybMusicApiService.get(orderDeatilApi.getMusicId());
             if (yybMusic == null || yybMusic.getId() ==null || "1".equals(yybMusic.getDelFlag())) {
@@ -189,7 +187,6 @@ public class OrderApiController extends BaseController {
 
         //付款金额，必填
         String money = String.valueOf(orderApi.getOrderAmount());
-        String orderNo = orderApi.getOrderNo();
         //订单名称，必填
         String name = String.valueOf("music");
         //商品描述，可空
