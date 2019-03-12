@@ -42,7 +42,7 @@
 				<span class="icon-bar"></span>
 			</button>
 
-			<a class="navbar-brand J_menuItem" href="/static/welcome.html" data-index="0">音乐邦管理平台</a>
+			<a class="navbar-brand J_menuItem" href="" data-index="0">音乐邦管理平台</a>
 		</div>
 	</div>
 	<div class="navbar-container container-fluid">
