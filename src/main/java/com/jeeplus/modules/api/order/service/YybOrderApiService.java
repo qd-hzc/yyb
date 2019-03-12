@@ -49,7 +49,9 @@ public class YybOrderApiService extends CrudService<YybOrderApiMapper, OrderApi>
 	
 	public OrderApi get(String id) {
 		OrderApi orderApi = super.get(id);
-		orderApi.setDetailList(yybOrderDeatilMapper.findList(new OrderDeatilApi(orderApi)));
+		if (orderApi != null) {
+			orderApi.setDetailList(yybOrderDeatilMapper.findList(new OrderDeatilApi(orderApi)));
+		}
 		return orderApi;
 	}
 	

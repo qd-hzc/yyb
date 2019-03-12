@@ -161,7 +161,7 @@ public class OrderApiController extends BaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "orderId", value = "orderId", required = true, paramType = "query",dataType = "string")})
     public String pay(HttpServletRequest request, @RequestParam String orderId) {
 
-        logger.info("pay:request:" + (orderId));
+        Map<String, Object> returnMap = new HashMap<>();
 
         YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
         String memberId = yybMember.getId();
@@ -170,12 +170,12 @@ public class OrderApiController extends BaseController {
         OrderApi orderApi = yybOrderApiService.get(orderId);
         if (orderApi == null || orderApi.getStatus() != 1) {
             logger.error("支付：订单状态异常");
-            return ("订单状态异常");
+            return JSON.toJSONString(ResultUtil.error("订单状态异常"));
         }
 
         if (!orderApi.getMemberId().equals(memberId)) {
             logger.error("支付：订单异常");
-            return ("订单异常");
+            return JSON.toJSONString(ResultUtil.error("订单异常"));
         }
 
         List<OrderDeatilApi> deatilList = yybOrderApiService.getDetailListByOrderId(orderId);
@@ -183,7 +183,7 @@ public class OrderApiController extends BaseController {
             YybMusic yybMusic = yybMusicApiService.get(orderDeatilApi.getMusicId());
             if (yybMusic == null || yybMusic.getId() ==null || "1".equals(yybMusic.getDelFlag())) {
                 logger.error("支付：音乐状态异常");
-                return ("音乐状态异常");
+                return JSON.toJSONString(ResultUtil.error("音乐状态异常"));
             }
         }
 
@@ -202,7 +202,8 @@ public class OrderApiController extends BaseController {
             e.printStackTrace();
         }
 
-        return result;
+        String returnR = "{'code':'0000','data':'"+result+"'}";
+        return returnR;
     }
 
 
