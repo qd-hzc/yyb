@@ -159,7 +159,7 @@ public class OrderApiController extends BaseController {
     @RequestMapping(value = "/alipay", method = RequestMethod.POST)
     @ApiOperation(notes = "alipay", httpMethod = "POST", value = "支付宝支付")
     @ApiImplicitParams({@ApiImplicitParam(name = "orderNo", value = "orderNo", required = true, paramType = "query",dataType = "string")})
-    public String pay(HttpServletRequest request, @RequestParam String orderNo) {
+    public Result pay(HttpServletRequest request, @RequestParam String orderNo) {
 
         YybMember yybMember = (YybMember) request.getAttribute(LOGIN_MEMBER);
         String memberId = yybMember.getId();
@@ -168,12 +168,12 @@ public class OrderApiController extends BaseController {
         OrderApi orderApi = yybOrderApiService.getByOrderNo(orderNo);
         if (orderApi == null || orderApi.getStatus() != 1) {
             logger.error("支付：订单状态异常");
-            return JSON.toJSONString(ResultUtil.error("订单状态异常"));
+            return ResultUtil.error("订单状态异常");
         }
 
         if (!orderApi.getMemberId().equals(memberId)) {
             logger.error("支付：订单异常");
-            return JSON.toJSONString(ResultUtil.error("订单异常"));
+            return ResultUtil.error("订单异常");
         }
 
         List<OrderDeatilApi> deatilList = yybOrderApiService.getDetailListByOrderId(orderApi.getId());
@@ -181,7 +181,7 @@ public class OrderApiController extends BaseController {
             YybMusic yybMusic = yybMusicApiService.get(orderDeatilApi.getMusicId());
             if (yybMusic == null || yybMusic.getId() ==null || "1".equals(yybMusic.getDelFlag())) {
                 logger.error("支付：音乐状态异常");
-                return JSON.toJSONString(ResultUtil.error("音乐状态异常"));
+                return ResultUtil.error("音乐状态异常");
             }
         }
 
@@ -196,11 +196,10 @@ public class OrderApiController extends BaseController {
             result = AlipayUtil.pay(money, info, name, orderNo);
             logger.info(result);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("调用支付宝异常："+e.getMessage(), e);
         }
 
-        String returnR = "{'code':'0000','data':'"+result+"'}";
-        return returnR;
+        return ResultUtil.success(result);
     }
 
 
