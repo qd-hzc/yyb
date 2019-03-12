@@ -84,25 +84,18 @@ $(document).ready(function() {
 		        checkbox: true
 		       
 		    }
+		    ,{
+                       field: 'orderNo',
+                       title: '订单号',
+                       sortable: true,
+                       sortName: 'orderNo'
+
+                   }
 			,{
 		        field: 'musicTitle',
 		        title: '音乐名称',
 		        sortable: true,
 		        sortName: 'musicTitle'
-		        ,formatter:function(value, row , index){
-		        	value = jp.unescapeHTML(value);
-				   <c:choose>
-					   <c:when test="${fns:hasPermission('yyborderdetailone:yybOrderDeatilOne:edit')}">
-					      return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
-				      </c:when>
-					  <c:when test="${fns:hasPermission('yyborderdetailone:yybOrderDeatilOne:view')}">
-					      return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
-				      </c:when>
-					  <c:otherwise>
-					      return value;
-				      </c:otherwise>
-				   </c:choose>
-		         }
 		       
 		    }
 			,{
