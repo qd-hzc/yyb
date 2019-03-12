@@ -33,6 +33,7 @@ public class YybMusician extends DataEntity<YybMusician> {
 	private String companyName;		// 归属公司
 	private Integer status;		// 独立音乐人状态  1待审核 2通过 3驳回
 	private String memberId;		// 申请人
+	private String refuseReason;
 	private List<YybMusicianAlbum> yybMusicianAlbumList = Lists.newArrayList();		// 子表列表
 	
 	public YybMusician() {
@@ -175,6 +176,15 @@ public class YybMusician extends DataEntity<YybMusician> {
 	}
 
 	public void setMemberId(String memberId) {
+
 		this.memberId = memberId;
+	}
+
+	public String getRefuseReason() {
+		return refuseReason;
+	}
+
+	public void setRefuseReason(String refuseReason) {
+		this.refuseReason = refuseReason;
 	}
 }

@@ -191,7 +191,8 @@
 	<!--修改状态-->
 	<update id="updateStatus" parameterType="YybMusician">
 		UPDATE yyb_musician SET
-			status = #{status}
+			status = #{status},
+			refuse_reason = #{refuseReason}
 		WHERE id = #{id}
 	</update>
 

@@ -10,6 +10,7 @@
 	<%@include file="yybMusicianList.js" %>
 </head>
 <body>
+	<input id="host" value="${host}" type="hidden"/>
 	<div class="wrapper wrapper-content">
 	<div class="panel panel-primary">
 	<div class="panel-heading">

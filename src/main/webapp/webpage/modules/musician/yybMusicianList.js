@@ -421,10 +421,9 @@ $(document).ready(function() {
 	}
 
     function pass(id){
-  		var apiHost = window.location.protocol+"//"+window.location.host+"/api";
         jp.confirm('确认要通过音乐人记录吗？', function(){
             jp.loading();
-            jp.get(apiHost + "/musician/pass?id=" + id, function(data){
+            jp.get($("#host").val() + "/api/musician/pass?id=" + id, function(data){
                 if(data.success){
                     $('#yybMusicianTable').bootstrapTable('refresh');
                     jp.alert(data.msg);
@@ -436,17 +435,20 @@ $(document).ready(function() {
 	}
 
     function noPass(id){
-        var apiHost = window.location.protocol+"//"+window.location.host+"/api";
-        jp.confirm('确认要通过音乐人记录吗？', function(){
-            jp.loading();
-            jp.get(apiHost + "/musician/noPass?id=" + id, function(data){
-                if(data.success){
-                    $('#yybMusicianTable').bootstrapTable('refresh');
-                    jp.success(data.msg);
-                }else{
-                    jp.error(data.msg);
-                }
-            })
+        jp.confirm('确认要拒绝音乐人记录吗？', function(){
+            layer.prompt({title: '请填写拒绝原因', formType: 2}, function(text, index){
+                jp.loading();
+                jp.get($("#host").val() + "/api/musician/noPass?id=" + id+"&refuseReason="+text, function(data){
+                    if(data.success){
+                        $('#yybMusicianTable').bootstrapTable('refresh');
+                        jp.success(data.msg);
+                    }else{
+                        jp.error(data.msg);
+                    }
+                })
+                layer.close(index);
+            });
+
 
         })
 	}

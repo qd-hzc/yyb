@@ -88,7 +88,7 @@ public class YybMemberApiController extends BaseController {
         //验证码位数  是否含有字母  是否含有数字
         String code= RandomStringUtils.random(6, false, true);
 
-        Boolean smsMsg = SmsUtils.sendSms(phone, code, "3", "417372");
+        Boolean smsMsg = SmsUtils.sendSms(phone, new String[]{code,"3"}, "417518");
         if (smsMsg == false) {
             return ResultUtil.error("短信发送失败");
         }

@@ -7,6 +7,7 @@ import com.jeeplus.common.annotation.IgnoreAuth;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.HanyuPinyinHelper;
+import com.jeeplus.common.utils.SmsUtils;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
@@ -128,12 +129,15 @@ public class YybMusicianApiController extends BaseController {
 		user.setUpdateDate(new Date());
 		user.setDelFlag("0");
 
-		user.setPassword(SystemService.entryptPassword("123456"));
-		user.setPhoto(yybMusician.getHeadPhoto());
-		user.setName(yybMusician.getName());
 		HanyuPinyinHelper hanyuPinyinHelper = new HanyuPinyinHelper() ;
 		String adminLoginName = hanyuPinyinHelper.toHanyuPinyin(yybMusician.getName());
-		user.setLoginName(this.getLoginName(adminLoginName));
+		adminLoginName = this.getLoginName(adminLoginName);
+
+		user.setPassword(SystemService.entryptPassword(adminLoginName));
+		user.setPhoto(yybMusician.getHeadPhoto());
+		user.setName(yybMusician.getName());
+
+		user.setLoginName(adminLoginName);
 
 		user.setLoginFlag("1");
 		//角色音乐id
@@ -148,7 +152,21 @@ public class YybMusicianApiController extends BaseController {
 		yybMusician.setCompanyName("独立音乐人"+yybMusician.getName());
 		yybMusicianApiService.save(yybMusician);
 
-		j.setMsg("通过音乐人成功，请牢记此独立音乐人后台登陆账号："+adminLoginName+"  密码：123456");
+
+		YybMusician yybMusician2 = yybMusicianApiService.get(id);
+
+
+		String adminLoginUrl = Global.getConfig("admin_login_url");
+
+		Boolean smsMsg = SmsUtils.sendSms(yybMusician2.getPhone(), new String[]{adminLoginUrl,adminLoginName,adminLoginName}, "417506");
+
+		if (smsMsg){
+			j.setMsg("通过音乐人成功，短信通知成功。此独立音乐人后台登陆账号："+adminLoginName+"  密码："+adminLoginName);
+		} else {
+			logger.error("通过音乐人短信发送失败！");
+			j.setMsg("通过音乐人成功，短信通知失败。此独立音乐人后台登陆账号："+adminLoginName+"  密码："+adminLoginName);
+		}
+
         return j;
     }
 
@@ -159,13 +177,29 @@ public class YybMusicianApiController extends BaseController {
 	@IgnoreAuth
     @ResponseBody
     @RequestMapping(value = "noPass")
-    public AjaxJson noPass(String id) {
+    public AjaxJson noPass(String id, @RequestParam(required = false) String refuseReason) {
         AjaxJson j = new AjaxJson();
         YybMusician yybMusician = new YybMusician();
         yybMusician.setId(id);
         yybMusician.setStatus(3);
+        yybMusician.setRefuseReason(refuseReason);
 		yybMusicianApiService.updateStatus(yybMusician);
-        j.setMsg("拒绝音乐人成功");
+
+		YybMusician yybMusician2 = yybMusicianApiService.get(id);
+
+		if (StringUtils.isBlank(refuseReason)) {
+			refuseReason = "";
+		}
+
+		Boolean smsMsg = SmsUtils.sendSms(yybMusician2.getPhone(), new String[]{refuseReason}, "417507");
+		if (true) {
+			j.setMsg("拒绝音乐人成功,短信通知成功。");
+
+		} else {
+			logger.error("拒绝音乐人短信发送失败！");
+			j.setMsg("拒绝音乐人成功,短信通知失败。");
+
+		}
         return j;
     }
 

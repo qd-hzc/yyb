@@ -79,6 +79,12 @@ public class YybOrderController extends BaseController {
 		return getBootstrapData(page);
 	}
 
+
+	@ResponseBody
+	@RequestMapping(value = "detail")
+	public YybOrder detail(String id) {
+		return yybOrderService.get(id);
+	}
 	
 
 }

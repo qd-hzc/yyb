@@ -14,7 +14,7 @@ public class SmsUtils {
      * @param time 有效时间分钟
      * @param tempId 模版， 1登陆 2注册
      */
-    public static Boolean sendSms(String phone, String code, String time, String tempId){
+    public static Boolean sendSms(String phone, String[] param, String tempId){
 
         //获取短信配置信息
         String url = Global.getConfig("sms.serverIP");
@@ -67,7 +67,7 @@ public class SmsUtils {
         //*********************************************************************************************************************
 
 
-        result = restAPI.sendTemplateSMS(phone, tempId, new String[]{code,time});
+        result = restAPI.sendTemplateSMS(phone, tempId, param);
 
         System.out.println("SDKTestGetSubAccounts result=" + result);
         if("000000".equals(result.get("statusCode"))){
