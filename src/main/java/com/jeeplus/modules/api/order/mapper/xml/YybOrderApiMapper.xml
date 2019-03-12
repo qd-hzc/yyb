@@ -226,7 +226,7 @@
 			status = #{status},
 			pay_type  = #{payType},
 			pay_time = #{payTime}
-		WHERE id = #{orderNo}
+		WHERE order_no = #{orderNo}
 	</update>
 
 
