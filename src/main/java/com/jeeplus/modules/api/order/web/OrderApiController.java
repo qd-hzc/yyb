@@ -188,16 +188,16 @@ public class OrderApiController extends BaseController {
         }
 
         //付款金额，必填
-        String money = orderApi.getOrderAmount().toString();
+        String money = String.valueOf(orderApi.getOrderAmount());
         String orderNo = orderApi.getOrderNo();
         //订单名称，必填
-        String name = new String("音乐邦版权购买");
+        String name = String.valueOf("music");
         //商品描述，可空
-        String info = new String("音乐邦版权购买");
+        String info = String.valueOf("");
         String result= "";
         try {
-            result = AlipayUtil.pay(money, info, name, orderId, orderNo);
-            System.out.println(result);
+            result = AlipayUtil.pay(money, info, name, orderNo);
+            logger.info(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -214,8 +214,7 @@ public class OrderApiController extends BaseController {
      * @throws IOException
      */
     @IgnoreAuth
-    @RequestMapping(value="/notify_url",method= RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value="/notify_url")
     public String notify(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
         logger.info("支付宝回调参数：" + JSON.toJSONString(request.getParameterMap()));
@@ -238,7 +237,7 @@ public class OrderApiController extends BaseController {
         }
 
         boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
-        logger.info("支付宝验签成功");
+        logger.info(String.valueOf(signVerified));
 
 
         //——请在这里编写您的程序（以下代码仅作参考）——
@@ -249,18 +248,21 @@ public class OrderApiController extends BaseController {
 	4、验证app_id是否为该商户本身。
 	*/
         if(signVerified) {//验证成功
+            logger.info("验签成功");
             //商户订单号
-            String out_trade_no = new String(request.getParameter("orderNo").getBytes("ISO-8859-1"),"UTF-8");
+            String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 
-            String orderId = new String(request.getParameter("orderId").getBytes("ISO-8859-1"),"UTF-8");
+            logger.info("out_trade_no:" + out_trade_no);
 
             //支付宝交易号
             String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
+            logger.info("trade_no:" + trade_no);
 
             //交易状态
             String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
-
+            logger.info("trade_status：" + trade_status);
             if(trade_status.equals("TRADE_FINISHED")){
+                logger.info("TRADE_FINISHED:true");
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
@@ -268,12 +270,13 @@ public class OrderApiController extends BaseController {
                 //注意：
                 //退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
             }else if (trade_status.equals("TRADE_SUCCESS")){
+                logger.info("TRADE_SUCCESS:true");
                 //判断该笔订单是否在商户网站中已经做过处理
                 //如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
                 //如果有做过处理，不执行商户的业务程序
 
                 Map<String, Object> param = new HashMap<>();
-                param.put("orderId", orderId);
+                param.put("orderNo", out_trade_no);
                 param.put("tradeNo", trade_no);
                 param.put("status", 3);
                 param.put("payType", 1);
@@ -286,6 +289,7 @@ public class OrderApiController extends BaseController {
             return "success";
 
         }else {//验证失败
+            logger.info("验签失败");
             return "fail";
 
             //调试用，写文本函数记录程序运行情况是否正常
@@ -394,6 +398,7 @@ public class OrderApiController extends BaseController {
 
         return ResultUtil.success();
     }
+
 
 
 
