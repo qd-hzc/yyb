@@ -53,9 +53,21 @@ public class YybOrderDeatilOneController extends BaseController {
 	@RequiresPermissions("yyborderdetailone:yybOrderDeatilOne:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybOrderDeatilOne yybOrderDeatilOne, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<YybOrderDeatilOne> page = yybOrderDeatilOneService.findPage(new Page<YybOrderDeatilOne>(request, response), yybOrderDeatilOne); 
+		Page<YybOrderDeatilOne> page = yybOrderDeatilOneService.findPage(new Page<YybOrderDeatilOne>(request, response), yybOrderDeatilOne);
 		return getBootstrapData(page);
 	}
+
+
+	/**
+	 * 订单详情列表页面
+	 */
+	@RequiresPermissions("yyborderdetailone:yybOrderDeatilOne:list")
+	@RequestMapping(value = {"list", ""})
+	public String list(YybOrderDeatilOne yybOrderDeatilOne, Model model) {
+		model.addAttribute("yybOrderDeatilOne", yybOrderDeatilOne);
+		return "modules/yyborderdetailone/yybOrderDeatilOneList";
+	}
+
 
 
 

@@ -84,34 +84,20 @@ $(document).ready(function() {
 		        checkbox: true
 		       
 		    }
+		    ,{
+                       field: 'phone',
+                       title: '手机号',
+                       sortable: true,
+                       sortName: 'phone'
+
+                   }
 			,{
 		        field: 'name',
 		        title: '名称',
 		        sortable: true,
 		        sortName: 'name'
-		        ,formatter:function(value, row , index){
-		        	value = jp.unescapeHTML(value);
-				   <c:choose>
-					   <c:when test="${fns:hasPermission('member:yybMember:edit')}">
-					      return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
-				      </c:when>
-					  <c:when test="${fns:hasPermission('member:yybMember:view')}">
-					      return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
-				      </c:when>
-					  <c:otherwise>
-					      return value;
-				      </c:otherwise>
-				   </c:choose>
-		         }
-		       
 		    }
-			,{
-		        field: 'phone',
-		        title: '手机号',
-		        sortable: true,
-		        sortName: 'phone'
-		       
-		    }
+
 			,{
 		        field: 'type',
 		        title: '用户类型',
