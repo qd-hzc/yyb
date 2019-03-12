@@ -171,6 +171,7 @@ public class YybMemberApiController extends BaseController {
 
         apiMember.setId(yybMember.getId());
         apiMember.setPhone(yybMember.getPhone());
+        apiMember.setTags(yybMember.getTags());
         //给用户jwt加密生成token
         String token = JWT.sign(apiMember, 12L * 60L * 60L * 1000L);
         yybMember.setToken(token);
@@ -232,6 +233,7 @@ public class YybMemberApiController extends BaseController {
 
         apiMember.setId(yybMember.getId());
         apiMember.setPhone(yybMember.getPhone());
+        apiMember.setTags(yybMember.getTags());
 
         //给用户jwt加密生成token
         String token = JWT.sign(apiMember, 12L * 60L * 60L * 1000L);

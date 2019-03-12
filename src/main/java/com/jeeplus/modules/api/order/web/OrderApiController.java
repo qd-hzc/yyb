@@ -309,13 +309,13 @@ public class OrderApiController extends BaseController {
 
         //个人
         if (1 == yybOrderVo.getMemberType()) {
-            if (StringUtils.isEmpty(yybOrderVo.getIdCard()) || StringUtils.isEmpty(yybOrderVo.getIdCardAttach())
+            if (StringUtils.isEmpty(yybOrderVo.getIdCard())
                     || null == yybOrderVo.getMemberSex() || (yybOrderVo.getMemberSex() != 1 && yybOrderVo.getMemberSex() != 2)){
                 logger.error("下单：个人信息不全");
                 return ResultUtil.error("个人信息不全");
             }
         } else {
-            if (StringUtils.isEmpty(yybOrderVo.getOrgCode()) || StringUtils.isEmpty(yybOrderVo.getOrgCodeAttach())){
+            if (StringUtils.isEmpty(yybOrderVo.getOrgCode())){
                 logger.error("下单：公司信息不全");
                 return ResultUtil.error("公司信息不全");
             }
