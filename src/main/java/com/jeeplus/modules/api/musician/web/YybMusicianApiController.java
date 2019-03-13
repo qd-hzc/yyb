@@ -158,7 +158,7 @@ public class YybMusicianApiController extends BaseController {
 
 		String adminLoginUrl = Global.getConfig("admin_login_url");
 
-		Boolean smsMsg = SmsUtils.sendSms(yybMusician2.getPhone(), new String[]{adminLoginUrl,adminLoginName,adminLoginName}, "417506");
+		Boolean smsMsg = SmsUtils.sendSms(yybMusician2.getPhone(), new String[]{adminLoginUrl,adminLoginName,adminLoginName}, Global.getConfig("sms.pass.tempId"));
 
 		if (smsMsg){
 			j.setMsg("通过音乐人成功，短信通知成功。此独立音乐人后台登陆账号："+adminLoginName+"  密码："+adminLoginName);
@@ -191,8 +191,8 @@ public class YybMusicianApiController extends BaseController {
 			refuseReason = "";
 		}
 
-		Boolean smsMsg = SmsUtils.sendSms(yybMusician2.getPhone(), new String[]{refuseReason}, "417507");
-		if (true) {
+		Boolean smsMsg = SmsUtils.sendSms(yybMusician2.getPhone(), new String[]{refuseReason}, Global.getConfig("sms.nopass.tempId"));
+		if (smsMsg) {
 			j.setMsg("拒绝音乐人成功,短信通知成功。");
 
 		} else {
