@@ -28,4 +28,6 @@ public interface YybMusicApiMapper extends BaseMapper<YybMusic> {
     void updateReduceLikeCount(String musicId);
 
     void updateAddPlayHistoryCount(String musicId);
+
+    YybMusic getExcellentCase();
 }

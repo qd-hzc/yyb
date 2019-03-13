@@ -3,12 +3,7 @@
  */
 package com.jeeplus.common.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -23,6 +18,8 @@ import com.jeeplus.core.web.Servlets;
 import com.jeeplus.modules.sys.entity.FileData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 文件操作工具类
@@ -664,4 +661,39 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
         return label;
     }
 
+
+	public static void downFile(String path, String name, HttpServletResponse response){
+
+		BufferedInputStream bis = null;
+		BufferedOutputStream bos = null;
+		try {
+
+			String s_utf8 = new String(name.getBytes("UTF-8"),"ISO8859-1");//真实文件名
+			response.setHeader("Content-disposition", "attachment; filename=" + s_utf8);//下载文件名
+			bis = new BufferedInputStream(new FileInputStream(path));//根据路径，用字节缓冲流读取文件，比字节流效率快
+			bos = new BufferedOutputStream(response.getOutputStream());//缓冲输出流
+			byte[] buff = new byte[2048000];
+			int bytesRead = 0;
+			while(-1 !=(bytesRead = (bis.read(buff, 0, buff.length)))){
+				bos.write(buff, 0, buff.length);
+			}
+		}catch (Exception e){
+			System.out.println(e);
+		}finally{
+			if(bis != null){
+				try {
+					bis.close();
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+			if(bos != null){
+				try {
+					bos.close();
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }

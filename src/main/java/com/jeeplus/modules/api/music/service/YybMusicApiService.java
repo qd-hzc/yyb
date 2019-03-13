@@ -75,4 +75,8 @@ public class YybMusicApiService extends CrudService<YybMusicApiMapper, YybMusic>
 	public void updateAddPlayHistoryCount(String musicId) {
 		yybMusicApiMapper.updateAddPlayHistoryCount(musicId);
 	}
+
+	public YybMusic getExcellentCase() {
+		return mapper.getExcellentCase();
+	}
 }

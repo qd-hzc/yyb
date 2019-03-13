@@ -8,6 +8,8 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jeeplus.common.annotation.IgnoreAuth;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.utils.FileUtils;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
@@ -184,6 +186,19 @@ public class YybMusicApiController extends BaseController {
 	}
 
 
+	@IgnoreAuth
+	@RequestMapping(value = "/down", method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(notes = "down", httpMethod = "get", value = "文件上传")
+	@ApiImplicitParams({@ApiImplicitParam(name = "id", value = "id", required = true, paramType = "query",dataType = "string")})
+	public void downMusic(HttpServletRequest request, HttpServletResponse response, String id) {
+		YybMusic yybMusic = yybMusicService.get(id);
+		if (yybMusic !=null) {
+			FileUtils.downFile(Global.getConfig("download.basedir")+ yybMusic.getUrl(), yybMusic.getTitle()+".mp3", response);
+		}else {
+			FileUtils.downFile("文件未找到", "文件未找到", response);
+		}
+	}
 
 
 }

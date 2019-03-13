@@ -5,6 +5,7 @@ import com.jeeplus.common.annotation.IgnoreAuth;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.core.web.Result;
 import com.jeeplus.core.web.ResultUtil;
+import com.jeeplus.modules.api.music.service.YybMusicApiService;
 import com.jeeplus.modules.music.entity.YybMusic;
 import com.jeeplus.modules.usage.entity.YybUsage;
 import com.jeeplus.modules.usage.service.YybUsageService;
@@ -24,16 +25,18 @@ import java.util.Map;
  * @version 2019-02-18
  */
 @Controller
-@RequestMapping(value = "/api/member")
+@RequestMapping(value = "/api/index")
 public class IndexApiController extends BaseController {
 
 
     @Autowired
     YybUsageService yybUsageService;
+    @Autowired
+    YybMusicApiService yybMusicApiService;
 
     @IgnoreAuth
     @ResponseBody
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "")
     @ApiOperation(notes = "index", httpMethod = "GET", value = "首页")
     public Result index(){
         Map<String, Object> resultAll = new HashMap<>();
@@ -41,9 +44,15 @@ public class IndexApiController extends BaseController {
         List<YybUsage> usageList = yybUsageService.findAllList(new YybUsage());
         resultAll.put("usageAll", usageList);
 
-//        List<YybMusic> musicList = yybUsageService.getIndexMusic();
+
+
+        YybMusic yybMusic = yybMusicApiService.getExcellentCase();
+        resultAll.put("excellentCase", yybMusic);
+
 
         return ResultUtil.success(resultAll);
     }
+
+
 
 }

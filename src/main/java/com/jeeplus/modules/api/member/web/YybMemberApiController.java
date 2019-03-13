@@ -11,6 +11,7 @@ import com.jeeplus.core.web.ResultUtil;
 import com.jeeplus.modules.api.member.entity.ApiMember;
 import com.jeeplus.modules.member.entity.YybMember;
 import com.jeeplus.modules.api.member.service.YybMemberApiService;
+import com.jeeplus.modules.musician.entity.YybMusician;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.security.SystemAuthorizingRealm;
 import com.jeeplus.modules.sys.utils.UserUtils;
@@ -300,8 +301,6 @@ public class YybMemberApiController extends BaseController {
         }
         return ResultUtil.success(url);
     }
-
-
 
 
     @IgnoreAuth
