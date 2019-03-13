@@ -188,7 +188,7 @@ public class OrderApiController extends BaseController {
         //付款金额，必填
         String money = String.valueOf(orderApi.getOrderAmount());
         //订单名称，必填
-        String name = String.valueOf("music");
+        String name = String.valueOf("yyb");
         //商品描述，可空
         String info = String.valueOf("");
         String result= "";
