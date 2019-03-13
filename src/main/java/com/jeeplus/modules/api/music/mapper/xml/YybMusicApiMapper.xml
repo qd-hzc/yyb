@@ -265,31 +265,10 @@
 
 	<select id="getExcellentCase" resultType="YybMusic">
 		SELECT
-a.id AS "id",
-		a.create_by AS "createBy.id",
-		a.create_date AS "createDate",
-		a.update_by AS "updateBy.id",
-		a.update_date AS "updateDate",
-		a.del_flag AS "delFlag",
-		a.title AS "title",
-		a.price AS "price",
-		a.musician_id AS "yybMusician.id",
-		a.album_id AS "yybMusicianAlbum.id",
-		a.url AS "url",
-		a.img AS "img",
-		a.tag_id AS "yybTagCategory.id",
-		a.music_time AS "musicTime",
-		a.publish_time AS "publishTime",
-		a.remarks AS "remarks",
-		a.play_count AS "playCount",
-		a.like_count AS "likeCount",
-		a.is_circle AS "isCircle",
-		a.seller_count AS "sellerCount",
-		a.case_introduction AS "caseIntroduction",
-		a.is_excellent_case AS "isExcellentCase",
-		a.is_excellent_case_time AS "isExcellentCaseTime",
-		a.tag_name AS "tagName"
+		<include refid="yybMusicColumns"/>
 		FROM yyb_music a
+		<include refid="yybMusicJoins"/>
+		where a.del_flag = 0
 		where is_excellent_case = 1 order by is_excellent_case_time desc limit 1
 	</select>
 </mapper>
