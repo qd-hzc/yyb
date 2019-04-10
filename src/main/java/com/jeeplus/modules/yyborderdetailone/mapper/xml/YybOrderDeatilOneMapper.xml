@@ -42,6 +42,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			and a.company_id = #{companyId}
 			<if test="orderNo != null and orderNo != ''">
 				AND a.order_no LIKE 
 					<if test="dbName == 'oracle'">'%'||#{orderNo}||'%'</if>

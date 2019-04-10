@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,8 @@ public class YybOrderDeatilOneController extends BaseController {
 	@RequiresPermissions("yyborderdetailone:yybOrderDeatilOne:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(YybOrderDeatilOne yybOrderDeatilOne, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		yybOrderDeatilOne.setCompanyId(user.getOffice().getId());
 		Page<YybOrderDeatilOne> page = yybOrderDeatilOneService.findPage(new Page<YybOrderDeatilOne>(request, response), yybOrderDeatilOne);
 		return getBootstrapData(page);
 	}

@@ -24,6 +24,7 @@ public class YybOrderDeatilOne extends DataEntity<YybOrderDeatilOne> {
 	private Double musicTotal;		// 总价
 	private String rightSelectName;		// 权利
 	private String usageSelectName;		// 用途
+	private String companyId;
 	
 	public YybOrderDeatilOne() {
 		super();
@@ -113,5 +114,12 @@ public class YybOrderDeatilOne extends DataEntity<YybOrderDeatilOne> {
 	public void setUsageSelectName(String usageSelectName) {
 		this.usageSelectName = usageSelectName;
 	}
-	
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
 }
