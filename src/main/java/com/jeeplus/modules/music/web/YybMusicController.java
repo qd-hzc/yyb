@@ -112,17 +112,18 @@ public class YybMusicController extends BaseController {
 
 		YybTagCategory yybTagCategory = yybMusic.getYybTagCategory();
 		if (yybTagCategory != null) {
-			String id = yybTagCategory.getId();
-			List<String> ids = Arrays.asList(id.split(","));
-			String name = "";
-			for (String tagId : ids) {
-				YybTagCategory yybTagCategoryId = yybTagCategoryService.get(tagId);
-				if (yybTagCategoryId != null){
-					name = name + yybTagCategoryId.getName()+";";
+			if (!yybTagCategory.getId().equals(yybTagCategory.getName())) {
+				String id = yybTagCategory.getId();
+				List<String> ids = Arrays.asList(id.split(","));
+				String name = "";
+				for (String tagId : ids) {
+					YybTagCategory yybTagCategoryId = yybTagCategoryService.get(tagId);
+					if (yybTagCategoryId != null){
+						name = name + yybTagCategoryId.getName()+";";
+					}
 				}
+				yybMusic.setTagName(name);
 			}
-			yybMusic.setTagName(name);
-
 		}
 
 		if (1 == yybMusic.getIsExcellentCase()) {
